@@ -1,0 +1,412 @@
+{%load static%}
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="en">
+  <head>
+    <title>Single post</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- Stylesheets-->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:100,300,300i,400,700,900">
+    <link rel="stylesheet" href={%static "css/bootstrap.css"%}>
+    <link rel="stylesheet" href={%static "css/fonts.css"%}>
+    <link rel="stylesheet" href={%static "css/style.css"%} id="main-styles-link">
+    <!--[if lt IE 10]>
+    <div style="background: #212121; padding: 10px 0; box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3); clear: both; text-align:center; position: relative; z-index:1;"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="{%static "images/ie8-panel/warning_bar_0000_us.jpg"%}" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
+    <script src={%static "js/html5shiv.min.js"%}></script>
+    <![endif]-->
+	<script>
+function loadXMLDoc1()
+{
+	var num={{data.id}}
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		// IE6, IE5 浏览器执行代码
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			var data=xmlhttp.responseText;
+			var json=JSON.parse(data);  // 使用JSON.parse()进行解析：使用JSON对象的静态方法parse()，将字符串解析为对象。
+			document.getElementById("likes_num").innerHTML=json.nums
+		}
+	}
+	url = "/likes/likes_nums?type=Article&&obj_id="+num
+	xmlhttp.open("GET",url,true);
+	xmlhttp.send();
+}
+function loadXMLDoc2(num)
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		// IE6, IE5 浏览器执行代码
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			var data=xmlhttp.responseText;
+			var json=JSON.parse(data);  // 使用JSON.parse()进行解析：使用JSON对象的静态方法parse()，将字符串解析为对象。
+			document.getElementById("likes_num").innerHTML=json.nums
+		}
+	}
+	url = "/likes/likes_change?type=Article&&obj_id="+num
+	xmlhttp.open("GET",url,true);
+	xmlhttp.send();
+}
+window.onload=loadXMLDoc1()
+</script>
+  </head>
+  <body>
+    <div class="preloader">
+      <div class="preloader-body">
+        <div class="cssload-container">
+          <div class="cssload-speeding-wheel"></div>
+        </div>
+        <p>Loading...</p>
+      </div>
+    </div>
+    <div class="page">
+      <!-- Page Header-->
+      <header class="section page-header">
+        <!-- RD Navbar-->
+        <div class="rd-navbar-wrap rd-navbar-absolute">
+          <nav class="rd-navbar rd-navbar-creative" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed" data-md-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-fixed" data-xl-layout="rd-navbar-static" data-xxl-layout="rd-navbar-static" data-md-device-layout="rd-navbar-fixed" data-lg-device-layout="rd-navbar-fixed" data-xl-device-layout="rd-navbar-static" data-xxl-device-layout="rd-navbar-static" data-lg-stick-up-offset="20px" data-xl-stick-up-offset="20px" data-xxl-stick-up-offset="20px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
+            <div class="rd-navbar-main-outer">
+              <div class="rd-navbar-main">
+                <!-- RD Navbar Panel-->
+                <div class="rd-navbar-panel">
+                  <!-- RD Navbar Toggle-->
+                  <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
+                  <!-- RD Navbar Brand-->
+                  <div class="rd-navbar-brand">
+                    <!--Brand--><a class="brand" href="index.html"><img class="brand-logo-dark" src="{%static 'images/logo-default-147x37.svg'%}" alt="" width="147" height="37"/><img class="brand-logo-light" src="{%static 'images/logo-inverse-147x37.svg'%}" alt="" width="147" height="37"/></a>
+                  </div>
+                </div>
+                <div class="rd-navbar-main-element">
+                  <div class="rd-navbar-nav-wrap">
+                    <!-- RD Navbar Nav-->
+                    <ul class="rd-navbar-nav">
+                      <li class="rd-nav-item active"><a class="rd-nav-link" href="{%url 'index'%}">首页</a>
+                      </li>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:gov'%}">政府主页</a>
+					  </li>
+					  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:thirdParty'%}">第三方主页</a>
+					  </li>
+					  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:expert'%}">专家主页</a>
+					  <li class="rd-nav-item"><a class="rd-nav-link" href="">用户主页</a>
+                        <!-- RD Navbar Dropdown-->
+                        <ul class="rd-menu rd-navbar-dropdown">
+                          <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:gov'%}">政府主页</a>
+						  </li>
+						  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:thirdParty'%}">第三方主页</a>
+						  </li>
+						  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:expert'%}">专家主页</a>
+                        </ul>
+                      </li>
+					  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'spider'%}">获取新闻</a>
+                      </li>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
+                        <!-- RD Navbar Megamenu-->
+                        <ul class="rd-menu rd-navbar-megamenu">
+                          <li class="rd-megamenu-item">
+                            <h6 class="rd-megamenu-title">Elements</h6>
+                            <ul class="rd-megamenu-list">
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="typography.html">Typography</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="buttons.html">Buttons</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="forms.html">Forms</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="tabs-and-accordions.html">Tabs and accordions</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="progress-bars.html">Progress bars</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="grid.html">Grid</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="tables.html">Tables</a></li>
+                            </ul>
+                          </li>
+                          <li class="rd-megamenu-item">
+                            <h6 class="rd-megamenu-title">Blog</h6>
+                            <ul class="rd-megamenu-list">
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="classic-blog.html">Classic blog</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="grid-blog.html">Grid blog</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="masonry-blog.html">Masonry blog</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="modern-blog.html">Modern blog</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="single-post.html">Single post</a></li>
+                            </ul>
+                          </li>
+                          <li class="rd-megamenu-item">
+                            <h6 class="rd-megamenu-title">Gallery</h6>
+                            <ul class="rd-megamenu-list">
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="grid-gallery.html">Grid gallery</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="masonry-gallery.html">Masonry gallery</a></li>
+                            </ul>
+                          </li>
+                          <li class="rd-megamenu-item">
+                            <h6 class="rd-megamenu-title">Extras</h6>
+                            <ul class="rd-megamenu-list">
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="404.html">404 Page</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="503.html">503 Page</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="coming-soon.html">Coming soon</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="Login.html">Login/Registration</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="privacy-policy.html">Privacy policy</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="search-results.html">Search results</a></li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'login:login'%}">登录</a>
+					  <!-- RD Navbar Dropdown-->
+                        <ul class="rd-menu rd-navbar-dropdown">
+                          <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="{%url 'login:logout'%}">退出登录</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                  <!-- RD Navbar Search-->
+                  <div class="rd-navbar-search">
+                    <button class="rd-navbar-search-toggle rd-navbar-fixed-element-1" data-rd-navbar-toggle=".rd-navbar-search"><span></span></button>
+                    <form class="rd-search" action="search-results.html" data-search-live="rd-search-results-live" method="GET">
+                      <div class="form-wrap">
+                        <label class="form-label" for="rd-navbar-search-form-input">Search</label>
+                        <input class="rd-navbar-search-form-input form-input" id="rd-navbar-search-form-input" type="text" name="s" autocomplete="off">
+                        <div class="rd-search-results-live" id="rd-search-results-live"></div>
+                      </div>
+                      <button class="rd-search-form-submit mdi mdi-magnify" type="submit"></button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </header>
+      <!-- Breadcrumbs -->
+      <section class="section section-bredcrumbs">
+        <div class="container context-light breadcrumb-wrapper">
+          <h1>Single post</h1>
+          <ul class="breadcrumbs-custom">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#">Pages</a></li>
+            <li class="active">Single post</li>
+          </ul>
+        </div>
+      </section>
+      <!-- Overview-->
+      <section class="section section-lg bg-default">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-md-10 col-xl-8">
+              <div class="post-single-wrap">
+                <div class="post-item">
+                  <h2>{{data.title}}</h2>
+                  <ul class="list-dotted">
+                    <li>
+					  <!-- 点赞功能区 start -->
+					  <div id="likes_num"><h2></h2></div>
+					  <button onclick="loadXMLDoc2({{data.id}})">点赞</button>
+					  
+                      <!-- <div class="post-author">
+                        <div class="media-wrap"><img src="{%static "images/single-post-author-1-48x48.jpg"%}" alt="" width="48" height="48"/>
+                        </div>
+                        <div class="author-name">Martha Ryan</div>
+                      </div> -->
+                    </li>
+                    <li>
+                      <div class="post-time">June, 16 2020 at 2:12 pm</div>
+                    </li>
+                    <li>
+                      <div class="post-tag">News</div>
+                    </li>
+                  </ul>
+                  <!-- <div class="subtitle heading-6">Lorem ipsum dolor sit amet, qui tollit laoreet ocurreret id, ne vis melius offendit appetere, ius timeam percipit argumentum id. His mutat nostrum ad, ei qui nostro aeterno recteque, aperiam quaerendum id has. et.</div><img class="img-bordered" src="{%static "images/single-post-1-770x472.jpg"%}" alt="" width="770" height="472"/>
+                  <p>Lorem ipsum dolor sit amet, qui tollit laoreet ocurreret id, ne vis melius offendit appetere, ius timeam percipit argumentum id. His mutat nostrum ad, ei qui nostro aeterno recteque, aperiam quaerendum id has. Quod tantas volumus eu eum, mei appetere honestatis an. Dico apeirian qui ad, pri eu munere menandri maluisset. Ei has elit essent mentitum, sed ex vocent maluisset.</p>
+                  <blockquote class="quote quote-default">
+                    <div class="quote-icon mdi mdi-format-quote"></div>
+                    <div class="quote-body">
+                      <q class="heading-6">Lorem ipsum dolor sit amet, scripta legimus qua erendum ex vis, audire no umes his an. Decore tam quam insole ns usu, an omnium debitis. ipsum dolo. Lorem ipsum dolor sit amet, scripta legimus qua Lorem ipsum dolor sit.</q>
+                    </div>
+                  </blockquote> -->
+<!--                   <p>At eos omnium option disputando, eius nusquam quo at. Ad sit modo nemore diceret, in vel vidit dicat. Eam fierent neglegentur ea. Delectus volutpat at sit, cum etiam copiosae an. Vim in illud nonumy malorum. Nemore democritum cu eos, quo etiam volumus id. Eripuit corrumpit ei quo.</p>
+                  <p>In summo assentior consetetur qui, ea per dolor erroribus expetendis. Causae audire cu est. Quodsi meliore mei ea, at odio euismod pro. Ad mundi indoctum sit. Vel meis instructior in, discere habemus eu usu. Ne eam quas saperet, cu vix homero recteque, no mea eripuit sadipscing.</p><img class="img-bordered" src="{%static "images/single-post-2-770x472.jpg"%}" alt="" width="770" height="472"/>
+                  <p>Lorem ipsum dolor sit amet, qui tollit laoreet ocurreret id, ne vis melius offendit appetere, ius timeam percipit argumentum id. His mutat nostrum ad, ei qui nostro aeterno recteque, aperiam quaerendum id has. Quod tantas volumus eu eum, mei appetere honestatis an. Dico apeirian qui ad, pri eu munere menandri maluisset. Ei has elit essent mentitum, sed ex vocent maluisset.</p>
+ -->              <!-- 正文 start -->
+				<div class="article" id="article">
+					<div class="img_wrapper">
+						{% comment %} 改链接 {% endcomment %}
+						{% comment %} <img src="{%static '/images/news.png'%}" alt=""> {% endcomment %}
+						<img src={{data.imglink}} alt="">
+						<span class="img_descr"></span></div>
+					<p cms-style="font-L">　　{{data.essay}}</p>
+				</div>
+				
+				<div class="group-sm buttons-group-1"><a class="button button-icon button-icon-left button-round button-facebook" href="#"><span class="icon mdi mdi-facebook"></span><span>Share on Facebook</span></a><a class="button button-icon button-icon-left button-round button-twitter" href="#"><span class="icon mdi mdi-twitter"></span><span>Share on Twitter</span></a></div>
+                </div>
+                <div class="post-item">
+                  <h2>评论区</h2>
+                  <ul class="comment-list">
+                    <li>
+                      <div class="box-comment">
+                        <!-- 评论显示区 start -->
+						<ul class="comment-list list-unstyled">
+							{% for comment in comment_list %}
+							<li class="comment-item">
+								<div class="text">
+									{{ comment.text }}
+								</div>
+								<span class="username">用户：{{ comment.username }}</span>
+								<time class="submit-date">创建时间：{{ comment.create_time }}</time>
+							</li>
+							{% empty %}
+							暂无评论
+							{% endfor %}
+						</ul>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="post-item">
+                  <h2>发表评论</h2>
+				  <!-- 提交评论区 start -->
+		
+					<form action="{% url 'Comment:post_comment' data.id%}" method="post" class="rd-form rd-mailform comment-form">
+						{% csrf_token %}
+						<div class="row">
+							<div class="col-md-12">
+								<label for="{{ form.text.id_for_label }}">评论：</label>
+								 <!-- <div class="col-md-12"> -->
+									<!-- <div class="form-wrap"> -->
+									  <!-- <label class="form-label" for="contact-message">Message</label> -->
+									  <!-- <textarea class="form-input" id="contact-message" name="message" data-constraints="@Required"></textarea> -->
+									<!-- </div> -->
+								 <!-- </div> -->
+								{{ form.text }}
+								{{ form.text.errors }}
+								<button type="submit" class="button button-secondary">发表</button>
+							</div>
+						</div>    <!-- row -->
+					</form>
+					
+                  <!-- <form class="rd-form rd-mailform comment-form">
+                    <div class="row row-15">
+                      <div class="col-md-6">
+                        <div class="form-wrap">
+                          <input class="form-input" id="contact-name" type="text" name="name" data-constraints="@Required">
+                          <label class="form-label" for="contact-name">Name</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-wrap">
+                          <input class="form-input" id="contact-email" type="email" name="email" data-constraints="@Email @Required">
+                          <label class="form-label" for="contact-email">E-mail</label>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-wrap">
+                          <label class="form-label" for="contact-message">Message</label>
+                          <textarea class="form-input" id="contact-message" name="message" data-constraints="@Required"></textarea>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <button class="button button-secondary" type="submit">Submit</button>
+                      </div>
+                    </div>
+                  </form> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Page Footer-->
+      <footer class="section footer-2 context-dark">
+        <div class="container">
+          <div class="row row-40">
+            <div class="col-md-6 col-lg-3"><a class="footer-logo" href="index.html"><img src="{%static 'images/logo-inverse-147x37.svg'%}" alt="" width="147" height="37"/></a>
+              <p>We're a world-class web hosting company who offers a range of hosting services, including web hosting, reseller hosting, vps hosting and dedicated servers.</p>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <h5 class="title">Contact Information</h5>
+              <ul class="contact-box">
+                <li>
+                  <div class="unit unit-horizontal unit-spacing-xxs">
+                    <div class="unit-left"><span class="icon mdi mdi-map-marker"></span></div>
+                    <div class="unit-body"><a href="#">2130 Fulton Street, <br class="veil reveal-lg-inline">San Diego, CA 94117-1080 USA</a></div>
+                  </div>
+                </li>
+                <li>
+                  <div class="unit unit-horizontal unit-spacing-xxs">
+                    <div class="unit-left"><span class="icon mdi mdi-phone"></span></div>
+                    <div class="unit-body">
+                      <ul class="list-phones">
+                        <li><a href="tel:#">1-800-1234-567</a></li>
+                        <li><a href="tel:#">1-800-1234-567</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="unit unit-horizontal unit-spacing-xxs">
+                    <div class="unit-left"><span class="icon mdi mdi-email-outline"></span></div>
+                    <div class="unit-body"><a href="mailto:#">info@demolink.org</a></div>
+                  </div>
+                </li>
+              </ul>
+              <div class="group-md group-middle social-items"><a class="icon icon-md novi-icon mdi mdi-facebook" href="#"></a><a class="icon icon-md novi-icon mdi mdi-twitter" href="#"></a><a class="icon icon-md novi-icon mdi mdi-instagram" href="#"></a><a class="icon icon-md novi-icon mdi mdi-facebook-messenger" href="#"></a><a class="icon icon-md novi-icon mdi mdi-linkedin" href="#"></a><a class="icon icon-md novi-icon mdi mdi-snapchat" href="#"></a></div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <h5 class="title">Instagram Feed</h5>
+              <ul class="instafeed instagram-gallery" data-lightgallery="group">
+                <li><a class="instagram-item" data-lightgallery="item" href="{%static "images/insta-gallery-1-original.jpg"%}"><img src="{%static "images/insta-gallery-1-72x72.jpg"%}" alt="" width="72" height="72"/></a>
+                </li>
+                <li><a class="instagram-item" data-lightgallery="item" href="{%static "images/insta-gallery-2-original.jpg"%}"><img src="{%static "images/insta-gallery-2-72x72.jpg"%}" alt="" width="72" height="72"/></a>
+                </li>
+                <li><a class="instagram-item" data-lightgallery="item" href="{%static "images/insta-gallery-3-original.jpg"%}"><img src="{%static "images/insta-gallery-3-72x72.jpg"%}" alt="" width="72" height="72"/></a>
+                </li>
+                <li><a class="instagram-item" data-lightgallery="item" href="{%static "images/insta-gallery-4-original.jpg"%}"><img src="{%static "images/insta-gallery-4-72x72.jpg"%}" alt="" width="72" height="72"/></a>
+                </li>
+                <li><a class="instagram-item" data-lightgallery="item" href="{%static "images/insta-gallery-5-original.jpg"%}"><img src="{%static "images/insta-gallery-5-72x72.jpg"%}" alt="" width="72" height="72"/></a>
+                </li>
+                <li><a class="instagram-item" data-lightgallery="item" href="{%static "images/insta-gallery-6-original.jpg"%}"><img src="{%static "images/insta-gallery-6-72x72.jpg"%}" alt="" width="72" height="72"/></a>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <h5 class="title">Newsletter</h5>
+              <p>Keep up with our always upcoming news and updates. Enter your e-mail and subscribe to our newsletter.</p>
+              <!-- RD Mailform-->
+              <form class="rd-form form-sm rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" action="bat/rd-mailform.php">
+                <div class="form-wrap">
+                  <input class="form-input" id="newsletter-email2" type="email" name="email" data-constraints="@Email @Required">
+                  <label class="form-label" for="newsletter-email2">Enter your e-mail</label>
+                </div>
+                <button class="button button-additional" type="submit">Subscribe</button>
+              </form>
+            </div>
+          </div>
+          <!-- Rights-->
+          <p class="rights">Copyright &copy; 2021.Company name All rights reserved.<a target="_blank" href="https://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a></p>
+        </div>
+      </footer>
+    </div>
+    <!-- Global Mailform Output-->
+    <div class="snackbars" id="form-output-global"></div>
+    <!-- Javascript-->
+    <script src={%static "js/core.min.js"%}></script>
+    <script src={%static "js/script.js"%}></script>
+  </body>
+</html>

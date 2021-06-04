@@ -1,0 +1,238 @@
+{%load static%}
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="en">
+  <head>
+    <title>Login/Registration</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- Stylesheets-->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:100,300,300i,400,700,900">
+    <link rel="stylesheet" href={%static "css/bootstrap.css"%}>
+    <link rel="stylesheet" href={%static "css/fonts.css"%}>
+    <link rel="stylesheet" href={%static "css/style.css"%} id="main-styles-link">
+    <!--[if lt IE 10]>
+    <div style="background: #212121; padding: 10px 0; box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3); clear: both; text-align:center; position: relative; z-index:1;"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="images/ie8-panel/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
+    <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="preloader">
+      <div class="preloader-body">
+        <div class="cssload-container">
+          <div class="cssload-speeding-wheel"></div>
+        </div>
+        <p>Loading...</p>
+      </div>
+    </div>
+    <div class="page">
+      <section class="section one-screen-page bg-gray-100">
+        <div class="one-screen-page-inner">
+          <header class="section page-header">
+            <!-- RD Navbar-->
+            <div class="rd-navbar-wrap rd-navbar-absolute">
+              <nav class="rd-navbar rd-navbar-creative" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed" data-md-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-fixed" data-xl-layout="rd-navbar-static" data-xxl-layout="rd-navbar-static" data-md-device-layout="rd-navbar-fixed" data-lg-device-layout="rd-navbar-fixed" data-xl-device-layout="rd-navbar-static" data-xxl-device-layout="rd-navbar-static" data-lg-stick-up-offset="20px" data-xl-stick-up-offset="20px" data-xxl-stick-up-offset="20px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
+                <div class="rd-navbar-main-outer">
+                  <div class="rd-navbar-main">
+                    <!-- RD Navbar Panel-->
+                    <div class="rd-navbar-panel">
+                      <!-- RD Navbar Toggle-->
+                      <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
+                      <!-- RD Navbar Brand-->
+                      <div class="rd-navbar-brand">
+                        <!--Brand--><a class="brand" href="{%url 'index'%}"><img class="brand-logo-dark" src="{%static 'images/logo-default-147x37.svg'%}" alt="" width="147" height="37"/><img class="brand-logo-light" src="{%static 'images/logo-inverse-147x37.svg'%}" alt="" width="147" height="37"/></a>
+                  </div>
+                </div>
+                <div class="rd-navbar-main-element">
+                  <div class="rd-navbar-nav-wrap">
+                    <!-- RD Navbar Nav-->
+                    <ul class="rd-navbar-nav">
+                      <li class="rd-nav-item active"><a class="rd-nav-link" href="{%url 'index'%}">首页</a>
+                      </li>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:gov'%}">政府主页</a>
+					  </li>
+					  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:thirdParty'%}">第三方主页</a>
+					  </li>
+					  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:expert'%}">专家主页</a>
+					  <li class="rd-nav-item"><a class="rd-nav-link" href="">用户主页</a>
+                        <!-- RD Navbar Dropdown-->
+                        <ul class="rd-menu rd-navbar-dropdown">
+                          <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:gov'%}">政府主页</a>
+						  </li>
+						  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:thirdParty'%}">第三方主页</a>
+						  </li>
+						  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:expert'%}">专家主页</a>
+                        </ul>
+                      </li>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
+                        <!-- RD Navbar Megamenu-->
+                        <ul class="rd-menu rd-navbar-megamenu">
+                          <li class="rd-megamenu-item">
+                            <h6 class="rd-megamenu-title">Elements</h6>
+                            <ul class="rd-megamenu-list">
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="typography.html">Typography</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="buttons.html">Buttons</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="forms.html">Forms</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="tabs-and-accordions.html">Tabs and accordions</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="progress-bars.html">Progress bars</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="grid.html">Grid</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="tables.html">Tables</a></li>
+                            </ul>
+                          </li>
+                          <li class="rd-megamenu-item">
+                            <h6 class="rd-megamenu-title">Blog</h6>
+                            <ul class="rd-megamenu-list">
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="classic-blog.html">Classic blog</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="grid-blog.html">Grid blog</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="masonry-blog.html">Masonry blog</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="modern-blog.html">Modern blog</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="single-post.html">Single post</a></li>
+                            </ul>
+                          </li>
+                          <li class="rd-megamenu-item">
+                            <h6 class="rd-megamenu-title">Gallery</h6>
+                            <ul class="rd-megamenu-list">
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="grid-gallery.html">Grid gallery</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="masonry-gallery.html">Masonry gallery</a></li>
+                            </ul>
+                          </li>
+                          <li class="rd-megamenu-item">
+                            <h6 class="rd-megamenu-title">Extras</h6>
+                            <ul class="rd-megamenu-list">
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="404.html">404 Page</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="503.html">503 Page</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="coming-soon.html">Coming soon</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="Login.html">Login/Registration</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="privacy-policy.html">Privacy policy</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="search-results.html">Search results</a></li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'login:login'%}">登录</a>
+					  <!-- RD Navbar Dropdown-->
+                        <ul class="rd-menu rd-navbar-dropdown">
+                          <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="{%url 'login:logout'%}">退出登录</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                  <!-- RD Navbar Search-->
+                  <div class="rd-navbar-search">
+                    <button class="rd-navbar-search-toggle rd-navbar-fixed-element-1" data-rd-navbar-toggle=".rd-navbar-search"><span></span></button>
+                    <form class="rd-search" action="search-results.html" data-search-live="rd-search-results-live" method="GET">
+                      <div class="form-wrap">
+                        <label class="form-label" for="rd-navbar-search-form-input">Search</label>
+                        <input class="rd-navbar-search-form-input form-input" id="rd-navbar-search-form-input" type="text" name="s" autocomplete="off">
+                        <div class="rd-search-results-live" id="rd-search-results-live"></div>
+                      </div>
+                      <button class="rd-search-form-submit mdi mdi-magnify" type="submit"></button>
+                    </form>
+                  </div>
+                </div>
+                  </div>
+                </div>
+              </nav>
+            </div>
+          </header>
+          <div class="page-content text-center">
+            <div class="container">
+              <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-4">
+                  <!-- Tabs-->
+                  <div class="tabs-custom tabs-horizontal tabs-line" id="tabs-1">
+                    <!-- Nav tabs-->
+                    <ul class="nav nav-tabs nav-tabs-inline">
+                      <li class="nav-item" role="presentation"><a class="nav-link active" href="#tabs-1-1" data-toggle="tab">Login</a></li>
+                      <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-1-2" data-toggle="tab">Registration</a></li>
+                    </ul>
+                    <!-- Tab panes-->
+                    <div class="tab-content">
+                      
+					  <div class="tab-pane fade show active" id="tabs-1-1">
+                        <h3>Login</h3>
+                        <!-- RD Mailform-->
+                        <form class="rd-form form-lg rd-mailform" method="POST">
+                          <div class="form-wrap">
+                            <input class="form-input" id="login-name" type="text" name="login-name">
+                            <label class="form-label" for="login-name">用户名</label>
+                          </div>
+                          <div class="form-wrap">
+                            <input class="form-input" id="login-password" type="password" name="login-password" data-constraints="@Required">
+                            <label class="form-label" for="login-password">Password</label>
+                          </div>
+                          <button class="button button-lg button-round button-block button-secondary" type="submit" name="submit" value="sign_in">登录</button>
+                          {% comment %} <input type="submit" class="button button-lg button-round button-block button-secondary" name="submit" value="sign_in"> {% endcomment %}
+                        </form>
+                        <div class="group-sm group-sm-justify group-middle social-items"><span>or use</span><a class="icon icon-lg icon-gray-400 novi-icon fa fa-facebook" href="#"></a><a class="icon icon-lg icon-gray-400 novi-icon fa fa-twitter" href="#"></a></div>
+                      </div>
+                      
+					  
+					  
+					  
+					  
+					  
+					  <div class="tab-pane fade" id="tabs-1-2">
+                        <h3>Registration</h3>
+                        <!-- RD Mailform-->
+                        <form class="rd-form form-lg rd-mailform" method="POST" name="sign_up_form" onsubmit="checkPasswords()">
+                          <div class="form-wrap">
+                            <input class="form-input" id="register-name" type="text" name="register-name" data-constraints="@Required">
+                            <label class="form-label" for="register-name">用户名</label>
+                          </div>
+                          <div class="form-wrap">
+                            <input class="form-input" id="register-password" type="password" name="register-password" data-constraints="@Required">
+                            <label class="form-label" for="register-password">Password</label>
+                          </div>
+                          <div class="form-wrap">
+                            <input class="form-input" id="register-confirm-password" type="password" name="confirm-password" data-constraints="@Required">
+                            <label class="form-label" for="register-confirm-password">Confirm Password</label>
+                          </div>
+                          <button class="button button-lg button-round button-block button-secondary" type="submit" name="submit" value="sign_up">注册</button>
+                          {% comment %} <input type="submit" class="button button-lg button-round button-block button-secondary" name="submit" value="sign_up"> {% endcomment %}
+                        </form>
+                        <div class="group-sm group-sm-justify group-middle social-items"><span>or use</span><a class="icon icon-lg icon-gray-400 novi-icon fa fa-facebook" href="#"></a><a class="icon icon-lg icon-gray-400 novi-icon fa fa-twitter" href="#"></a></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="page-footer">
+            <div class="container">
+              <!-- Rights-->
+              <p class="rights">Copyright &copy; 2021.Company name All rights reserved.<a target="_blank" href="https://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a></p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- Global Mailform Output-->
+    <div class="snackbars" id="form-output-global"></div>
+    <!-- Javascript-->
+    <script src={%static "js/core.min.js"%}></script>
+    <script src={%static "js/script.js"%}></script>
+  
+  
+  <script>
+    function checkPasswords() {
+        var pass1 = document.getElementsByName("register-password")[0];
+        var pass2 = document.getElementsByName("confirm-password")[0];
+        
+        if (pass1.value!=pass2.value)
+        {
+          alert("两次输入的密码不一致");
+        }
+    }
+  </script>
+  
+  </body>
+
+
+
+
+
+</html>

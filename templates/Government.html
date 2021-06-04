@@ -1,0 +1,554 @@
+{%load static%}
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="en">
+  <head>
+    <title>政府用户主页</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <link rel="icon" href={%static "images/favicon.ico"%} type="image/x-icon">
+    <!-- Stylesheets-->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:100,300,300i,400,700,900">
+    <link rel="stylesheet" href={%static "css/bootstrap.css"%}>
+    <link rel="stylesheet" href={%static "css/fonts.css"%}>
+    <link rel="stylesheet" href={%static "css/style.css"%} id="main-styles-link">
+    <!--[if lt IE 10]>
+    <div style="background: #212121; padding: 10px 0; box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3); clear: both; text-align:center; position: relative; z-index:1;"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src={%static "images/ie8-panel/warning_bar_0000_us.jpg"%} border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
+    <script src={%static "js/html5shiv.min.js"%}></script>
+    <![endif]-->
+	<script>
+	
+	<!-- 刷新页面、翻页用TODO -->
+function loadXMLDoc1()
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		// IE6, IE5 浏览器执行代码
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			var data=xmlhttp.responseText;
+			var json=JSON.parse(data);  // 使用JSON.parse()进行解析：使用JSON对象的静态方法parse()，将字符串解析为对象。
+			document.getElementById("likes_num").innerHTML=json.nums
+		}
+	}
+	url = "/likes/likes_nums?type=Article&&obj_id="
+	xmlhttp.open("GET",url,true);
+	xmlhttp.send();
+}
+<!-- 废除订单用 -->
+function loadXMLDoc2(formtype,obj_id)
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		// IE6, IE5 浏览器执行代码
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			var data=xmlhttp.responseText;
+			
+		}
+	}
+	url = "{%url 'main:gov'%}/?type=nullify"+formtype+"&&obj_id="+obj_id
+	xmlhttp.open("GET",url,true);
+	xmlhttp.send();
+}
+<!-- window.onload=loadXMLDoc1() -->
+</script>
+  </head>
+  <body>
+    <div class="preloader">
+      <div class="preloader-body">
+        <div class="cssload-container">
+          <div class="cssload-speeding-wheel"></div>
+        </div>
+        <p>Loading...</p>
+      </div>
+    </div>
+    <div class="page">
+      <!-- Page Header-->
+      <header class="section page-header">
+        <!-- RD Navbar-->
+        <div class="rd-navbar-wrap rd-navbar-absolute">
+          <nav class="rd-navbar rd-navbar-creative" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed" data-md-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-fixed" data-xl-layout="rd-navbar-static" data-xxl-layout="rd-navbar-static" data-md-device-layout="rd-navbar-fixed" data-lg-device-layout="rd-navbar-fixed" data-xl-device-layout="rd-navbar-static" data-xxl-device-layout="rd-navbar-static" data-lg-stick-up-offset="20px" data-xl-stick-up-offset="20px" data-xxl-stick-up-offset="20px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
+            <div class="rd-navbar-main-outer">
+              <div class="rd-navbar-main">
+                <!-- RD Navbar Panel-->
+                <div class="rd-navbar-panel">
+                  <!-- RD Navbar Toggle-->
+                  <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
+                  <!-- RD Navbar Brand-->
+                  <div class="rd-navbar-brand">
+                    <!--Brand--><a class="brand" href="{%url 'index'%}"><img class="brand-logo-dark" src="{%static 'images/logo-default-147x37.svg'%}" alt="" width="147" height="37"/><img class="brand-logo-light" src="{%static 'images/logo-inverse-147x37.svg'%}" alt="" width="147" height="37"/></a>
+                  </div>
+                </div>
+                <div class="rd-navbar-main-element">
+                  <div class="rd-navbar-nav-wrap">
+                    <!-- RD Navbar Nav-->
+                    <ul class="rd-navbar-nav">
+                      <li class="rd-nav-item active"><a class="rd-nav-link" href="{%url 'index'%}">首页</a>
+                      </li>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:gov'%}">政府主页</a>
+					  </li>
+					  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:thirdParty'%}">第三方主页</a>
+					  </li>
+					  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:expert'%}">专家主页</a>
+					  <li class="rd-nav-item"><a class="rd-nav-link" href="">用户主页</a>
+                        <!-- RD Navbar Dropdown-->
+                        <ul class="rd-menu rd-navbar-dropdown">
+                          <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:gov'%}">政府主页</a>
+						  </li>
+						  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:thirdParty'%}">第三方主页</a>
+						  </li>
+						  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:expert'%}">专家主页</a>
+                        </ul>
+                      </li>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
+                        <!-- RD Navbar Megamenu-->
+                        <ul class="rd-menu rd-navbar-megamenu">
+                          <li class="rd-megamenu-item">
+                            <h6 class="rd-megamenu-title">Elements</h6>
+                            <ul class="rd-megamenu-list">
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="typography.html">Typography</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="buttons.html">Buttons</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="forms.html">Forms</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="tabs-and-accordions.html">Tabs and accordions</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="progress-bars.html">Progress bars</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="grid.html">Grid</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="tables.html">Tables</a></li>
+                            </ul>
+                          </li>
+                          <li class="rd-megamenu-item">
+                            <h6 class="rd-megamenu-title">Blog</h6>
+                            <ul class="rd-megamenu-list">
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="classic-blog.html">Classic blog</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="grid-blog.html">Grid blog</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="masonry-blog.html">Masonry blog</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="modern-blog.html">Modern blog</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="single-post.html">Single post</a></li>
+                            </ul>
+                          </li>
+                          <li class="rd-megamenu-item">
+                            <h6 class="rd-megamenu-title">Gallery</h6>
+                            <ul class="rd-megamenu-list">
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="grid-gallery.html">Grid gallery</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="masonry-gallery.html">Masonry gallery</a></li>
+                            </ul>
+                          </li>
+                          <li class="rd-megamenu-item">
+                            <h6 class="rd-megamenu-title">Extras</h6>
+                            <ul class="rd-megamenu-list">
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="404.html">404 Page</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="503.html">503 Page</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="coming-soon.html">Coming soon</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="Login.html">Login/Registration</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="privacy-policy.html">Privacy policy</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="search-results.html">Search results</a></li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'login:login'%}">登录</a>
+					  <!-- RD Navbar Dropdown-->
+                        <ul class="rd-menu rd-navbar-dropdown">
+                          <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="{%url 'login:logout'%}">退出登录</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                  <!-- RD Navbar Search-->
+                  <div class="rd-navbar-search">
+                    <button class="rd-navbar-search-toggle rd-navbar-fixed-element-1" data-rd-navbar-toggle=".rd-navbar-search"><span></span></button>
+                    <form class="rd-search" action="search-results.html" data-search-live="rd-search-results-live" method="GET">
+                      <div class="form-wrap">
+                        <label class="form-label" for="rd-navbar-search-form-input">Search</label>
+                        <input class="rd-navbar-search-form-input form-input" id="rd-navbar-search-form-input" type="text" name="s" autocomplete="off">
+                        <div class="rd-search-results-live" id="rd-search-results-live"></div>
+                      </div>
+                      <button class="rd-search-form-submit mdi mdi-magnify" type="submit"></button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </header>
+      <!-- Breadcrumbs -->
+      <section class="section section-bredcrumbs">
+        <div class="container context-light breadcrumb-wrapper">
+          <h1>Tabs &amp; Accordions</h1>
+          <ul class="breadcrumbs-custom">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#">Pages</a></li>
+            <li class="active">Tabs &amp; Accordions</li>
+          </ul>
+        </div>
+      </section>
+      <!-- Vertical Tabs-->
+      <section class="section section-lg bg-default">
+        <div class="container">
+          <h2>政府用户主页</h2>
+          <div class="row row-offset-3">
+            <div class="col-lg-10 col-xxl-10">
+              <!-- Bootstrap tabs-->
+              <div class="tabs-custom tabs-vertical tabs-line" id="tabs-2">
+                <!-- Nav tabs-->
+                <ul class="nav nav-tabs">
+                  <li class="nav-item" role="presentation"><a class="nav-link active" href="#tabs-2-1" data-toggle="tab">集采服务</a></li>
+                  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-2" data-toggle="tab">专家评审服务</a></li>
+                  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-3" data-toggle="tab">我的集采订单</a></li>
+				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-4" data-toggle="tab">专家评审订单</a></li>
+				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-5" data-toggle="tab">订单修改#TODO</a></li>
+				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-6" data-toggle="tab">我的信息</a></li>
+                </ul>
+                <!-- Tab panes-->
+                <div class="tab-content">
+                  <div class="tab-pane fade show active" id="tabs-2-1">
+                    <ul class="contact-box">
+						<h3>集采服务信息填写</h3>
+						<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
+									<a>地区</a>
+									<div class="form-wrap">									  
+									  <input class="form-input" id="jicai-province" type="text" name="province" data-constraints="@Required">
+									  <label class="form-label" for="jicai-province">省（直辖市）</label>
+									</div>
+									 <div class="form-wrap">
+									  <input class="form-input" id="jicai-city" type="text" name="city" data-constraints="@Required">
+									  <label class="form-label" for="jicai-city">市（区）</label>
+									</div>
+                  
+									 <div class="form-wrap">
+									  <input class="form-input" id="jicai-county" type="text" name="county">
+									  <label class="form-label" for="jicai-county">县</label>
+									</div>
+									<a>数量</a>
+									<div class="form-wrap">
+									  <input class="form-input" id="jicai-num" type="text" name="jicai-num" data-constraints="@Required">
+									  <label class="form-label" for="jicai-num">份</label>
+									</div>
+									<a>期限</a>
+									<div class="form-wrap">
+									  <input class="form-input" id="jicai-ddl" type="date" name="jicai-ddl" data-constraints="@Required">
+									  <label class="form-label" for="jicai-ddl"></label>
+									</div>
+									<a>谈判时间</a>
+									<div class="form-wrap">
+									  <input class="form-input" id="jicai-negotiate" type="date" name="jicai-negotiate" data-constraints="@Required">
+									  <label class="form-label" for="jicai-negotiate"></label>
+									</div>
+								
+									<input type="submit" class="button button-secondary" name="submit" value="提交集采订单"">
+						</form>
+		            </ul>
+                  </div>
+                  <div class="tab-pane fade" id="tabs-2-2" >
+                    <ul class="contact-box">
+					
+						<h3>专家评审服务信息填写</h3>
+						<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
+									<a>评审时间</a>
+									<div class="form-wrap">
+									  <input class="form-input" id="pingshen-ddl" type="date" name="pingshen-ddl" data-constraints="@Required">
+									  <label class="form-label" for="pingshen-ddl"></label>
+									</div>
+									<a>专家人数</a>
+									<div class="form-wrap">									  
+									  <input class="form-input" id="pingshen-expert-num" type="text" name="expert-num" data-constraints="@Required">
+									  <label class="form-label" for="pingshen-expert-num">人</label>
+									</div>
+									<a>价格</a>
+									  <div class="form-wrap">
+									  <input class="form-input" id="pingshen-price" type="text" name="price" data-constraints="@Required">
+									  <label class="form-label" for="pingshen-price">元（人民币）</label>
+									</div>
+									<a>专家类别</a>
+									A类
+									<input type="radio" checked="checked" name="expert-type" value="A类" />
+									B类
+									<input type="radio" name="expert-type" value="B类" />
+									C类
+									<input type="radio" name="expert-type" value="C类" />
+								
+									<input type="submit" class="button button-secondary" name="submit" value="提交评审订单"/>
+						</form>
+					  
+		            </ul> 
+                  </div>
+                  <div class="tab-pane fade" id="tabs-2-3">
+                     <ul class="contact-box">
+					<!-- Skill Bars-->
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					  <!--当前页内容遍历展示-->
+					  {%for item in page%}
+					  <li>
+						  
+						  {% if item.12 == 1 %}
+						  <h5>{{item.6}}号集采订单</h5>
+						  <p>省份：{{item.0}}，城市：{{item.1}}，县：{{item.2}}，订单数量：{{item.3}}，期限：{{item.4}}，谈判时间：{{item.5}}</p> 
+							<!-- Linear progress bar-->
+							<div class="progress-linear-wrap">
+							<article class="progress-linear">
+							  <div class="progress-header">
+								{%if item.7 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">0</span>
+								{%elif item.8 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">33</span>
+								{%elif item.9 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">66</span>
+									<p>接单用户：{{item.11}}</p>
+								{%elif item.9 == 1 and item.7 == 1 and item.8 == 1%}
+									<p>订单执行百分比</p><span class="progress-value">100</span>
+									<p>接单用户：{{item.11}}</p>
+								{%else%}
+									<p>error</p><span class="progress-value">100</span>
+								{%endif%}
+							  </div>
+							  <div class="progress-bar-linear-wrap">
+								<div class="progress-bar-linear"></div>
+							  </div>
+							  <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
+								<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:loadXMLDoc2({{item.12}},{{item.6}})">
+							  </form>
+							</article>
+							</div>
+						  {%else%}
+							<p>error</p>					 	  
+						  {% endif %}  
+					  </li>
+					  {%endfor%}
+						<!-- Bootstrap Pagination -->
+						  <nav class="page-navigation" aria-label="Page navigation">
+							<ul class="pagination">
+								{% if page.has_previous %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:gov'%}/?page={{page.previous_page_number}}" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span></a></li>
+								{% endif %}
+
+								{% for num in page.paginator.page_range%} 
+									{%if pindex == page.number%}
+										<li class="page-item active"><span class="page-link">{{ num }}</span></li>
+									{%else%}
+										<li class="page-item"><a class="page-link" href="{%url 'main:gov'%}/?page={{num}}">{{ num }}</a></li>
+									{%endif%}
+								{% endfor %}
+
+								{% if page.has_next %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:gov'%}/?page={{page.next_page_number}}" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span></a></li>
+								{% endif %}
+							</ul>
+						  </nav>
+					  </div>
+					</ul>
+                  </div>
+				  
+				  <div class="tab-pane fade" id="tabs-2-4">
+                     <ul class="contact-box">
+					<!-- Skill Bars-->
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					  <!--当前页内容遍历展示-->
+					  {%for item in page2%}
+					  <li>
+						  
+						  {% if item.10 == 2 %}
+						  <h5>{{item.4}}号专家评审订单</h5>
+						   <p>评审时间：{{item.3}}，专家人数：{{item.2}}，价格：{{item.1}}，专家类别：{{item.0}}</p>
+							<!-- Linear progress bar-->
+							<div class="progress-linear-wrap">
+							<article class="progress-linear">
+							  <div class="progress-header">
+								{%if item.5 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">0</span>
+								{%elif item.6 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">33</span>
+								{%elif item.7 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">66</span>
+									<p>接单用户：{{item.11}}</p>
+								{%elif item.5 == 1 and item.6 == 1 and item.7 == 1%}
+									<p>订单执行百分比</p><span class="progress-value">100</span>
+									<p>接单用户：{{item.9}}</p>
+								{%else%}
+									<p>error</p><span class="progress-value">100</span>
+								{%endif%}
+							  </div>
+							  <div class="progress-bar-linear-wrap">
+								<div class="progress-bar-linear"></div>
+							  </div>
+							  <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
+								<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:loadXMLDoc2({{item.10}},{{item.4}})">
+							  </form>
+							</article>
+							</div>							
+						  {%else%}
+							<p>error</p>
+					 	  
+						  {% endif %}
+						  
+					  </li>
+					  {%endfor%}
+						<!-- Bootstrap Pagination -->
+						  <nav class="page-navigation" aria-label="Page navigation">
+							<ul class="pagination">
+								{% if page.has_previous %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:gov'%}/?page2={{page.previous_page_number}}" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span></a></li>
+								{% endif %}
+
+								{% for num in page.paginator.page_range%} 
+									{%if pindex == page.number%}
+										<li class="page-item active"><span class="page-link">{{ num }}</span></li>
+									{%else%}
+										<li class="page-item"><a class="page-link" href="{%url 'main:gov'%}/?page2={{num}}">{{ num }}</a></li>
+									{%endif%}
+								{% endfor %}
+
+								{% if page.has_next %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:gov'%}/?page2={{page.next_page_number}}" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span></a></li>
+								{% endif %}
+							</ul>
+						  </nav>
+					  </div>
+					</ul>
+                  </div>
+				  
+				  
+				  <div class="tab-pane fade" id="tabs-2-5">
+                    <ul class="contact-box">
+                      <li>
+                        <div class="unit unit-horizontal unit-spacing-xxs">
+                          <div class="unit-left"><span class="icon mdi mdi-map-marker"></span></div>
+                          <div class="unit-body"><a class="hover-text" href="#">TODO</a></div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+				  <div class="tab-pane fade" id="tabs-2-6">
+                    <ul class="contact-box">
+                      <li>
+                        <div class="unit unit-horizontal unit-spacing-xxs">
+                          
+                          <div class="unit-body"><a class="hover-text" href="#">用户ID：{{user_id}}, <br class="veil reveal-lg-inline">用户名：{{username}}</a></div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="unit unit-horizontal unit-spacing-xxs">
+                          
+                          <div class="unit-body">
+
+                              <li><a class="hover-text" >上次登录时间：{{last_login}}</a></li>
+                              <li><a class="hover-text" >注册时间：{{date_joined}}</a></li>
+							  <li><a class="hover-text" >是否为平台管理员：{{is_superuser}}</a></li>
+							  <li><a class="hover-text" >用户权限：TODO</a></li>
+							  <li><a class="hover-text" >用户邮箱：{{email}}</a></li>
+
+                          </div>
+                        </div>
+                      </li>
+                      
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Page Footer-->
+      <footer class="section footer-2 context-dark">
+        <div class="container">
+          <div class="row row-40">
+            <div class="col-md-6 col-lg-3"><a class="footer-logo" href="index.html"><img src={%static "images/logo-inverse-147x37.svg"%} alt="" width="147" height="37"/></a>
+              <p>We're a world-class web hosting company who offers a range of hosting services, including web hosting, reseller hosting, vps hosting and dedicated servers.</p>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <h5 class="title">Contact Information</h5>
+              <ul class="contact-box">
+                <li>
+                  <div class="unit unit-horizontal unit-spacing-xxs">
+                    <div class="unit-left"><span class="icon mdi mdi-map-marker"></span></div>
+                    <div class="unit-body"><a href="#">2130 Fulton Street, <br class="veil reveal-lg-inline">San Diego, CA 94117-1080 USA</a></div>
+                  </div>
+                </li>
+                <li>
+                  <div class="unit unit-horizontal unit-spacing-xxs">
+                    <div class="unit-left"><span class="icon mdi mdi-phone"></span></div>
+                    <div class="unit-body">
+                      <ul class="list-phones">
+                        <li><a href="tel:#">1-800-1234-567</a></li>
+                        <li><a href="tel:#">1-800-1234-567</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="unit unit-horizontal unit-spacing-xxs">
+                    <div class="unit-left"><span class="icon mdi mdi-email-outline"></span></div>
+                    <div class="unit-body"><a href="mailto:#">info@demolink.org</a></div>
+                  </div>
+                </li>
+              </ul>
+              <div class="group-md group-middle social-items"><a class="icon icon-md novi-icon mdi mdi-facebook" href="#"></a><a class="icon icon-md novi-icon mdi mdi-twitter" href="#"></a><a class="icon icon-md novi-icon mdi mdi-instagram" href="#"></a><a class="icon icon-md novi-icon mdi mdi-facebook-messenger" href="#"></a><a class="icon icon-md novi-icon mdi mdi-linkedin" href="#"></a><a class="icon icon-md novi-icon mdi mdi-snapchat" href="#"></a></div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <h5 class="title">Instagram Feed</h5>
+              <ul class="instafeed instagram-gallery" data-lightgallery="group">
+                <li><a class="instagram-item" data-lightgallery="item" href={%static "images/insta-gallery-1-original.jpg"%}><img src={%static "images/insta-gallery-1-72x72.jpg"%} alt="" width="72" height="72"/></a>
+                </li>
+                <li><a class="instagram-item" data-lightgallery="item" href={%static "images/insta-gallery-2-original.jpg"%}><img src={%static "images/insta-gallery-2-72x72.jpg"%} alt="" width="72" height="72"/></a>
+                </li>
+                <li><a class="instagram-item" data-lightgallery="item" href={%static "images/insta-gallery-3-original.jpg"%}><img src={%static "images/insta-gallery-3-72x72.jpg"%} alt="" width="72" height="72"/></a>
+                </li>
+                <li><a class="instagram-item" data-lightgallery="item" href={%static "images/insta-gallery-4-original.jpg"%}><img src={%static "images/insta-gallery-4-72x72.jpg"%} alt="" width="72" height="72"/></a>
+                </li>
+                <li><a class="instagram-item" data-lightgallery="item" href={%static "images/insta-gallery-5-original.jpg"%}><img src={%static "images/insta-gallery-5-72x72.jpg"%} alt="" width="72" height="72"/></a>
+                </li>
+                <li><a class="instagram-item" data-lightgallery="item" href={%static "images/insta-gallery-6-original.jpg"%}><img src={%static "images/insta-gallery-6-72x72.jpg"%} alt="" width="72" height="72"/></a>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <h5 class="title">Newsletter</h5>
+              <p>Keep up with our always upcoming news and updates. Enter your e-mail and subscribe to our newsletter.</p>
+              <!-- RD Mailform-->
+              <form class="rd-form form-sm rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" action="bat/rd-mailform.php">
+                <div class="form-wrap">
+                  <input class="form-input" id="newsletter-email2" type="email" name="email" data-constraints="@Email @Required">
+                  <label class="form-label" for="newsletter-email2">Enter your e-mail</label>
+                </div>
+                <button class="button button-additional" type="submit">Subscribe</button>
+              </form>
+            </div>
+          </div>
+          <!-- Rights-->
+          <p class="rights">Copyright &copy; 2021.Company name All rights reserved.<a target="_blank" href="https://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a></p>
+        </div>
+      </footer>
+    </div>
+    <!-- Global Mailform Output-->
+    <div class="snackbars" id="form-output-global"></div>
+    <!-- Javascript-->
+    <script src={%static "js/core.min.js"%}></script>
+    <script src={%static "js/script.js"%}></script>
+  </body>
+</html>
