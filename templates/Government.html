@@ -74,6 +74,37 @@ function loadXMLDoc2(formtype,obj_id)
 	xmlhttp.send();
 }
 <!-- window.onload=loadXMLDoc1() -->
+
+
+ $('#page-navigation1').onclick(function () {
+		$('')
+        $.ajax({
+            url: '/ajax_page/',
+            type: 'POST',
+            cache: true,
+            data: $(this).serialize(),
+            success: function (data) {
+                console.log(data);
+                // 循环遍历数据并增加到前端页面
+                for(var i=0; i<data['ar_list'].length; i++){
+                    var comment_html = "<div id='hwy_1'>" +
+                    "<a href='/content/?pk=" + data['ar_id'][i] + "' target='_blank'>" + data['ar_list'][i] + "</a>"
+                    + "</div>";
+                $('#ajax_page').before(comment_html);
+                }
+                // 判断当前页的是否有下一页，如果没有下一页则禁止按钮点击
+                if (data['has_next'] == 'no'){
+                    $('#submit').attr('value', '没有了...');
+                    $('#submit').attr('disabled', 'disabled');
+                }
+            }
+        });
+        return false;
+    });
+
+
+
+
 </script>
   </head>
   <body>
@@ -338,7 +369,7 @@ function loadXMLDoc2(formtype,obj_id)
 					  </li>
 					  {%endfor%}
 						<!-- Bootstrap Pagination -->
-						  <nav class="page-navigation" aria-label="Page navigation">
+						  <nav class="page-navigation" aria-label="Page navigation" id="page-navigation1">
 							<ul class="pagination">
 								{% if page.has_previous %}  
 									<li class="page-item"><a class="page-link" href="{%url 'main:gov'%}/?page={{page.previous_page_number}}" aria-label="Previous">

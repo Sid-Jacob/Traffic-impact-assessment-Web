@@ -160,24 +160,39 @@ def gov(request):
             paginator2 = Paginator(form2_list, 3)
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page = 1
-            if request.method == "GET":
-                page = request.GET.get('page')
-            try:
-                article = paginator.page(page)
-            # todo: 注意捕获异常
-            except PageNotAnInteger:
-                # 如果请求的页数不是整数, 返回第一页。
-                article = paginator.page(1)
-            except InvalidPage:
-                # 如果请求的页数不存在, 重定向页面
-                return HttpResponse('找不到页面的内容')
-            except EmptyPage:
-                # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
-                article = paginator.page(paginator.num_pages)
-            # context = {"page": article}
+            page2 = 1
+
+            page = request.GET.get('page', '')
+            page2 = request.GET.get('page2', '')
+            if page != '':
+                try:
+                    article = paginator.page(page)
+                # todo: 注意捕获异常
+                except PageNotAnInteger:
+                    # 如果请求的页数不是整数, 返回第一页。
+                    article = paginator.page(1)
+                except InvalidPage:
+                    # 如果请求的页数不存在, 重定向页面
+                    return HttpResponse('找不到页面的内容')
+                except EmptyPage:
+                    # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
+                    article = paginator.page(paginator.num_pages)
+            elif page2 != '':
+                try:
+                    article = paginator2.page(page2)
+                # todo: 注意捕获异常
+                except PageNotAnInteger:
+                    # 如果请求的页数不是整数, 返回第一页。
+                    article = paginator2.page(1)
+                except InvalidPage:
+                    # 如果请求的页数不存在, 重定向页面
+                    return HttpResponse('找不到页面的内容')
+                except EmptyPage:
+                    # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
+                    article = paginator2.page(paginator2.num_pages)
             try:
 
-                print("try")
+                print("asy update")
                 l = []
                 l = User.objects.get(id=user_id)
                 # TODO 增加分组权限显示
@@ -199,9 +214,9 @@ def gov(request):
                 print(e)
 
             #返回结果
-            return render(request, 'government.html', content)
-            # return HttpResponse(json.dumps(context),
-            #                     content_type="application/json")
+            # return render(request, 'government.html', content)
+            return HttpResponse(json.dumps(context),
+                                content_type="application/json")
         else:
             print("refresh")
             # 首次访问刷新页面
