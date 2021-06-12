@@ -18,6 +18,35 @@
     <script src={%static "js/html5shiv.min.js"%}></script>
     <![endif]-->
 	<script src="https://apps.bdimg.com/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script>
+	<!-- 接单用 -->
+function loadXMLDoc3(obj_id)
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		// IE6, IE5 浏览器执行代码
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			var data=xmlhttp.responseText;
+			
+		}
+	}
+	url = "{%url 'main:expert'%}/?type=take"+"&&obj_id="+obj_id
+	xmlhttp.open("GET",url,true);
+	xmlhttp.send();
+}
+	
+	</script>
   </head>
   <body>
     <div class="preloader">
@@ -187,7 +216,7 @@
 									<p>订单执行百分比</p><span class="progress-value">33</span>
 								{%elif item.7 == 0%}
 									<p>订单执行百分比</p><span class="progress-value">66</span>
-									<p>接单用户：{{item.11}}</p>
+									<p>接单用户：{{item.9}}</p>
 								{%elif item.5 == 1 and item.6 == 1 and item.7 == 1%}
 									<p>订单执行百分比</p><span class="progress-value">100</span>
 									<p>接单用户：{{item.9}}</p>
@@ -197,12 +226,18 @@
 							  </div>
 							  <div class="progress-bar-linear-wrap">
 								<div class="progress-bar-linear"></div>
-							  </div>
-								<textarea rows="4" cols="50" name="comment" form="report">输入评审报告内容...</textarea>
-					
+							  </div>	
 								<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report">
-										<input type="button" class="button button-secondary" name="提交报告" value="{{item.4}}">
-								</form>
+										<!-- <a>关联订单编号</a>
+										<div class="form-wrap">
+										  <input class="form-input" id="formId" type="number" name="formId" data-constraints="@Required">
+										  <label class="form-label" for="formId">{{item.6}}</label>
+										</div> -->
+										<input class="form-input" id="hidden" type="hidden" name="formId" value="{{item.4}}">
+										
+										<textarea rows="2" cols="100" name="report-content" form="report"  placeholder="输入评审报告内容..."></textarea>
+										<input type="submit" class="button button-secondary" name="submit" value="提交报告">
+							  </form>
 							</article>
 							</div>							
 						  {%else%}
@@ -272,7 +307,7 @@
 								<div class="progress-bar-linear"></div>
 							  </div>
 								<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
-										<input type="button" class="button button-secondary" name="接单" value="{{item.4}}">
+										<input type="button" class="button button-secondary" name="submit" value="接单" onclick="javascript:loadXMLDoc3({{item.4}})">
 								</form>
 							</article>
 							</div>							

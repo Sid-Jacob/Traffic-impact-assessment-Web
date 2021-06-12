@@ -76,33 +76,76 @@ function loadXMLDoc2(formtype,obj_id)
 <!-- window.onload=loadXMLDoc1() -->
 
 
- $('#page-navigation1').onclick(function () {
-		$('')
-        $.ajax({
-            url: '/ajax_page/',
-            type: 'POST',
-            cache: true,
-            data: $(this).serialize(),
-            success: function (data) {
-                console.log(data);
-                // 循环遍历数据并增加到前端页面
-                for(var i=0; i<data['ar_list'].length; i++){
-                    var comment_html = "<div id='hwy_1'>" +
-                    "<a href='/content/?pk=" + data['ar_id'][i] + "' target='_blank'>" + data['ar_list'][i] + "</a>"
-                    + "</div>";
-                $('#ajax_page').before(comment_html);
-                }
-                // 判断当前页的是否有下一页，如果没有下一页则禁止按钮点击
-                if (data['has_next'] == 'no'){
-                    $('#submit').attr('value', '没有了...');
-                    $('#submit').attr('disabled', 'disabled');
-                }
-            }
-        });
+{% comment %} $('#page-turner').onclick(function () {
+		alert($('#page-turner').attr("href"));
+        var xmlhttp;
+		if (window.XMLHttpRequest)
+		{
+			//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+			xmlhttp=new XMLHttpRequest();
+		}
+		else
+		{
+			// IE6, IE5 浏览器执行代码
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function()
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			{
+				var data=xmlhttp.responseText;
+				var obj=JSON.parse(data);  // 使用JSON.parse()进行解析：使用JSON对象的静态方法parse()，将字符串解析为对象。
+				<!-- document.getElementById("likes_num").innerHTML=json.nums -->
+				alert(obj)
+				for (item in obj.page){
+					block = "<li>
+							  +"<h5>"+item[6]+"号集采订单</h5>\
+							  <p>省份：{{item.0}}，城市：{{item.1}}，县：{{item.2}}，订单数量：{{item.3}}，期限：{{item.4}}，谈判时间：{{item.5}}</p>\
+								<!-- Linear progress bar-->\
+								<div class="progress-linear-wrap">\
+								<article class="progress-linear">\
+								  <div class="progress-header">\
+									{%if item.7 == 0%}\
+										<p>订单执行百分比</p><span class="progress-value">0</span>\
+									{%elif item.8 == 0%}\
+										<p>订单执行百分比</p><span class="progress-value">33</span>\
+									{%elif item.9 == 0%}\
+										<p>订单执行百分比</p><span class="progress-value">66</span>\
+										<p>接单用户：{{item.11}}</p>\
+									{%elif item.9 == 1 and item.7 == 1 and item.8 == 1%}\
+										<p>订单执行百分比</p><span class="progress-value">100</span>\
+										<p>接单用户：{{item.11}}</p>\
+									{%else%}\
+										<p>error</p><span class="progress-value">100</span>\
+									{%endif%}\
+								  </div>\
+								  <div class="progress-bar-linear-wrap">\
+									<div class="progress-bar-linear"></div>\
+								  </div>\
+								  <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">\
+									<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:loadXMLDoc2({{item.12}},{{item.6}})">\
+								  </form>\
+								</article>\
+								</div>\
+						  </li>"
+				
+				
+				
+				}
+				
+				
+				
+				
+				
+			}
+		}
+		url = $('#page-turner').attr("href")
+		xmlhttp.open("GET",url,true);
+		xmlhttp.send();
         return false;
-    });
+    }); {% endcomment %}
 
-
+ 
 
 
 </script>
@@ -372,20 +415,20 @@ function loadXMLDoc2(formtype,obj_id)
 						  <nav class="page-navigation" aria-label="Page navigation" id="page-navigation1">
 							<ul class="pagination">
 								{% if page.has_previous %}  
-									<li class="page-item"><a class="page-link" href="{%url 'main:gov'%}/?page={{page.previous_page_number}}" aria-label="Previous">
+									<li class="page-item"><a class="page-link" href="{%url 'main:gov'%}/?page={{page.previous_page_number}}#tabs-2-3" aria-label="Previous" id="page-turner">
 										<span aria-hidden="true">&laquo;</span></a></li>
 								{% endif %}
 
 								{% for num in page.paginator.page_range%} 
 									{%if pindex == page.number%}
-										<li class="page-item active"><span class="page-link">{{ num }}</span></li>
+										<li class="page-item active"><span class="page-link" id="page-turner">{{ num }}</span></li>
 									{%else%}
-										<li class="page-item"><a class="page-link" href="{%url 'main:gov'%}/?page={{num}}">{{ num }}</a></li>
+										<li class="page-item"><a class="page-link" href="{%url 'main:gov'%}/?page={{num}}#tabs-2-3" id="page-turner">{{ num }}</a></li>
 									{%endif%}
 								{% endfor %}
 
 								{% if page.has_next %}  
-									<li class="page-item"><a class="page-link" href="{%url 'main:gov'%}/?page={{page.next_page_number}}" aria-label="Next">
+									<li class="page-item"><a class="page-link" href="{%url 'main:gov'%}/?page={{page.next_page_number}}#tabs-2-3" aria-label="Next" id="page-turner">
 										<span aria-hidden="true">&raquo;</span></a></li>
 								{% endif %}
 							</ul>
