@@ -17,6 +17,7 @@
     <div style="background: #212121; padding: 10px 0; box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3); clear: both; text-align:center; position: relative; z-index:1;"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src={%static "images/ie8-panel/warning_bar_0000_us.jpg"%} border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
     <script src={%static "js/html5shiv.min.js"%}></script>
     <![endif]-->
+	<script src="https://apps.bdimg.com/libs/jquery/3.6.0/jquery.min.js"></script>
   </head>
   <body>
     <div class="preloader">
@@ -166,98 +167,220 @@
                 <!-- Tab panes-->
                 <div class="tab-content">
                   <div class="tab-pane fade show active" id="tabs-2-1">
-                    <ul class="contact-box">
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-map-marker"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="#">此处显示订单内容, <br class="veil reveal-lg-inline">San Diego, CA 94117-1080 USA</a></div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-phone"></span></div>
-                          <div class="unit-body">
-                            <ul class="list-phones">
-                              <li><a class="hover-text" href="tel:#">1-800-1234-567</a></li>
-                              <li><a class="hover-text" href="tel:#">1-800-1234-567</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-email-outline"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="mailto:#">info@demolink.org</a></div>
-                        </div>
-                      </li>
-                    </ul>
+					<ul class="contact-box">
+					<!-- Skill Bars-->
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					  <!--当前页内容遍历展示-->
+					  {%for item in page%}
+					  <li>
+						  <!-- <p>{{item.0}} {{item.1}} {{item.2}} {{item.3}} {{item.4}} {{item.5}} {{item.6}} {{item.7}} {{item.8}} {{item.9}} {{item.10}}</p> -->
+						  {% if item.10 == 2 %}
+						  <h5>{{item.4}}号专家评审订单</h5>
+						   <p>评审时间：{{item.3}}，专家人数：{{item.2}}，价格：{{item.1}}，专家类别：{{item.0}}</p>
+							<!-- Linear progress bar-->
+							<div class="progress-linear-wrap">
+							<article class="progress-linear">
+							  <div class="progress-header">
+								{%if item.5 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">0</span>
+								{%elif item.6 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">33</span>
+								{%elif item.7 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">66</span>
+									<p>接单用户：{{item.11}}</p>
+								{%elif item.5 == 1 and item.6 == 1 and item.7 == 1%}
+									<p>订单执行百分比</p><span class="progress-value">100</span>
+									<p>接单用户：{{item.9}}</p>
+								{%else%}
+									<p>error</p><span class="progress-value">100</span>
+								{%endif%}
+							  </div>
+							  <div class="progress-bar-linear-wrap">
+								<div class="progress-bar-linear"></div>
+							  </div>
+								<textarea rows="4" cols="50" name="comment" form="report">输入评审报告内容...</textarea>
 					
-					<textarea rows="4" cols="50" name="comment" form="report">输入评审报告内容...</textarea>
-					
-					<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" action="bat/rd-mailform.php" id="report">
-							<input type="button" class="button button-secondary" name="button" value="提交报告">
-					</form>
-					
-					
+								<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report">
+										<input type="button" class="button button-secondary" name="提交报告" value="{{item.4}}">
+								</form>
+							</article>
+							</div>							
+						  {%else%}
+							<p>error</p>
+					 	  
+						  {% endif %}
+						  
+					  </li>
+					  {%endfor%}
+						<!-- Bootstrap Pagination -->
+						  <nav class="page-navigation" aria-label="Page navigation">
+							<ul class="pagination">
+								{% if page.has_previous %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page={{page.previous_page_number}}" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span></a></li>
+								{% endif %}
+
+								{% for num in page.paginator.page_range%} 
+									{%if pindex == page.number%}
+										<li class="page-item active"><span class="page-link">{{ num }}</span></li>
+									{%else%}
+										<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page={{num}}">{{ num }}</a></li>
+									{%endif%}
+								{% endfor %}
+
+								{% if page.has_next %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page={{page.next_page_number}}" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span></a></li>
+								{% endif %}
+							</ul>
+						  </nav>
+					  </div>
+					</ul>
                   </div>
+				  
+				 
                   <div class="tab-pane fade" id="tabs-2-2">
                     <ul class="contact-box">
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-map-marker"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="#">此处显示订单内容, <br class="veil reveal-lg-inline">San Diego, CA 94117-1080 USA</a></div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-phone"></span></div>
-                          <div class="unit-body">
-                            <ul class="list-phones">
-                              <li><a class="hover-text" href="tel:#">1-800-1234-567</a></li>
-                              <li><a class="hover-text" href="tel:#">1-800-1234-567</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-email-outline"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="mailto:#">info@demolink.org</a></div>
-                        </div>
-                      </li>
-                    </ul>
-					
-					<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" action="bat/rd-mailform.php">
-							<input type="button" class="button button-secondary" name="button" value="接单">
-					</form>
+					<!-- Skill Bars-->
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					  <!--当前页内容遍历展示-->
+					  {%for item in page2%}
+					  <li>
+						  <!-- <p>{{item.0}} {{item.1}} {{item.2}} {{item.3}} {{item.4}} {{item.5}} {{item.6}} {{item.7}} {{item.8}} {{item.9}} {{item.10}}</p> -->
+						  {% if item.10 == 2 %}
+						  <h5>{{item.4}}号专家评审订单</h5>
+						   <p>评审时间：{{item.3}}，专家人数：{{item.2}}，价格：{{item.1}}，专家类别：{{item.0}}</p>
+							<!-- Linear progress bar-->
+							<div class="progress-linear-wrap">
+							<article class="progress-linear">
+							  <div class="progress-header">
+								{%if item.5 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">0</span>
+								{%elif item.6 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">33</span>
+								{%elif item.7 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">66</span>
+									<p>接单用户：{{item.11}}</p>
+								{%elif item.5 == 1 and item.6 == 1 and item.7 == 1%}
+									<p>订单执行百分比</p><span class="progress-value">100</span>
+									<p>接单用户：{{item.9}}</p>
+								{%else%}
+									<p>error</p><span class="progress-value">100</span>
+								{%endif%}
+							  </div>
+							  <div class="progress-bar-linear-wrap">
+								<div class="progress-bar-linear"></div>
+							  </div>
+								<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
+										<input type="button" class="button button-secondary" name="接单" value="{{item.4}}">
+								</form>
+							</article>
+							</div>							
+						  {%else%}
+							<p>error</p>
+					 	  
+						  {% endif %}
+						  
+					  </li>
+					  {%endfor%}
+						<!-- Bootstrap Pagination -->
+						  <nav class="page-navigation" aria-label="Page navigation">
+							<ul class="pagination">
+								{% if page2.has_previous %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page2={{page2.previous_page_number}}" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span></a></li>
+								{% endif %}
+
+								{% for num in page2.paginator2.page_range%} 
+									{%if pindex == page4.number%}
+										<li class="page-item active"><span class="page-link">{{ num }}</span></li>
+									{%else%}
+										<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page2={{num}}">{{ num }}</a></li>
+									{%endif%}
+								{% endfor %}
+
+								{% if page2.has_next %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page2={{page2.next_page_number}}" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span></a></li>
+								{% endif %}
+							</ul>
+						  </nav>
+					  </div>
+					</ul>
                   </div>
+				  
+				  
                   <div class="tab-pane fade" id="tabs-2-3">
                     <ul class="contact-box">
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-map-marker"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="#">5432 Central Street, <br class="veil reveal-lg-inline">Chicago, IL 43541-3243 USA</a></div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-phone"></span></div>
-                          <div class="unit-body">
-                            <ul class="list-phones">
-                              <li><a class="hover-text" href="tel:#">1-800-1234-567</a></li>
-                              <li><a class="hover-text" href="tel:#">1-800-1234-567</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-email-outline"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="mailto:#">info@demolink.org</a></div>
-                        </div>
-                      </li>
-                    </ul>
+					<!-- Skill Bars-->
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					  <!--当前页内容遍历展示-->
+					  {%for item in page3%}
+					  <li>
+						  <!-- <p>{{item.0}} {{item.1}} {{item.2}} {{item.3}} {{item.4}} {{item.5}} {{item.6}} {{item.7}} {{item.8}} {{item.9}} {{item.10}}</p> -->
+						  {% if item.10 == 2 %}
+						  <h5>{{item.4}}号专家评审订单</h5>
+						   <p>评审时间：{{item.3}}，专家人数：{{item.2}}，价格：{{item.1}}，专家类别：{{item.0}}</p>
+							<!-- Linear progress bar-->
+							<div class="progress-linear-wrap">
+							<article class="progress-linear">
+							  <div class="progress-header">
+								{%if item.5 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">0</span>
+								{%elif item.6 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">33</span>
+								{%elif item.7 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">66</span>
+									<p>接单用户：{{item.11}}</p>
+								{%elif item.5 == 1 and item.6 == 1 and item.7 == 1%}
+									<p>订单执行百分比</p><span class="progress-value">100</span>
+									<p>接单用户：{{item.9}}</p>
+								{%else%}
+									<p>error</p><span class="progress-value">100</span>
+								{%endif%}
+							  </div>
+							  <div class="progress-bar-linear-wrap">
+								<div class="progress-bar-linear"></div>
+							  </div>
+							  <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
+								<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:loadXMLDoc2({{item.10}},{{item.4}})">
+							  </form>
+							</article>
+							</div>							
+						  {%else%}
+							<p>error</p>
+					 	  
+						  {% endif %}
+						  
+					  </li>
+					  {%endfor%}
+						<!-- Bootstrap Pagination -->
+						  <nav class="page-navigation" aria-label="Page navigation">
+							<ul class="pagination">
+								{% if page3.has_previous %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page3={{page3.previous_page_number}}" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span></a></li>
+								{% endif %}
+
+								{% for num in page3.paginator3.page_range%} 
+									{%if pindex == page3.number%}
+										<li class="page-item active"><span class="page-link">{{ num }}</span></li>
+									{%else%}
+										<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page3={{num}}">{{ num }}</a></li>
+									{%endif%}
+								{% endfor %}
+
+								{% if page3.has_next %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page3={{page3.next_page_number}}" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span></a></li>
+								{% endif %}
+							</ul>
+						  </nav>
+					  </div>
+					</ul>
                   </div>
+				  
+				  
 				  
 				  <div class="tab-pane fade" id="tabs-2-4">
                     <ul class="contact-box">
@@ -270,27 +393,25 @@
                     <ul class="contact-box">
                       <li>
                         <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-map-marker"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="#">5432 Central Street, <br class="veil reveal-lg-inline">Chicago, IL 43541-3243 USA</a></div>
+                          
+                          <div class="unit-body"><a class="hover-text" href="#">用户ID：{{user_id}}, <br class="veil reveal-lg-inline">用户名：{{username}}</a></div>
                         </div>
                       </li>
                       <li>
                         <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-phone"></span></div>
+                          
                           <div class="unit-body">
-                            <ul class="list-phones">
-                              <li><a class="hover-text" href="tel:#">1-800-1234-567</a></li>
-                              <li><a class="hover-text" href="tel:#">1-800-1234-567</a></li>
-                            </ul>
+
+                              <li><a class="hover-text" >上次登录时间：{{last_login}}</a></li>
+                              <li><a class="hover-text" >注册时间：{{date_joined}}</a></li>
+							  <li><a class="hover-text" >是否为平台管理员：{{is_superuser}}</a></li>
+							  <li><a class="hover-text" >用户权限：TODO</a></li>
+							  <li><a class="hover-text" >用户邮箱：{{email}}</a></li>
+
                           </div>
                         </div>
                       </li>
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-email-outline"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="mailto:#">info@demolink.org</a></div>
-                        </div>
-                      </li>
+                      
                     </ul>
                   </div>
 				  

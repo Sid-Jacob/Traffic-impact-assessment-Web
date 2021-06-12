@@ -17,6 +17,90 @@
     <div style="background: #212121; padding: 10px 0; box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3); clear: both; text-align:center; position: relative; z-index:1;"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src={%static "images/ie8-panel/warning_bar_0000_us.jpg"%} border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
     <script src={%static "js/html5shiv.min.js"%}></script>
     <![endif]-->
+	<script src="https://apps.bdimg.com/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script>
+	
+	<!-- 刷新页面、翻页用TODO -->
+function loadXMLDoc1()
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		// IE6, IE5 浏览器执行代码
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			var data=xmlhttp.responseText;
+			var json=JSON.parse(data);  // 使用JSON.parse()进行解析：使用JSON对象的静态方法parse()，将字符串解析为对象。
+			document.getElementById("likes_num").innerHTML=json.nums
+		}
+	}
+	url = "/likes/likes_nums?type=Article&&obj_id="
+	xmlhttp.open("GET",url,true);
+	xmlhttp.send();
+}
+<!-- 废除订单用 -->
+function loadXMLDoc2(formtype,obj_id)
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		// IE6, IE5 浏览器执行代码
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			var data=xmlhttp.responseText;
+			
+		}
+	}
+	url = "{%url 'main:thirdParty'%}/?type=nullify"+formtype+"&&obj_id="+obj_id
+	xmlhttp.open("GET",url,true);
+	xmlhttp.send();
+}
+<!-- 接单用 -->
+function loadXMLDoc3(obj_id)
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		// IE6, IE5 浏览器执行代码
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			var data=xmlhttp.responseText;
+			
+		}
+	}
+	url = "{%url 'main:thirdParty'%}/?type=take"+"&&obj_id="+obj_id
+	xmlhttp.open("GET",url,true);
+	xmlhttp.send();
+}
+<!-- window.onload=loadXMLDoc1() -->
+</script>
   </head>
   <body>
     <div class="preloader">
@@ -152,7 +236,7 @@
         <div class="container">
           <h2>第三方用户主页</h2>
           <div class="row row-offset-3">
-            <div class="col-lg-5 col-xxl-4">
+            <div class="col-lg-7 col-xxl-7">
               <!-- Bootstrap tabs-->
               <div class="tabs-custom tabs-vertical tabs-line" id="tabs-2">
                 <!-- Nav tabs-->
@@ -160,171 +244,367 @@
                   <li class="nav-item" role="presentation"><a class="nav-link active" href="#tabs-2-1" data-toggle="tab">正在进行</a></li>
                   <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-2" data-toggle="tab">新订单</a></li>
                   <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-3" data-toggle="tab">历史订单</a></li>
-				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-4" data-toggle="tab">问题反馈</a></li>
-				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-5" data-toggle="tab">我的信息</a></li>
+				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-4" data-toggle="tab">专家评审订单</a></li>
+				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-5" data-toggle="tab">问题反馈</a></li>
+				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-6" data-toggle="tab">我的信息</a></li>
                 </ul>
                 <!-- Tab panes-->
                 <div class="tab-content">
                   <div class="tab-pane fade show active" id="tabs-2-1">
-                    <ul class="contact-box">
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-map-marker"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="#">此处显示订单内容, <br class="veil reveal-lg-inline">San Diego, CA 94117-1080 USA</a></div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-phone"></span></div>
-                          <div class="unit-body">
-                            <ul class="list-phones">
-                              <li><a class="hover-text" href="tel:#">1-800-1234-567</a></li>
-                              <li><a class="hover-text" href="tel:#">1-800-1234-567</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-email-outline"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="mailto:#">info@demolink.org</a></div>
-                        </div>
-                      </li>
-                    </ul>
+                    
+					<ul class="contact-box">
+					<!-- Skill Bars-->
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					  <!--当前页内容遍历展示-->
+					  {%for item in page%}
+					  <li>
+						  
+						  {% if item.12 == 1 %}
+						  <h5>{{item.6}}号集采订单</h5>
+						  <p>省份：{{item.0}}，城市：{{item.1}}，县：{{item.2}}，订单数量：{{item.3}}，期限：{{item.4}}，谈判时间：{{item.5}}</p> 
+							<!-- Linear progress bar-->
+							<div class="progress-linear-wrap">
+							<article class="progress-linear">
+							  <div class="progress-header">
+								{%if item.7 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">0</span>
+								{%elif item.8 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">33</span>
+								{%elif item.9 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">66</span>
+									<p>接单用户：{{item.11}}</p>
+								{%elif item.9 == 1 and item.7 == 1 and item.8 == 1%}
+									<p>订单执行百分比</p><span class="progress-value">100</span>
+									<p>接单用户：{{item.11}}</p>
+								{%else%}
+									<p>error</p><span class="progress-value">100</span>
+								{%endif%}
+							  </div>
+							  <div class="progress-bar-linear-wrap">
+								<div class="progress-bar-linear"></div>
+							  </div>
+							  
+							  
 					
-					<textarea rows="4" cols="50" name="comment" form="report">输入交评报告内容...</textarea>
-					
-					<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report">
-							<input type="button" class="button button-secondary" name="report" value="提交报告">
-					</form>
-					
-					<br>
-						<ul class="contact-box">
-					
-						<h3>专家评审服务信息填写</h3>
-						<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
-									<a>评审时间</a>
-									<div class="form-wrap">
-									  <input class="form-input" id="pingshen-ddl" type="date" name="pingshen-ddl" data-constraints="@Required">
-									  <label class="form-label" for="pingshen-ddl"></label>
-									</div>
-									<a>专家人数</a>
-									<div class="form-wrap">									  
-									  <input class="form-input" id="pingshen-expert-num" type="text" name="expert-num" data-constraints="@Required">
-									  <label class="form-label" for="pingshen-expert-num">人</label>
-									</div>
-									<a>价格</a>
-									  <div class="form-wrap">
-									  <input class="form-input" id="pingshen-price" type="text" name="price" data-constraints="@Required">
-									  <label class="form-label" for="pingshen-price">元（人民币）</label>
-									</div>
-									<a>专家类别</a>
-									A类
-									<input type="radio" checked="checked" name="expert-type" value="A类" />
-									B类
-									<input type="radio" name="expert-type" value="B类" />
-									C类
-									<input type="radio" name="expert-type" value="C类" />
+							  <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report">
+										<!-- <a>关联订单编号</a>
+										<div class="form-wrap">
+										  <input class="form-input" id="formId" type="number" name="formId" data-constraints="@Required">
+										  <label class="form-label" for="formId">{{item.6}}</label>
+										</div> -->
+										<textarea rows="2" cols="100" name="report-content" form="report"  placeholder="请输入报告内容...">321</textarea>
+										<input type="submit" class="button button-secondary" name="提交报告" value={{item.6}}>
+							  </form>
 								
-									<input type="submit" class="button button-secondary" name="submit" value="提交抽审订单"/>
-						</form>
-					  
-						</ul>
-					</br>
+							  <br>
+									<ul class="contact-box">
+								
+									<h3>专家评审服务信息填写</h3>
+									<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
+												<a>评审时间</a>
+												<div class="form-wrap">
+												  <input class="form-input" id="pingshen-ddl" type="date" name="pingshen-ddl" data-constraints="@Required">
+												  <label class="form-label" for="pingshen-ddl"></label>
+												</div>
+												<a>专家人数</a>
+												<div class="form-wrap">									  
+												  <input class="form-input" id="pingshen-expert-num" type="text" name="expert-num" data-constraints="@Required">
+												  <label class="form-label" for="pingshen-expert-num">人</label>
+												</div>
+												<a>价格</a>
+												  <div class="form-wrap">
+												  <input class="form-input" id="pingshen-price" type="text" name="price" data-constraints="@Required">
+												  <label class="form-label" for="pingshen-price">元（人民币）</label>
+												</div>
+												<a>专家类别</a>
+												A类
+												<input type="radio" checked="checked" name="expert-type" value="A类" />
+												B类
+												<input type="radio" name="expert-type" value="B类" />
+												C类
+												<input type="radio" name="expert-type" value="C类" />
+											
+												<input type="submit" class="button button-secondary" name="submit" value="提交抽审订单"/>
+									</form>
+								  
+									</ul>
+							  </br>
+							  
+							  <!-- <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
+								<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:loadXMLDoc2({{item.12}},{{item.6}})">
+							  </form> -->
+							</article>
+							</div>
+						  {%else%}
+							<p>error</p>					 	  
+						  {% endif %}  
+					  </li>
+					  {%endfor%}
+						<!-- Bootstrap Pagination -->
+						  <nav class="page-navigation" aria-label="Page navigation">
+							<ul class="pagination">
+								{% if page.has_previous %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page={{page.previous_page_number}}" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span></a></li>
+								{% endif %}
+
+								{% for num in page.paginator.page_range%} 
+									{%if pindex == page.number%}
+										<li class="page-item active"><span class="page-link">{{ num }}</span></li>
+									{%else%}
+										<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page={{num}}">{{ num }}</a></li>
+									{%endif%}
+								{% endfor %}
+
+								{% if page.has_next %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page={{page.next_page_number}}" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span></a></li>
+								{% endif %}
+							</ul>
+						  </nav>
+					  </div>
+					</ul>
+					
+					
 					
 					
                   </div>
                   <div class="tab-pane fade" id="tabs-2-2">
                     <ul class="contact-box">
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-map-marker"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="#">此处显示订单内容, <br class="veil reveal-lg-inline">San Diego, CA 94117-1080 USA</a></div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-phone"></span></div>
-                          <div class="unit-body">
-                            <ul class="list-phones">
-                              <li><a class="hover-text" href="tel:#">1-800-1234-567</a></li>
-                              <li><a class="hover-text" href="tel:#">1-800-1234-567</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-email-outline"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="mailto:#">info@demolink.org</a></div>
-                        </div>
-                      </li>
-                    </ul>
+					<!-- Skill Bars-->
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					  <!--当前页内容遍历展示-->
+					  {%for item in page2%}
+					  <li>
+						  
+						  {% if item.12 == 1 %}
+						  <h5>{{item.6}}号集采订单</h5>
+						  <p>省份：{{item.0}}，城市：{{item.1}}，县：{{item.2}}，订单数量：{{item.3}}，期限：{{item.4}}，谈判时间：{{item.5}}</p> 
+							<!-- Linear progress bar-->
+							<div class="progress-linear-wrap">
+							<article class="progress-linear">
+							  <div class="progress-header">
+								{%if item.7 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">0</span>
+								{%elif item.8 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">33</span>
+								{%elif item.9 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">66</span>
+									<p>接单用户：{{item.11}}</p>
+								{%elif item.9 == 1 and item.7 == 1 and item.8 == 1%}
+									<p>订单执行百分比</p><span class="progress-value">100</span>
+									<p>接单用户：{{item.11}}</p>
+								{%else%}
+									<p>error</p><span class="progress-value">100</span>
+								{%endif%}
+							  </div>
+							  <div class="progress-bar-linear-wrap">
+								<div class="progress-bar-linear"></div>
+							  </div>
+							  
+							 
+							  <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
+								<input type="button" class="button button-secondary" name="submit" value="接单" onclick="javascript:loadXMLDoc3({{item.6}})">
+							  </form>
+							</article>
+							</div>
+						  {%else%}
+							<p>error</p>					 	  
+						  {% endif %}  
+					  </li>
+					  {%endfor%}
+						<!-- Bootstrap Pagination -->
+						  <nav class="page-navigation" aria-label="Page navigation">
+							<ul class="pagination">
+								{% if page2.has_previous %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page2={{page2.previous_page_number}}" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span></a></li>
+								{% endif %}
+
+								{% for num in page2.paginator2.page_range%} 
+									{%if pindex == page2.number%}
+										<li class="page-item active"><span class="page-link">{{ num }}</span></li>
+									{%else%}
+										<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page2={{num}}">{{ num }}</a></li>
+									{%endif%}
+								{% endfor %}
+
+								{% if page2.has_next %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page2={{page2.next_page_number}}" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span></a></li>
+								{% endif %}
+							</ul>
+						  </nav>
+					  </div>
+					</ul>
 					
-					<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" action="bat/rd-mailform.php">
-							<input type="button" class="button button-secondary" name="button" value="接单">
-					</form>
+					
                   </div>
                   <div class="tab-pane fade" id="tabs-2-3">
                     <ul class="contact-box">
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-map-marker"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="#">5432 Central Street, <br class="veil reveal-lg-inline">Chicago, IL 43541-3243 USA</a></div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-phone"></span></div>
-                          <div class="unit-body">
-                            <ul class="list-phones">
-                              <li><a class="hover-text" href="tel:#">1-800-1234-567</a></li>
-                              <li><a class="hover-text" href="tel:#">1-800-1234-567</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-email-outline"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="mailto:#">info@demolink.org</a></div>
-                        </div>
-                      </li>
-                    </ul>
+					<!-- Skill Bars-->
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					  <!--当前页内容遍历展示-->
+					  {%for item in page3%}
+					  <li>
+						  
+						  {% if item.12 == 1 %}
+						  <h5>{{item.6}}号集采订单</h5>
+						  <p>省份：{{item.0}}，城市：{{item.1}}，县：{{item.2}}，订单数量：{{item.3}}，期限：{{item.4}}，谈判时间：{{item.5}}</p> 
+							<!-- Linear progress bar-->
+							<div class="progress-linear-wrap">
+							<article class="progress-linear">
+							  <div class="progress-header">
+								{%if item.7 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">0</span>
+								{%elif item.8 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">33</span>
+								{%elif item.9 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">66</span>
+									<p>接单用户：{{item.11}}</p>
+								{%elif item.9 == 1 and item.7 == 1 and item.8 == 1%}
+									<p>订单执行百分比</p><span class="progress-value">100</span>
+									<p>接单用户：{{item.11}}</p>
+								{%else%}
+									<p>error</p><span class="progress-value">100</span>
+								{%endif%}
+							  </div>
+							  <div class="progress-bar-linear-wrap">
+								<div class="progress-bar-linear"></div>
+							  </div>
+							</article>
+							</div>
+						  {%else%}
+							<p>error</p>					 	  
+						  {% endif %}  
+					  </li>
+					  {%endfor%}
+						<!-- Bootstrap Pagination -->
+						  <nav class="page-navigation" aria-label="Page navigation">
+							<ul class="pagination">
+								{% if page3.has_previous %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page3={{page3.previous_page_number}}" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span></a></li>
+								{% endif %}
+
+								{% for num in page3.paginator3.page_range%} 
+									{%if pindex == page3.number%}
+										<li class="page-item active"><span class="page-link">{{ num }}</span></li>
+									{%else%}
+										<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page3={{num}}">{{ num }}</a></li>
+									{%endif%}
+								{% endfor %}
+
+								{% if page3.has_next %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page3={{page3.next_page_number}}" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span></a></li>
+								{% endif %}
+							</ul>
+						  </nav>
+					  </div>
+					</ul>
                   </div>
 				  
 				  <div class="tab-pane fade" id="tabs-2-4">
+                    <ul class="contact-box">
+					<!-- Skill Bars-->
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					  <!--当前页内容遍历展示-->
+					  {%for item in page4%}
+					  <li>
+						  <!-- <p>{{item.0}} {{item.1}} {{item.2}} {{item.3}} {{item.4}} {{item.5}} {{item.6}} {{item.7}} {{item.8}} {{item.9}} {{item.10}}</p> -->
+						  {% if item.10 == 2 %}
+						  <h5>{{item.4}}号专家评审订单</h5>
+						   <p>评审时间：{{item.3}}，专家人数：{{item.2}}，价格：{{item.1}}，专家类别：{{item.0}}</p>
+							<!-- Linear progress bar-->
+							<div class="progress-linear-wrap">
+							<article class="progress-linear">
+							  <div class="progress-header">
+								{%if item.5 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">0</span>
+								{%elif item.6 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">33</span>
+								{%elif item.7 == 0%}
+									<p>订单执行百分比</p><span class="progress-value">66</span>
+									<p>接单用户：{{item.11}}</p>
+								{%elif item.5 == 1 and item.6 == 1 and item.7 == 1%}
+									<p>订单执行百分比</p><span class="progress-value">100</span>
+									<p>接单用户：{{item.9}}</p>
+								{%else%}
+									<p>error</p><span class="progress-value">100</span>
+								{%endif%}
+							  </div>
+							  <div class="progress-bar-linear-wrap">
+								<div class="progress-bar-linear"></div>
+							  </div>
+							  <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
+								<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:loadXMLDoc2({{item.10}},{{item.4}})">
+							  </form>
+							</article>
+							</div>							
+						  {%else%}
+							<p>error</p>
+					 	  
+						  {% endif %}
+						  
+					  </li>
+					  {%endfor%}
+						<!-- Bootstrap Pagination -->
+						  <nav class="page-navigation" aria-label="Page navigation">
+							<ul class="pagination">
+								{% if page4.has_previous %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page4={{page4.previous_page_number}}" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span></a></li>
+								{% endif %}
+
+								{% for num in page4.paginator4.page_range%} 
+									{%if pindex == page4.number%}
+										<li class="page-item active"><span class="page-link">{{ num }}</span></li>
+									{%else%}
+										<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page4={{num}}">{{ num }}</a></li>
+									{%endif%}
+								{% endfor %}
+
+								{% if page4.has_next %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page4={{page4.next_page_number}}" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span></a></li>
+								{% endif %}
+							</ul>
+						  </nav>
+					  </div>
+					</ul>
+                  </div>
+				  
+				  <div class="tab-pane fade" id="tabs-2-5">
                     <ul class="contact-box">
                       <h4>TODO</h4>
 					  
                     </ul>
                   </div>
 				  
-				  <div class="tab-pane fade" id="tabs-2-5">
+				  <div class="tab-pane fade" id="tabs-2-6">
                     <ul class="contact-box">
                       <li>
                         <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-map-marker"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="#">5432 Central Street, <br class="veil reveal-lg-inline">Chicago, IL 43541-3243 USA</a></div>
+                          
+                          <div class="unit-body"><a class="hover-text" href="#">用户ID：{{user_id}}, <br class="veil reveal-lg-inline">用户名：{{username}}</a></div>
                         </div>
                       </li>
                       <li>
                         <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-phone"></span></div>
+                          
                           <div class="unit-body">
-                            <ul class="list-phones">
-                              <li><a class="hover-text" href="tel:#">1-800-1234-567</a></li>
-                              <li><a class="hover-text" href="tel:#">1-800-1234-567</a></li>
-                            </ul>
+
+                              <li><a class="hover-text" >上次登录时间：{{last_login}}</a></li>
+                              <li><a class="hover-text" >注册时间：{{date_joined}}</a></li>
+							  <li><a class="hover-text" >是否为平台管理员：{{is_superuser}}</a></li>
+							  <li><a class="hover-text" >用户权限：TODO</a></li>
+							  <li><a class="hover-text" >用户邮箱：{{email}}</a></li>
+
                           </div>
                         </div>
                       </li>
-                      <li>
-                        <div class="unit unit-horizontal unit-spacing-xxs">
-                          <div class="unit-left"><span class="icon mdi mdi-email-outline"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="mailto:#">info@demolink.org</a></div>
-                        </div>
-                      </li>
+                      
                     </ul>
                   </div>
 				  

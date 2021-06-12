@@ -29,13 +29,18 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+# 默认应用
+PREREQ_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+]
+
+# 项目应用
+PROJECT_APPS = [
     'login',
     'Article',
     'Comment',
@@ -45,9 +50,15 @@ INSTALLED_APPS = [
     'Form2',
     'main',
     'Report',
+]
+
+# 第三方应用
+THIRD_PARTY_APPS = [
     'django_summernote',  #后台富文本
     # 'guardian',
 ]
+
+INSTALLED_APPS = PREREQ_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
 # AUTHENTICATION_BACKENDS = (
 #     'django.contrib.auth.backends.ModelBackend',  # 这是Django默认的
