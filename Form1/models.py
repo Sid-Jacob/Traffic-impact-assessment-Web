@@ -12,3 +12,4 @@ class Form1(FormTemplate):
     number = models.IntegerField()
     ddl = models.DateField(auto_now_add=False)
     negotiateTime = models.DateField(auto_now_add=False)
+    percentage = models.IntegerField()

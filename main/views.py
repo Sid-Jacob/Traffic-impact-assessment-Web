@@ -16,6 +16,12 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, Invali
 # login_url用reverse替换报错
 # TODO
 # 异步刷新订单，提交post请求字段刷新页面
+# TODO
+# 第三方只能先发起评审订单再提交集采报告
+# TODO
+# ui优化
+# TODO
+# 增加集采报告合格位！！！抽审发起订单逻辑明确！！！
 
 
 @login_required(login_url="/accounts/login")
@@ -31,6 +37,7 @@ def gov(request):
             jicainum = request.POST.get('jicai-num', '')
             ddl = request.POST.get('jicai-ddl', '')
             negotiatetime = request.POST.get('jicai-negotiate', '')
+            percentage = request.POST.get('jicai-per', '')
 
             # 获取当前用户信息
             username = request.user  #得到用户名
@@ -44,7 +51,8 @@ def gov(request):
                                  negotiateTime=negotiatetime,
                                  userId1=userId,
                                  userName1=username,
-                                 subtype=1)
+                                 subtype=1,
+                                 percentage=percentage)
             return render(request, 'government.html')
         #评审订单提交
         elif request.POST.get('submit') == '提交评审订单':
@@ -199,7 +207,7 @@ def gov(request):
             rets1 = Form1.objects.filter(Q(userId1=user_id)).values_list(
                 "province", "city", "county", "number", "ddl", "negotiateTime",
                 "formId", "significanceBit", "taken", "done", "userId2",
-                "userName2", "subtype").order_by("-formId")
+                "userName2", "subtype", "percentage").order_by("-formId")
             form1_list = []
             for i in range(0, len(rets1)):
                 form1_list.append(list(rets1[i]))
@@ -467,23 +475,23 @@ def thirdParty(request):
                 & Q(significanceBit=True) & Q(userId2=user_id)).values_list(
                     "province", "city", "county", "number", "ddl",
                     "negotiateTime", "formId", "significanceBit", "taken",
-                    "done", "userId2", "userName2",
-                    "subtype").order_by("-formId")
+                    "done", "userId2", "userName2", "subtype",
+                    "percentage").order_by("-formId")
             # 新订单
             rets2 = Form1.objects.filter(
                 Q(taken=False) & Q(significanceBit=True)).values_list(
                     "province", "city", "county", "number", "ddl",
                     "negotiateTime", "formId", "significanceBit", "taken",
-                    "done", "userId2", "userName2",
-                    "subtype").order_by("-formId")
+                    "done", "userId2", "userName2", "subtype",
+                    "percentage").order_by("-formId")
             # 已完成的订单
             rets3 = Form1.objects.filter(
                 Q(done=True)
                 & Q(significanceBit=True) & Q(userId2=user_id)).values_list(
                     "province", "city", "county", "number", "ddl",
                     "negotiateTime", "formId", "significanceBit", "taken",
-                    "done", "userId2", "userName2",
-                    "subtype").order_by("-formId")
+                    "done", "userId2", "userName2", "subtype",
+                    "percentage").order_by("-formId")
 
             form1_list = []
             for i in range(0, len(rets1)):
