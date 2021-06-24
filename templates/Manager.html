@@ -418,6 +418,29 @@ function loadXMLDoc3(obj_id)
                     <ul class="contact-box">
                       
 					  TODO
+					   <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
+							 
+						<h3>选择用户</h3>
+						<select name="user">
+							<!-- <optgroup label="直辖市"  ></optgroup> -->
+							{%for item in user_list%}
+							<option value="{{item.0}}" >{{item.1}}</option>
+							{%endfor%}
+						</select>
+						
+						<br>
+						政府用户
+						<input type="checkbox" id="checkbox1" class="button button-sm button-secondary" name="用户角色分组" value="GOVERNMENT">
+						第三方用户
+						<input type="checkbox" id="checkbox2" class="button button-sm button-secondary" name="用户角色分组" value="THIRDPARTY">
+						专家用户
+						<input type="checkbox" id="checkbox3" class="button button-sm button-secondary" name="用户角色分组" value="EXPERT">
+						平台管理员用户
+						<input type="checkbox" id="checkbox4" class="button button-sm button-secondary" name="用户角色分组" value="MANAGER">
+						<br>
+						<input type="submit" class="button button-secondary" name="submit" value="设置分组">
+
+					   </form>
                       
                     </ul>
                   </div>

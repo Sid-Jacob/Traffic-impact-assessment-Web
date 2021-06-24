@@ -16,9 +16,7 @@ from main.decorator import group_required
 
 # Create your views here.
 # TODO
-# 异步刷新订单，提交post请求字段刷新页面 / 使用tab定位
-# TODO
-# 平台管理员设置用户权限
+# 异步刷新订单，提交post请求字段刷新页面
 
 
 # 测试功能：任何登录用户使用init变为manager，manager管理其他用户的分组
@@ -100,7 +98,45 @@ def manager(request):
         # 设置用户权限组
         elif request.POST.get('submit') == '设置分组':
             # TODO
-            pass
+            user_id = request.POST.get('user')
+            grouplist = request.POST.getlist('用户角色分组')
+
+            user_obj = User.objects.get(id=user_id)
+
+            if "GOVERNMENT" in grouplist:
+                group = Group.objects.get(name="GOVERNMENT")
+                user_obj.groups.add(group)
+                group.save()
+            else:
+                group = Group.objects.get(name="GOVERNMENT")
+                user_obj.groups.remove(group)
+                group.save()
+            if "THIRDPARTY" in grouplist:
+                group = Group.objects.get(name="THIRDPARTY")
+                user_obj.groups.add(group)
+                group.save()
+            else:
+                group = Group.objects.get(name="THIRDPARTY")
+                user_obj.groups.remove(group)
+                group.save()
+            if "EXPERT" in grouplist:
+                group = Group.objects.get(name="EXPERT")
+                user_obj.groups.add(group)
+                group.save()
+            else:
+                group = Group.objects.get(name="EXPERT")
+                user_obj.groups.remove(group)
+                group.save()
+            if "MANAGER" in grouplist:
+                group = Group.objects.get(name="MANAGER")
+                user_obj.groups.add(group)
+                group.save()
+            else:
+                group = Group.objects.get(name="MANAGER")
+                user_obj.groups.remove(group)
+                group.save()
+
+            return render(request, 'Manager.html')
     elif request.method == 'GET':
         print("GET")
         u"""处理废除清单、刷新订单信息
@@ -220,6 +256,15 @@ def manager(request):
                 # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
                 article2 = paginator.page(paginator2.num_pages)
 
+            # 获取所有用户
+            rets3 = User.objects.filter().values_list(
+                "id", "username").order_by("last_login")
+
+            user_list = []
+            for i in range(0, len(rets3)):
+                user_list.append(list(rets3[i]))
+            print(user_list)
+
             try:
 
                 print("try")
@@ -239,6 +284,7 @@ def manager(request):
                     "is_superuser": is_su,
                     "page": article,
                     "page2": article2,
+                    "user_list": user_list,
                 }
                 # print("content:", content)
             except Exception as e:
