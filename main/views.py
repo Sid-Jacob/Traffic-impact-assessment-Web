@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from Form1.models import Form1
 from Form2.models import Form2
 from FormTemplate.models import FormTemplate
@@ -11,15 +11,57 @@ from django.db.models import Q
 # 分页模块
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
 import random
+# 自定义装饰器
+from main.decorator import group_required
 
 # Create your views here.
 # TODO
 # 异步刷新订单，提交post请求字段刷新页面 / 使用tab定位
 # TODO
-# 划分角色
+# 平台管理员设置用户权限
+
+
+# 测试功能：任何登录用户使用init变为manager，manager管理其他用户的分组
+@login_required(login_url="/accounts/login")
+def init(request):
+    # group_government = Group.objects.create(name="GOVERNMENT")
+    # group_thirdparty = Group.objects.create(name="THIRDPARTY")
+    # group_expert = Group.objects.create(name="EXPERT")
+    # group_manager = Group.objects.create(name="MANAGER")
+
+    group_manager = Group.objects.get(name="MANAGER")
+
+    user = request.user
+    # group_government.user_set.add(user)
+    group_manager.user_set.add(user)
+
+    # group_government.save()
+    # group_thirdparty.save()
+    # group_expert.save()
+    group_manager.save()
+    return render(request, "Index.html")
+
+
+# 根据用户分组，自动跳转到对应主页
+@login_required(login_url="/accounts/login")
+def distributer(request):
+    def in_groups(u, *group_names):
+        if u.is_authenticated:
+            if bool(u.groups.filter(name__in=group_names)) | u.is_superuser:
+                return True
+        return False
+
+    user = request.user
+    if in_groups(user, "GOVERNMENT", "MANAGER"):
+        return redirect(reverse("main:gov"))
+    elif in_groups(user, "THIRDPARTY"):
+        return redirect(reverse("main:thirdParty"))
+    elif in_groups(user, "EXPERT"):
+        return redirect(reverse("main:expert"))
 
 
 @login_required(login_url="/accounts/login")
+@group_required("MANAGER")
 def manager(request):
     if request.method == 'POST':
         print("POST")
@@ -55,6 +97,10 @@ def manager(request):
                 pass
 
             return render(request, 'Manager.html')
+        # 设置用户权限组
+        elif request.POST.get('submit') == '设置分组':
+            # TODO
+            pass
     elif request.method == 'GET':
         print("GET")
         u"""处理废除清单、刷新订单信息
@@ -95,71 +141,10 @@ def manager(request):
         # 统一更新订单
         if obj_type == ("update" or "nullify1" or "nullify2" or "take"):
             pass
-            # print("update")
-            # rets1 = Form1.objects.filter(Q(userId1=user_id)).values_list(
-            #     "province", "city", "county", "number", "ddl", "negotiateTime",
-            #     "formId", "significanceBit", "taken", "done", "userId2",
-            #     "userName2", "subtype").order_by("-formId")
-            # rets2 = Form2.objects.filter(Q(userId1=user_id)).values_list(
-            #     "expertCategory", "price", "expertNum", "assessTime", "formId",
-            #     "significanceBit", "taken", "done", "userId2", "userName2",
-            #     "subtype").order_by("-formId")
-            # form1_list = []
-            # for i in range(0, len(rets1)):
-            #     form1_list.append(list(rets1[i]))
-            # form2_list = []
-            # for i in range(0, len(rets2)):
-            #     form2_list.append(list(rets2[i]))
-
-            # # TODO
-            # # 翻页必须改成异步的
-            # paginator = Paginator(form1_list, 3)  # 实例化Paginator, 每页显示3条数据
-            # paginator2 = Paginator(form2_list, 3)
-            # # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
-            # page = 1
-            # if request.method == "GET":
-            #     page = request.GET.get('page')
-            # try:
-            #     article = paginator.page(page)
-            # # todo: 注意捕获异常
-            # except PageNotAnInteger:
-            #     # 如果请求的页数不是整数, 返回第一页。
-            #     article = paginator.page(1)
-            # except InvalidPage:
-            #     # 如果请求的页数不存在, 重定向页面
-            #     return HttpResponse('找不到页面的内容')
-            # except EmptyPage:
-            #     # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
-            #     article = paginator.page(paginator.num_pages)
-            # # context = {"page": article}
-            # try:
-
-            #     print("try")
-            #     l = []
-            #     l = User.objects.get(id=user_id)
-            #     # TODO 增加分组权限显示
-            #     if l.is_superuser == True:
-            #         is_su = "是"
-            #     else:
-            #         is_su = "否"
-            #     content = {
-            #         "user_id": l.id,
-            #         "username": l.username,
-            #         "last_login": l.last_login.strftime("%Y-%m-%d %H:%M:%S"),
-            #         "email": l.email,
-            #         "date_joined": l.date_joined.strftime("%Y-%m-%d %H:%M:%S"),
-            #         "is_superuser": is_su,
-            #         "page": article,
-            #     }
-            # except Exception as e:
-            #     #没有获取到对象
-            #     print(e)
-
-            # #返回结果
-            # return render(request, 'government.html', content)
-            # # return HttpResponse(json.dumps(context),
-            # #                     content_type="application/json")
         else:
+            # TEST
+
+            #
             print("refresh")
             # 首次访问刷新页面
             user_id = request.session.get('_auth_user_id')
@@ -269,6 +254,7 @@ def manager(request):
 
 
 @login_required(login_url="/accounts/login")
+@group_required("MANAGER", "GOVERNMENT")
 def gov(request):
     if request.method == 'POST':
         print("POST")
@@ -550,6 +536,7 @@ def gov(request):
 
 
 @login_required(login_url="/accounts/login")
+@group_required("MANAGER", "THIRDPARTY")
 def thirdParty(request):
     if request.method == 'POST':
         print("POST")
@@ -890,6 +877,7 @@ def thirdParty(request):
 
 
 @login_required(login_url="/accounts/login")
+@group_required("MANAGER", "EXPERT")
 def expert(request):
     if request.method == 'POST':
         print("POST")

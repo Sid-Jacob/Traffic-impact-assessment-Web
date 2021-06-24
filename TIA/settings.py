@@ -55,17 +55,19 @@ PROJECT_APPS = [
 # 第三方应用
 THIRD_PARTY_APPS = [
     'django_summernote',  #后台富文本
-    # 'guardian',
+    'guardian',
 ]
 
 INSTALLED_APPS = PREREQ_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
-# AUTHENTICATION_BACKENDS = (
-#     'django.contrib.auth.backends.ModelBackend',  # 这是Django默认的
-#     'guardian.backends.ObjectPermissionBackend',  # 这是guardian的
-# )
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',  # 这是Django默认的
+    'guardian.backends.ObjectPermissionBackend',  # 这是guardian的
+)
 
-# ANONYMOUS_USER_ID = -1
+ANONYMOUS_USER_ID = -1
+
+# GUARDIAN_TEMPLATE_403 = "templates/404.html"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
