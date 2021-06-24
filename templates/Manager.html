@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="en">
   <head>
-    <title>专家用户主页</title>
+    <title>平台管理员用户主页</title>
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,8 +18,62 @@
     <script src={%static "js/html5shiv.min.js"%}></script>
     <![endif]-->
 	<script src="https://apps.bdimg.com/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script>
-	<!-- 接单用 -->
+		<script>
+	
+	<!-- 刷新页面、翻页用TODO -->
+function loadXMLDoc1()
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		// IE6, IE5 浏览器执行代码
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			var data=xmlhttp.responseText;
+			var json=JSON.parse(data);  // 使用JSON.parse()进行解析：使用JSON对象的静态方法parse()，将字符串解析为对象。
+			document.getElementById("likes_num").innerHTML=json.nums
+		}
+	}
+	url = "/likes/likes_nums?type=Article&&obj_id="
+	xmlhttp.open("GET",url,true);
+	xmlhttp.send();
+}
+<!-- 废除订单用 -->
+function loadXMLDoc2(formtype,obj_id)
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		// IE6, IE5 浏览器执行代码
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			var data=xmlhttp.responseText;
+			
+		}
+	}
+	url = "{%url 'main:thirdParty'%}/?type=nullify"+formtype+"&&obj_id="+obj_id
+	xmlhttp.open("GET",url,true);
+	xmlhttp.send();
+}
+<!-- 接单用 -->
 function loadXMLDoc3(obj_id)
 {
 	var xmlhttp;
@@ -41,12 +95,12 @@ function loadXMLDoc3(obj_id)
 			
 		}
 	}
-	url = "{%url 'main:expert'%}/?type=take"+"&&obj_id="+obj_id
+	url = "{%url 'main:thirdParty'%}/?type=take"+"&&obj_id="+obj_id
 	xmlhttp.open("GET",url,true);
 	xmlhttp.send();
 }
-	
-	</script>
+<!-- window.onload=loadXMLDoc1() -->
+</script>
   </head>
   <body>
     <div class="preloader">
@@ -78,7 +132,7 @@ function loadXMLDoc3(obj_id)
                   <div class="rd-navbar-nav-wrap">
                     <!-- RD Navbar Nav-->
                     <ul class="rd-navbar-nav">
-                      <li class="rd-nav-item active"><a class="rd-nav-link" href="{%url 'index'%}">首页</a>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'index'%}">首页</a>
                       </li>
                       <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:gov'%}">政府主页</a>
 					  </li>
@@ -86,7 +140,7 @@ function loadXMLDoc3(obj_id)
 					  </li>
 					  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:expert'%}">专家主页</a>
 					  </li>
-					  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:manager'%}">平台管理员主页</a>
+					  <li class="rd-nav-item active"><a class="rd-nav-link" href="{%url 'main:manager'%}">平台管理员主页</a>
 					  </li>
 					  <!-- <li class="rd-nav-item"><a class="rd-nav-link" href="">用户主页</a>
                         <ul class="rd-menu rd-navbar-dropdown">
@@ -95,6 +149,7 @@ function loadXMLDoc3(obj_id)
 						  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:thirdParty'%}">第三方主页</a>
 						  </li>
 						  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:expert'%}">专家主页</a>
+						  </li>
                         </ul>
                       </li> -->
                       <!-- <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
@@ -170,95 +225,94 @@ function loadXMLDoc3(obj_id)
       <!-- Breadcrumbs -->
       <section class="section section-bredcrumbs">
         <div class="container context-light breadcrumb-wrapper">
-          <h1>专家主页</h1>
+          <h1>平台管理员主页</h1>
           <ul class="breadcrumbs-custom">
             <li><a href="{%url 'index'%}">主页</a></li>
             <!-- <li><a href="#">Pages</a></li> -->
-            <li class="active">专家主页</li>
+            <li class="active">平台管理员主页</li>
           </ul>
         </div>
       </section>
       <!-- Vertical Tabs-->
       <section class="section section-lg bg-default">
         <div class="container">
-          <h2>专家用户主页</h2>
+          <h2>平台管理员主页</h2>
           <div class="row row-offset-3">
             <div class="col-lg-10 col-xxl-10">
               <!-- Bootstrap tabs-->
               <div class="tabs-custom tabs-vertical tabs-line" id="tabs-2">
                 <!-- Nav tabs-->
                 <ul class="nav nav-tabs">
-                  <li class="nav-item" role="presentation"><a class="nav-link active" href="#tabs-2-1" data-toggle="tab">正在进行</a></li>
-                  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-2" data-toggle="tab">新订单</a></li>
-                  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-3" data-toggle="tab">我的评审</a></li>
-				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-4" data-toggle="tab">问题反馈</a></li>
-				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-5" data-toggle="tab">我的信息</a></li>
+                  <li class="nav-item" role="presentation"><a class="nav-link active" href="#tabs-2-1" data-toggle="tab">新订单</a></li>
+				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-2" data-toggle="tab">专家评审订单</a></li>
+				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-3" data-toggle="tab">我的信息</a></li>
                 </ul>
                 <!-- Tab panes-->
                 <div class="tab-content">
                   <div class="tab-pane fade show active" id="tabs-2-1">
+                    
 					<ul class="contact-box">
 					<!-- Skill Bars-->
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					  <!--当前页内容遍历展示-->
 					  {%for item in page%}
 					  <li>
-						  <!-- <p>{{item.0}} {{item.1}} {{item.2}} {{item.3}} {{item.4}} {{item.5}} {{item.6}} {{item.7}} {{item.8}} {{item.9}} {{item.10}}</p> -->
-						  {% if item.10 == 2 %}
-						  <h5>{{item.4}}号专家评审订单</h5>
-						   <p>评审时间：{{item.3}}，专家人数：{{item.2}}，价格：{{item.1}}，专家类别：{{item.0}}</p>
+						  
+						  {% if item.12 == 1 %}
+						  <h5>{{item.6}}号集采订单</h5>
+						  <p>省份：{{item.0}}，城市：{{item.1}}，县：{{item.2}}，订单数量：{{item.3}}，期限：{{item.4}}，谈判时间：{{item.5}}，抽审比例：{{item.13}}</p> 
 							<!-- Linear progress bar-->
 							<div class="progress-linear-wrap">
-							<article class="progress-linear">
-							  <div class="progress-header">
-								{%if item.5 == 0%}
-									<p>订单执行百分比</p><span class="progress-value">0</span>
-								{%elif item.6 == 0%}
-									<p>订单执行百分比</p><span class="progress-value">33</span>
-								{%elif item.7 == 0%}
-									<p>订单执行百分比</p><span class="progress-value">66</span>
-									<p>接单用户：{{item.9}}</p>
-								{%elif item.5 == 1 and item.6 == 1 and item.7 == 1%}
-									<p>订单执行百分比</p><span class="progress-value">100</span>
-									<p>接单用户：{{item.9}}</p>
-								{%else%}
-									<p>error</p><span class="progress-value">100</span>
-								{%endif%}
-							  </div>
-							  <div class="progress-bar-linear-wrap">
-								<div class="progress-bar-linear"></div>
-							  </div>	
-								<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report">
-										<!-- <a>关联订单编号</a>
-										<div class="form-wrap">
-										  <input class="form-input" id="formId" type="number" name="formId" data-constraints="@Required">
-										  <label class="form-label" for="formId">{{item.6}}</label>
-										</div> -->
-										<input class="form-input" id="hidden" type="hidden" name="formId" value="{{item.4}}">
-										
-										<textarea rows="2" cols="100" name="report-content" form="report"  placeholder="输入评审报告内容..."></textarea>
-										<br>
-												合格
-												<input type="radio" checked="checked" name="qualification" value=1 />
-												不合格
-												<input type="radio" name="qualification" value=0 />
-										<br>		
-										<input type="submit" class="button button-secondary" name="submit" value="提交报告">
-							  </form>
-							</article>
-							</div>							
+							  <ul class="contact-box">
+								
+									<h3>专家评审服务信息填写</h3>
+									<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
+												<a>评审时间</a>
+												<div class="form-wrap">
+												  <input class="form-input" id="pingshen-ddl" type="date" name="pingshen-ddl" data-constraints="@Required">
+												  <label class="form-label" for="pingshen-ddl"></label>
+												</div>
+												<a>专家人数</a>
+												<div class="form-wrap">									  
+												  <input class="form-input" id="pingshen-expert-num" type="text" name="expert-num" data-constraints="@Required">
+												  <label class="form-label" for="pingshen-expert-num">人</label>
+												</div>
+												<a>价格</a>
+												  <div class="form-wrap">
+												  <input class="form-input" id="pingshen-price" type="text" name="price" data-constraints="@Required">
+												  <label class="form-label" for="pingshen-price">元（人民币）</label>
+												</div>
+												<a>专家类别</a>
+												A类
+												<input type="radio" checked="checked" name="expert-type" value="A类" />
+												B类
+												<input type="radio" name="expert-type" value="B类" />
+												C类
+												<input type="radio" name="expert-type" value="C类" />
+												<br>
+												
+												<input class="form-input" id="hidden" type="hidden" name="formId" value="{{item.6}}">
+											
+												<input type="submit" class="button button-secondary" name="submit" value="提交抽审订单"/>
+									</form>
+								  
+									</ul>
+							  </br>
+							  
+							  <!-- <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
+								<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:loadXMLDoc2({{item.12}},{{item.6}})">
+							  </form> -->
+							</div>
 						  {%else%}
-							<p>error</p>
-					 	  
-						  {% endif %}
-						  
+							<p>error</p>					 	  
+						  {% endif %}  
 					  </li>
 					  {%endfor%}
 						<!-- Bootstrap Pagination -->
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
 								{% if page.has_previous %}  
-									<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page={{page.previous_page_number}}" aria-label="Previous">
+									<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page={{page.previous_page_number}}" aria-label="Previous">
 										<span aria-hidden="true">&laquo;</span></a></li>
 								{% endif %}
 
@@ -266,22 +320,27 @@ function loadXMLDoc3(obj_id)
 									{%if pindex == page.number%}
 										<li class="page-item active"><span class="page-link">{{ num }}</span></li>
 									{%else%}
-										<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page={{num}}">{{ num }}</a></li>
+										<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page={{num}}">{{ num }}</a></li>
 									{%endif%}
 								{% endfor %}
 
 								{% if page.has_next %}  
-									<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page={{page.next_page_number}}" aria-label="Next">
+									<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page={{page.next_page_number}}" aria-label="Next">
 										<span aria-hidden="true">&raquo;</span></a></li>
 								{% endif %}
 							</ul>
 						  </nav>
 					  </div>
 					</ul>
+					
+					
+					
+					
                   </div>
+                 
+                  
 				  
-				 
-                  <div class="tab-pane fade" id="tabs-2-2">
+				  <div class="tab-pane fade" id="tabs-2-2">
                     <ul class="contact-box">
 					<!-- Skill Bars-->
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -302,79 +361,7 @@ function loadXMLDoc3(obj_id)
 									<p>订单执行百分比</p><span class="progress-value">33</span>
 								{%elif item.7 == 0%}
 									<p>订单执行百分比</p><span class="progress-value">66</span>
-									<p>接单用户：{{item.11}}</p>
-								{%elif item.5 == 1 and item.6 == 1 and item.7 == 1%}
-									<p>订单执行百分比</p><span class="progress-value">100</span>
 									<p>接单用户：{{item.9}}</p>
-								{%else%}
-									<p>error</p><span class="progress-value">100</span>
-								{%endif%}
-							  </div>
-							  <div class="progress-bar-linear-wrap">
-								<div class="progress-bar-linear"></div>
-							  </div>
-								<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
-										<input type="button" class="button button-secondary" name="submit" value="接单" onclick="javascript:loadXMLDoc3({{item.4}})">
-								</form>
-							</article>
-							</div>							
-						  {%else%}
-							<p>error</p>
-					 	  
-						  {% endif %}
-						  <br>
-						  
-					  </li>
-					  {%endfor%}
-						<!-- Bootstrap Pagination -->
-						  <nav class="page-navigation" aria-label="Page navigation">
-							<ul class="pagination">
-								{% if page2.has_previous %}  
-									<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page2={{page2.previous_page_number}}" aria-label="Previous">
-										<span aria-hidden="true">&laquo;</span></a></li>
-								{% endif %}
-
-								{% for num in page2.paginator2.page_range%} 
-									{%if pindex == page4.number%}
-										<li class="page-item active"><span class="page-link">{{ num }}</span></li>
-									{%else%}
-										<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page2={{num}}">{{ num }}</a></li>
-									{%endif%}
-								{% endfor %}
-
-								{% if page2.has_next %}  
-									<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page2={{page2.next_page_number}}" aria-label="Next">
-										<span aria-hidden="true">&raquo;</span></a></li>
-								{% endif %}
-							</ul>
-						  </nav>
-					  </div>
-					</ul>
-                  </div>
-				  
-				  
-                  <div class="tab-pane fade" id="tabs-2-3">
-                    <ul class="contact-box">
-					<!-- Skill Bars-->
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					  <!--当前页内容遍历展示-->
-					  {%for item in page3%}
-					  <li>
-						  <!-- <p>{{item.0}} {{item.1}} {{item.2}} {{item.3}} {{item.4}} {{item.5}} {{item.6}} {{item.7}} {{item.8}} {{item.9}} {{item.10}}</p> -->
-						  {% if item.10 == 2 %}
-						  <h5>{{item.4}}号专家评审订单</h5>
-						   <p>评审时间：{{item.3}}，专家人数：{{item.2}}，价格：{{item.1}}，专家类别：{{item.0}}</p>
-							<!-- Linear progress bar-->
-							<div class="progress-linear-wrap">
-							<article class="progress-linear">
-							  <div class="progress-header">
-								{%if item.5 == 0%}
-									<p>订单执行百分比</p><span class="progress-value">0</span>
-								{%elif item.6 == 0%}
-									<p>订单执行百分比</p><span class="progress-value">33</span>
-								{%elif item.7 == 0%}
-									<p>订单执行百分比</p><span class="progress-value">66</span>
-									<p>接单用户：{{item.11}}</p>
 								{%elif item.5 == 1 and item.6 == 1 and item.7 == 1%}
 									<p>订单执行百分比</p><span class="progress-value">100</span>
 									<p>接单用户：{{item.9}}</p>
@@ -401,21 +388,21 @@ function loadXMLDoc3(obj_id)
 						<!-- Bootstrap Pagination -->
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
-								{% if page3.has_previous %}  
-									<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page3={{page3.previous_page_number}}" aria-label="Previous">
+								{% if page2.has_previous %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page2={{page2.previous_page_number}}" aria-label="Previous">
 										<span aria-hidden="true">&laquo;</span></a></li>
 								{% endif %}
 
-								{% for num in page3.paginator3.page_range%} 
-									{%if pindex == page3.number%}
+								{% for num in page2.paginator2.page_range%} 
+									{%if pindex == page2.number%}
 										<li class="page-item active"><span class="page-link">{{ num }}</span></li>
 									{%else%}
-										<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page3={{num}}">{{ num }}</a></li>
+										<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page2={{num}}">{{ num }}</a></li>
 									{%endif%}
 								{% endfor %}
 
-								{% if page3.has_next %}  
-									<li class="page-item"><a class="page-link" href="{%url 'main:expert'%}/?page3={{page3.next_page_number}}" aria-label="Next">
+								{% if page2.has_next %}  
+									<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page2={{page2.next_page_number}}" aria-label="Next">
 										<span aria-hidden="true">&raquo;</span></a></li>
 								{% endif %}
 							</ul>
@@ -426,14 +413,7 @@ function loadXMLDoc3(obj_id)
 				  
 				  
 				  
-				  <div class="tab-pane fade" id="tabs-2-4">
-                    <ul class="contact-box">
-                      <h4>TODO</h4>
-					  
-                    </ul>
-                  </div>
-				  
-				  <div class="tab-pane fade" id="tabs-2-5">
+				  <div class="tab-pane fade" id="tabs-2-3">
                     <ul class="contact-box">
                       <li>
                         <div class="unit unit-horizontal unit-spacing-xxs">

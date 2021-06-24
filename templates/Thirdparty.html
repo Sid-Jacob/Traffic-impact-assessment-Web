@@ -132,25 +132,27 @@ function loadXMLDoc3(obj_id)
                   <div class="rd-navbar-nav-wrap">
                     <!-- RD Navbar Nav-->
                     <ul class="rd-navbar-nav">
-                      <li class="rd-nav-item active"><a class="rd-nav-link" href="{%url 'index'%}">首页</a>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'index'%}">首页</a>
                       </li>
                       <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:gov'%}">政府主页</a>
 					  </li>
-					  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:thirdParty'%}">第三方主页</a>
+					  <li class="rd-nav-item active"><a class="rd-nav-link" href="{%url 'main:thirdParty'%}">第三方主页</a>
 					  </li>
 					  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:expert'%}">专家主页</a>
-					  <li class="rd-nav-item"><a class="rd-nav-link" href="">用户主页</a>
-                        <!-- RD Navbar Dropdown-->
+					   </li>
+					  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:manager'%}">平台管理员主页</a>
+					  </li>
+					  <!-- <li class="rd-nav-item"><a class="rd-nav-link" href="">用户主页</a>
                         <ul class="rd-menu rd-navbar-dropdown">
                           <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:gov'%}">政府主页</a>
 						  </li>
 						  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:thirdParty'%}">第三方主页</a>
 						  </li>
 						  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:expert'%}">专家主页</a>
+						  </li>
                         </ul>
-                      </li>
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
-                        <!-- RD Navbar Megamenu-->
+                      </li> -->
+                      <!-- <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
                         <ul class="rd-menu rd-navbar-megamenu">
                           <li class="rd-megamenu-item">
                             <h6 class="rd-megamenu-title">Elements</h6>
@@ -193,7 +195,7 @@ function loadXMLDoc3(obj_id)
                             </ul>
                           </li>
                         </ul>
-                      </li>
+                      </li> -->
                       <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'login:login'%}">登录</a>
 					  <!-- RD Navbar Dropdown-->
                         <ul class="rd-menu rd-navbar-dropdown">
@@ -223,11 +225,11 @@ function loadXMLDoc3(obj_id)
       <!-- Breadcrumbs -->
       <section class="section section-bredcrumbs">
         <div class="container context-light breadcrumb-wrapper">
-          <h1>Tabs &amp; Accordions</h1>
+          <h1>第三方主页</h1>
           <ul class="breadcrumbs-custom">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="#">Pages</a></li>
-            <li class="active">Tabs &amp; Accordions</li>
+            <li><a href="{%url 'index'%}">主页</a></li>
+            <!-- <li><a href="#">Pages</a></li> -->
+            <li class="active">第三方主页</li>
           </ul>
         </div>
       </section>
@@ -236,7 +238,7 @@ function loadXMLDoc3(obj_id)
         <div class="container">
           <h2>第三方用户主页</h2>
           <div class="row row-offset-3">
-            <div class="col-lg-7 col-xxl-7">
+            <div class="col-lg-10 col-xxl-10">
               <!-- Bootstrap tabs-->
               <div class="tabs-custom tabs-vertical tabs-line" id="tabs-2">
                 <!-- Nav tabs-->
@@ -299,7 +301,7 @@ function loadXMLDoc3(obj_id)
 							  </form>
 								
 							  <br>
-									<ul class="contact-box">
+									<!-- <ul class="contact-box">
 								
 									<h3>专家评审服务信息填写</h3>
 									<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
@@ -325,13 +327,14 @@ function loadXMLDoc3(obj_id)
 												<input type="radio" name="expert-type" value="B类" />
 												C类
 												<input type="radio" name="expert-type" value="C类" />
+												<br>
 												
-												
+												<input class="form-input" id="hidden" type="hidden" name="formId" value="{{item.6}}">
 											
 												<input type="submit" class="button button-secondary" name="submit" value="提交抽审订单"/>
 									</form>
 								  
-									</ul>
+									</ul> -->
 							  </br>
 							  
 							  <!-- <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
@@ -415,6 +418,7 @@ function loadXMLDoc3(obj_id)
 						  {%else%}
 							<p>error</p>					 	  
 						  {% endif %}  
+						  <br>
 					  </li>
 					  {%endfor%}
 						<!-- Bootstrap Pagination -->
@@ -550,6 +554,7 @@ function loadXMLDoc3(obj_id)
 							<p>error</p>
 					 	  
 						  {% endif %}
+						  <br>
 						  
 					  </li>
 					  {%endfor%}

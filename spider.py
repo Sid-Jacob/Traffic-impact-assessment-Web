@@ -263,7 +263,7 @@ def saveData2DB(datalist, dbpath):
     # 如果上次数据没有清空，下次insert会报错：primary key not unique
     # 先判断db中是否存在data，如果不存在则insert，否则跳过
         check_existed = '''select title from Article where title=%s''' % data[0]
-        print(check_existed)
+        print(data[0])
         cur.execute(check_existed)
         conn.commit()
         rs = cur.fetchall()

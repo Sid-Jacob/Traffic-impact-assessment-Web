@@ -180,15 +180,17 @@ function loadXMLDoc2(formtype,obj_id)
                   <div class="rd-navbar-nav-wrap">
                     <!-- RD Navbar Nav-->
                     <ul class="rd-navbar-nav">
-                      <li class="rd-nav-item active"><a class="rd-nav-link" href="{%url 'index'%}">首页</a>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'index'%}">首页</a>
                       </li>
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:gov'%}">政府主页</a>
+                      <li class="rd-nav-item active"><a class="rd-nav-link" href="{%url 'main:gov'%}">政府主页</a>
 					  </li>
 					  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:thirdParty'%}">第三方主页</a>
 					  </li>
 					  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:expert'%}">专家主页</a>
-					  <li class="rd-nav-item"><a class="rd-nav-link" href="">用户主页</a>
-                        <!-- RD Navbar Dropdown-->
+					   </li>
+					  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:manager'%}">平台管理员主页</a>
+					  </li>
+					  <!-- <li class="rd-nav-item"><a class="rd-nav-link" href="">用户主页</a>
                         <ul class="rd-menu rd-navbar-dropdown">
                           <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:gov'%}">政府主页</a>
 						  </li>
@@ -196,9 +198,8 @@ function loadXMLDoc2(formtype,obj_id)
 						  </li>
 						  <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'main:expert'%}">专家主页</a>
                         </ul>
-                      </li>
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
-                        <!-- RD Navbar Megamenu-->
+                      </li> -->
+                     <!--  <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
                         <ul class="rd-menu rd-navbar-megamenu">
                           <li class="rd-megamenu-item">
                             <h6 class="rd-megamenu-title">Elements</h6>
@@ -241,7 +242,7 @@ function loadXMLDoc2(formtype,obj_id)
                             </ul>
                           </li>
                         </ul>
-                      </li>
+                      </li> -->
                       <li class="rd-nav-item"><a class="rd-nav-link" href="{%url 'login:login'%}">登录</a>
 					  <!-- RD Navbar Dropdown-->
                         <ul class="rd-menu rd-navbar-dropdown">
@@ -271,11 +272,11 @@ function loadXMLDoc2(formtype,obj_id)
       <!-- Breadcrumbs -->
       <section class="section section-bredcrumbs">
         <div class="container context-light breadcrumb-wrapper">
-          <h1>Tabs &amp; Accordions</h1>
+          <h1>政府主页</h1>
           <ul class="breadcrumbs-custom">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="#">Pages</a></li>
-            <li class="active">Tabs &amp; Accordions</li>
+            <li><a href="{%url 'index'%}">主页</a></li>
+            <!-- <li><a href="#">Pages</a></li> -->
+            <li class="active">业务页</li>
           </ul>
         </div>
       </section>
@@ -346,6 +347,11 @@ function loadXMLDoc2(formtype,obj_id)
 					
 						<h3>专家评审服务信息填写</h3>
 						<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
+									<a>关联集采订单编号</a>
+									<div class="form-wrap">									  
+									  <input class="form-input" id="pingshen-form1-id" type="text" name="form1-id" data-constraints="@Required">
+									  <label class="form-label" for="pingshen-form1-id">订单编号</label>
+									</div>
 									<a>评审时间</a>
 									<div class="form-wrap">
 									  <input class="form-input" id="pingshen-ddl" type="date" name="pingshen-ddl" data-constraints="@Required">
@@ -354,12 +360,12 @@ function loadXMLDoc2(formtype,obj_id)
 									<a>专家人数</a>
 									<div class="form-wrap">									  
 									  <input class="form-input" id="pingshen-expert-num" type="text" name="expert-num" data-constraints="@Required">
-									  <label class="form-label" for="pingshen-expert-num">人</label>
+									  <label class="form-label" for="pingshen-expert-num">/人</label>
 									</div>
 									<a>价格</a>
 									  <div class="form-wrap">
 									  <input class="form-input" id="pingshen-price" type="text" name="price" data-constraints="@Required">
-									  <label class="form-label" for="pingshen-price">元（人民币）</label>
+									  <label class="form-label" for="pingshen-price">/元（人民币）</label>
 									</div>
 									<a>专家类别</a>
 									A类
@@ -368,7 +374,7 @@ function loadXMLDoc2(formtype,obj_id)
 									<input type="radio" name="expert-type" value="B类" />
 									C类
 									<input type="radio" name="expert-type" value="C类" />
-								
+									<br>
 									<input type="submit" class="button button-secondary" name="submit" value="提交评审订单"/>
 						</form>
 					  
@@ -397,8 +403,13 @@ function loadXMLDoc2(formtype,obj_id)
 									<p>订单执行百分比</p><span class="progress-value">66</span>
 									<p>接单用户：{{item.11}}</p>
 								{%elif item.9 == 1 and item.7 == 1 and item.8 == 1%}
-									<p>订单执行百分比</p><span class="progress-value">100</span>
 									<p>接单用户：{{item.11}}</p>
+									{%if item.15 == 1 and item.16 == 1 and item.14 == 1%}
+									<p>报告审核情况：合格</p>
+									{%elif item.15 == 1 and item.16 == 1 and item.14 == 0%}
+									<p>报告审核情况：不合格</p>
+									{%endif%}
+									<p>订单执行百分比</p><span class="progress-value">100</span>
 								{%else%}
 									<p>error</p><span class="progress-value">100</span>
 								{%endif%}
@@ -413,7 +424,8 @@ function loadXMLDoc2(formtype,obj_id)
 							</div>
 						  {%else%}
 							<p>error</p>					 	  
-						  {% endif %}  
+						  {% endif %} 
+							<br>
 					  </li>
 					  {%endfor%}
 						<!-- Bootstrap Pagination -->
@@ -483,6 +495,7 @@ function loadXMLDoc2(formtype,obj_id)
 							<p>error</p>
 					 	  
 						  {% endif %}
+						  <br>
 						  
 					  </li>
 					  {%endfor%}

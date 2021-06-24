@@ -10,3 +10,4 @@ class Form2(FormTemplate):
     price = models.IntegerField()
     expertNum = models.IntegerField()
     assessTime = models.DateField(auto_now_add=False)
+    form1Id = models.IntegerField(default=-1)
