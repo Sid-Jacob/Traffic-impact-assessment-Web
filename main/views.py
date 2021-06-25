@@ -50,12 +50,14 @@ def distributer(request):
         return False
 
     user = request.user
-    if in_groups(user, "GOVERNMENT", "MANAGER"):
+    if in_groups(user, "GOVERNMENT"):
         return redirect(reverse("main:gov"))
     elif in_groups(user, "THIRDPARTY"):
         return redirect(reverse("main:thirdParty"))
     elif in_groups(user, "EXPERT"):
         return redirect(reverse("main:expert"))
+    elif in_groups(user, "MANAGER"):
+        return redirect(reverse("main:manager"))
 
 
 @login_required(login_url="/accounts/login")
@@ -300,7 +302,7 @@ def manager(request):
 
 
 @login_required(login_url="/accounts/login")
-@group_required("MANAGER", "GOVERNMENT")
+@group_required("GOVERNMENT")
 def gov(request):
     if request.method == 'POST':
         print("POST")
@@ -582,7 +584,7 @@ def gov(request):
 
 
 @login_required(login_url="/accounts/login")
-@group_required("MANAGER", "THIRDPARTY")
+@group_required("THIRDPARTY")
 def thirdParty(request):
     if request.method == 'POST':
         print("POST")
@@ -923,7 +925,7 @@ def thirdParty(request):
 
 
 @login_required(login_url="/accounts/login")
-@group_required("MANAGER", "EXPERT")
+@group_required("EXPERT")
 def expert(request):
     if request.method == 'POST':
         print("POST")
