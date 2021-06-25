@@ -73,17 +73,18 @@ function loadXMLDoc2(formtype,obj_id)
 	xmlhttp.open("GET",url,true);
 	xmlhttp.send();
 }
-
-<!-- 提交集采订单、异步刷新页面用 -->
-function submitForm1()
+function nullify(formtype,obj_id)
 {
-	$.ajax({
+$.ajax({
             //几个参数需要注意一下
-                type: "POST",//方法类型
+                type: "GET",//方法类型
                 dataType: "json",//预期服务器返回的数据类型
-                url: "{%url 'main:gov'%}" ,//url
-                data: $('#jicaiform').serialize(),
+                url: "{%url 'main:gov'%}",
+                data: {type:formtype,obj_id:obj_id},
                 success: function (result) {
+					var block;
+					var text1;
+					var gov;
                     console.log(result);//打印服务端返回的数据(调试用)
                     if (result.status == 200) {
                         alert("SUCCESS");
@@ -97,8 +98,134 @@ function submitForm1()
 						<!-- console.log(typeof(result.page[0][6])); -->
 						<!-- console.log(result.page[0][6]); -->
 						for(i=0;i<=2;i++){
-							block = "<li><h5>"+result.page[i][6]+"号集采订单</h5><p>省份：{{item.0}}，城市：{{item.1}}，县：{{item.2}}，订单数量：{{item.3}}，期限：{{item.4}}，谈判时间：{{item.5}}</p><div class='progress-linear-wrap'><article class='progress-linear'><div class='progress-header'>{%if item.7 == 0%}<p>订单执行百分比</p><span class='progress-value'>0</span>{%elif item.8 == 0%}<p>订单执行百分比</p><span class='progress-value'>33</span>{%elif item.9 == 0%}<p>订单执行百分比</p><span class='progress-value'>66</span><p>接单用户：{{item.11}}</p>{%elif item.9 == 1 and item.7 == 1 and item.8 == 1%}<p>订单执行百分比</p><span class='progress-value'>100</span><p>接单用户：{{item.11}}</p>{%else%}<p>error</p><span class='progress-value'>100</span>{%endif%}</div><div class='progress-bar-linear-wrap'><div class='progress-bar-linear'></div></div><form class='rd-form rd-mailform' data-form-output='form-output-global' data-form-type='contact' method='post'><input type='button' class='button button-sm button-secondary' name='abortForm' value='废除本订单' onclick='javascript:loadXMLDoc2({{item.12}},{{item.6}})'></form></article></div></li>";
-							console.log(result.page[i][6]);
+							block='<li><h5>'+result.page[i][6]+'号集采订单</h5><p>省份：'+result.page[i][0]+'，城市：'+result.page[i][1]+'，县：'+result.page[i][2]+'，订单数量：'+result.page[i][3]+'，期限：'+result.page[i][4]+'，谈判时间：'+result.page[i][5]+'，抽审比例：'+result.page[i][13]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
+							if(result.page[i][7]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+							}else if(result.page[i][8]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+							}else if(result.page[i][9]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+							}else if(result.page[i][9]==1 && result.page[i][7]==1 && result.page[i][8]==1){
+								block = block+'<p>接单用户：'+result.page[i][11]+'</p>';
+								if(result.page[i][15]==1 && result.page[i][16]==1 && result.page[i][14]==1){
+									block=block + '<p>报告审核情况：合格</p>';
+								}else if(result.page[i][15]==1 && result.page[i][16]==1 && result.page[i][14]==0){
+									block=block + '<p>报告审核情况：不合格</p>';
+								}
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								
+							}
+							else{
+								block = block+'<p>error</p>';
+							}
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:nullify('+result.page[i][12]+','+result.page[i][6]+')"></form>';
+							
+							
+							<!-- console.log(result.page[i][6]); -->
+							text1=text1+"<br>"+block;
+						}
+						
+						console.log("集采");
+						console.log(text1);
+						
+
+						$('#jicai-article').html(text1);
+						
+						
+						text1="";
+						block="";
+						
+						for(i=0;i<=2;i++){
+							block='<li><h5>'+result.page2[i][4]+'号专家评审订单</h5><p>评审时间：'+result.page2[i][3]+'，专家人数：'+result.page2[i][2]+'，价格：'+result.page2[i][1]+'，专家类别：'+result.page2[i][0]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
+							if(result.page2[i][5]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+							}else if(result.page2[i][6]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+							}else if(result.page2[i][7]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+							}else if(result.page2[i][5]==1 && result.page2[i][6]==1 && result.page2[i][7]==1){
+								block = block+'<p>接单用户：'+result.page2[i][9]+'</p>';
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								
+							}
+							else{
+								block = block+'<p>error</p>';
+							}
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:nullify('+result.page2[i][10]+','+result.page2[i][4]+')"></form>';
+							
+							
+							<!-- console.log(result.page2[i][6]); -->
+							text1=text1+"<br>"+block;
+						}
+						
+						console.log("评审");
+						console.log(text1);
+						
+
+						$('#pingshen-article').html(text1);
+						
+						}
+                    ;
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
+
+
+
+}
+
+<!-- 提交集采订单、异步刷新页面用 -->
+function submitForm1()
+{
+	$.ajax({
+            //几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{%url 'main:gov'%}" ,//url
+                data: $('#jicaiform').serialize(),
+                success: function (result) {
+					var block;
+					var text1;
+					var gov;
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    if (result.status == 200) {
+                        alert("SUCCESS");
+						text1="";
+						block="";
+						<!-- console.log(typeof(result.page)); -->
+						<!-- console.log(result.page); -->
+						<!-- console.log(result.page.0); -->
+						<!-- console.log(typeof(result.page[0])); -->
+						<!-- console.log(result.page[0]); -->
+						<!-- console.log(typeof(result.page[0][6])); -->
+						<!-- console.log(result.page[0][6]); -->
+						for(i=0;i<=2;i++){
+							block='<li><h5>'+result.page[i][6]+'号集采订单</h5><p>省份：'+result.page[i][0]+'，城市：'+result.page[i][1]+'，县：'+result.page[i][2]+'，订单数量：'+result.page[i][3]+'，期限：'+result.page[i][4]+'，谈判时间：'+result.page[i][5]+'，抽审比例：'+result.page[i][13]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
+							if(result.page[i][7]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+							}else if(result.page[i][8]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+							}else if(result.page[i][9]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+							}else if(result.page[i][9]==1 && result.page[i][7]==1 && result.page[i][8]==1){
+								block = block+'<p>接单用户：'+result.page[i][11]+'</p>';
+								if(result.page[i][15]==1 && result.page[i][16]==1 && result.page[i][14]==1){
+									block=block + '<p>报告审核情况：合格</p>';
+								}else if(result.page[i][15]==1 && result.page[i][16]==1 && result.page[i][14]==0){
+									block=block + '<p>报告审核情况：不合格</p>';
+								}
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								
+							}
+							else{
+								block = block+'<p>error</p>';
+							}
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:nullify('+result.page[i][15]+','+result.page[i][6]+')"></form>';
+							
+							
+							<!-- console.log(result.page[i][6]); -->
 							text1=text1+"<br>"+block;
 						}
 						
@@ -106,7 +233,32 @@ function submitForm1()
 						
 
 						$('#jicai-article').html(text1);
-					
+
+
+
+{% comment %} 						
+						gov = "{%url 'main:gov'%}";
+						block = "";
+						block = block + '<nav class="page-navigation" aria-label="Page navigation" id="page-navigation1"><ul class="pagination">';
+						if(result.page.has_previous){
+							block = block+ '<li class="page-item"><a class="page-link" href="'+gov+'/?page='+result.page.previous_page_number+'#tabs-2-3" aria-label="Previous" id="page-turner"><span aria-hidden="true">&laquo;</span></a></li>';
+						}
+						for(num in result.page.paginator.page_range){
+							if(pindex == result.page.number){
+								block = block + '<li class="page-item active"><span class="page-link" id="page-turner">'+num+'</span></li>';
+							}else{
+								block = block + '<li class="page-item"><a class="page-link" href="'+gov+'/?page='+num+'}}#tabs-2-3" id="page-turner">'+num+'</a></li>';
+							}
+						}
+						if(result.page.has_next){
+
+							block = block + '<li class="page-item"><a class="page-link" href="'+gov+'/?page='+result.page.next_page_number+'}}#tabs-2-3" aria-label="Next" id="page-turner"><span aria-hidden="true">&raquo;</span></a></li>';
+						}
+						block = block + '</ul></nav></article>';
+
+						$('#jicai-page').html(block); {% endcomment %}
+
+						
                     }
                     ;
                 },
@@ -116,6 +268,7 @@ function submitForm1()
             });
 	
 }
+
 <!-- 提交评审订单、异步刷新页面用 -->
 function submitForm2()
 {
@@ -126,9 +279,44 @@ function submitForm2()
                 url: "{%url 'main:gov'%}" ,//url
                 data: $('#pingshenform').serialize(),
                 success: function (result) {
+					var block;
+					var text1;
+					var gov;
                     console.log(result);//打印服务端返回的数据(调试用)
                     if (result.status == 200) {
                         alert("SUCCESS");
+						text1="";
+						block="";
+						
+						for(i=0;i<=2;i++){
+							block='<li><h5>'+result.page2[i][4]+'号专家评审订单</h5><p>评审时间：'+result.page2[i][3]+'，专家人数：'+result.page2[i][2]+'，价格：'+result.page2[i][1]+'，专家类别：'+result.page2[i][0]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
+							if(result.page2[i][5]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+							}else if(result.page2[i][6]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+							}else if(result.page2[i][7]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+							}else if(result.page2[i][5]==1 && result.page2[i][6]==1 && result.page2[i][7]==1){
+								block = block+'<p>接单用户：'+result.page2[i][9]+'</p>';
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								
+							}
+							else{
+								block = block+'<p>error</p>';
+							}
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:nullify('+result.page2[i][10]+','+result.page2[i][4]+')"></form>';
+							
+							
+							<!-- console.log(result.page2[i][6]); -->
+							text1=text1+"<br>"+block;
+						}
+						
+						console.log(text1);
+						
+
+						$('#pingshen-article').html(text1);
+
+				
                     }
                     ;
                 },
@@ -140,77 +328,6 @@ function submitForm2()
 }
 <!-- window.onload=loadXMLDoc1() -->
 
-<!-- TODO -->
-{% comment %} $('#page-turner').onclick(function () {
-		alert($('#page-turner').attr("href"));
-        var xmlhttp;
-		if (window.XMLHttpRequest)
-		{
-			//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
-			xmlhttp=new XMLHttpRequest();
-		}
-		else
-		{
-			// IE6, IE5 浏览器执行代码
-			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		xmlhttp.onreadystatechange=function()
-		{
-			if (xmlhttp.readyState==4 && xmlhttp.status==200)
-			{
-				var data=xmlhttp.responseText;
-				var obj=JSON.parse(data);  // 使用JSON.parse()进行解析：使用JSON对象的静态方法parse()，将字符串解析为对象。
-				<!-- document.getElementById("likes_num").innerHTML=json.nums -->
-				alert(obj)
-				for (item in obj.page){
-					block = "<li>
-							  +"<h5>"+item[6]+"号集采订单</h5>\
-							  <p>省份：{{item.0}}，城市：{{item.1}}，县：{{item.2}}，订单数量：{{item.3}}，期限：{{item.4}}，谈判时间：{{item.5}}</p>\
-								<!-- Linear progress bar-->\
-								<div class="progress-linear-wrap">\
-								<article class="progress-linear">\
-								  <div class="progress-header">\
-									{%if item.7 == 0%}\
-										<p>订单执行百分比</p><span class="progress-value">0</span>\
-									{%elif item.8 == 0%}\
-										<p>订单执行百分比</p><span class="progress-value">33</span>\
-									{%elif item.9 == 0%}\
-										<p>订单执行百分比</p><span class="progress-value">66</span>\
-										<p>接单用户：{{item.11}}</p>\
-									{%elif item.9 == 1 and item.7 == 1 and item.8 == 1%}\
-										<p>订单执行百分比</p><span class="progress-value">100</span>\
-										<p>接单用户：{{item.11}}</p>\
-									{%else%}\
-										<p>error</p><span class="progress-value">100</span>\
-									{%endif%}\
-								  </div>\
-								  <div class="progress-bar-linear-wrap">\
-									<div class="progress-bar-linear"></div>\
-								  </div>\
-								  <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">\
-									<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:loadXMLDoc2({{item.12}},{{item.6}})">\
-								  </form>\
-								</article>\
-								</div>\
-						  </li>"
-				
-				
-				
-				}
-				
-				
-				
-				
-				
-			}
-		}
-		url = $('#page-turner').attr("href")
-		xmlhttp.open("GET",url,true);
-		xmlhttp.send();
-        return false;
-    }); {% endcomment %}
-
- 
 
 
 </script>
@@ -489,8 +606,8 @@ function submitForm2()
 							  <div class="progress-bar-linear-wrap">
 								<div class="progress-bar-linear"></div>
 							  </div>
-							  <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
-								<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:loadXMLDoc2({{item.12}},{{item.6}})">
+							  <form class="rd-form rd-mailform" onsubmit="return false" data-form-output="form-output-global" data-form-type="contact" method="post">
+								<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:nullify({{item.12}},{{item.6}})">
 							  </form>
 							</article>
 							</div>
@@ -533,6 +650,7 @@ function submitForm2()
                      <ul class="contact-box">
 					<!-- Skill Bars-->
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					  <article id="pingshen-article">
 					  <!--当前页内容遍历展示-->
 					  {%for item in page2%}
 					  <li>
@@ -561,8 +679,8 @@ function submitForm2()
 							  <div class="progress-bar-linear-wrap">
 								<div class="progress-bar-linear"></div>
 							  </div>
-							  <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
-								<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:loadXMLDoc2({{item.10}},{{item.4}})">
+							  <form class="rd-form rd-mailform"  onsubmit="return false" data-form-output="form-output-global" data-form-type="contact" method="post">
+								<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:nullify({{item.10}},{{item.4}})">
 							  </form>
 							</article>
 							</div>							
@@ -574,6 +692,8 @@ function submitForm2()
 						  
 					  </li>
 					  {%endfor%}
+					  </article>
+					  <article id="pingshen-page">
 						<!-- Bootstrap Pagination -->
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
@@ -596,6 +716,7 @@ function submitForm2()
 								{% endif %}
 							</ul>
 						  </nav>
+						  </article>
 					  </div>
 					</ul>
                   </div>

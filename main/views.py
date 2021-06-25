@@ -17,7 +17,10 @@ from main.decorator import group_required
 
 # Create your views here.
 # TODO
-# 异步get请求刷新订单，提交post请求字段刷新页面，异步翻页
+# 异步get请求刷新订单，提交post请求字段刷新页面，$异步翻页$
+
+# TODO: bug
+# 异步更新时progress-bar无法正常渲染，时间显示格式和普通刷新不一样
 
 
 # 测试功能：任何登录用户使用init变为manager，manager管理其他用户的分组
@@ -321,7 +324,8 @@ def gov(request):
     class DateEncoder(json.JSONEncoder):
         def default(self, obj):
             if isinstance(obj, datetime.date):
-                return obj.strftime("%Y-%m-%d %H:%M:%S")
+                # return obj.strftime("%Y-%m-%d %H:%M:%S")
+                return obj.strftime("%Y-%m-%d")
             else:
                 return json.JSONEncoder.default(self, obj)
 
@@ -422,8 +426,40 @@ def gov(request):
             data = {}
             data['status'] = 200
             data['message'] = u'ok'
-            data['nums'] = 0
-            return HttpResponse(json.dumps(data),
+            data['page'] = u""
+
+            # 处理评审订单翻页和首次更新
+            rets2 = Form2.objects.filter(Q(userId1=userId)).values_list(
+                "expertCategory", "price", "expertNum", "assessTime", "formId",
+                "significanceBit", "taken", "done", "userId2", "userName2",
+                "subtype").order_by("-formId")
+            form2_list = []
+            for i in range(0, len(rets2)):
+                form2_list.append(list(rets2[i]))
+            # TODO
+            # 翻页必须改成异步的
+            paginator2 = Paginator(form2_list, 3)  # 实例化Paginator, 每页显示3条数据
+
+            # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
+            page2 = 1
+            if request.method == "GET":
+                page2 = request.GET.get('page2')
+            try:
+                article2 = paginator2.page(page2)
+            # todo: 注意捕获异常
+            except PageNotAnInteger:
+                # 如果请求的页数不是整数, 返回第一页。
+                article2 = paginator2.page(1)
+            except InvalidPage:
+                # 如果请求的页数不存在, 重定向页面
+                return HttpResponse('找不到页面的内容')
+            except EmptyPage:
+                # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
+                article2 = paginator.page(paginator2.num_pages)
+
+            data['page2'] = list(article2)
+
+            return HttpResponse(json.dumps(data, cls=DateEncoder),
                                 content_type="application/json")
             # return render(request, 'government.html')
         else:
@@ -449,8 +485,8 @@ def gov(request):
         # data['createTime'] = u""
         # data['form'] = u""  # form1和form2各个字段、接单用户
 
-        page = request.GET.get('page', '')
-        page2 = request.GET.get('page2', '')
+        page = request.GET.get('page', 1)
+        page2 = request.GET.get('page2', 1)
         obj_type = request.GET.get('type', '')
         obj_id = request.GET.get('obj_id', '')
         user_id = request.session.get('_auth_user_id')
@@ -462,14 +498,14 @@ def gov(request):
             # 废除订单
             print("nullify")
             obj_type = obj_type.lower()
-            if obj_type == "nullify1":
+            if obj_type == "1":
                 try:
                     l = Form1.objects.get(formId=obj_id)
                     l.significanceBit = False
                     l.save()
                 except Exception as e:
                     pass
-            elif obj_type == "nullify2":
+            elif obj_type == "2":
                 try:
                     l = Form2.objects.get(formId=obj_id)
                     l.significanceBit = False
@@ -477,81 +513,75 @@ def gov(request):
                 except Exception as e:
                     pass
         # 统一更新订单
-        if obj_type == ("update" or obj_type == "nullify1" or "nullify2"):
-            pass
-            # print("update")
-            # rets1 = Form1.objects.filter(Q(userId1=user_id)).values_list(
-            #     "province", "city", "county", "number", "ddl", "negotiateTime",
-            #     "formId", "significanceBit", "taken", "done", "userId2",
-            #     "userName2", "subtype").order_by("-formId")
-            # rets2 = Form2.objects.filter(Q(userId1=user_id)).values_list(
-            #     "expertCategory", "price", "expertNum", "assessTime", "formId",
-            #     "significanceBit", "taken", "done", "userId2", "userName2",
-            #     "subtype").order_by("-formId")
-            # form1_list = []
-            # for i in range(0, len(rets1)):
-            #     form1_list.append(list(rets1[i]))
-            # form2_list = []
-            # for i in range(0, len(rets2)):
-            #     form2_list.append(list(rets2[i]))
+        if obj_type == "update" or obj_type == "1" or obj_type == "2":
+            print("update")
+            rets1 = Form1.objects.filter(Q(userId1=user_id)).values_list(
+                "province", "city", "county", "number", "ddl", "negotiateTime",
+                "formId", "significanceBit", "taken", "done", "userId2",
+                "userName2", "subtype", "percentage", "qualified",
+                "need_examine", "form2_send").order_by("-formId")
+            rets2 = Form2.objects.filter(Q(userId1=user_id)).values_list(
+                "expertCategory", "price", "expertNum", "assessTime", "formId",
+                "significanceBit", "taken", "done", "userId2", "userName2",
+                "subtype").order_by("-formId")
+            form1_list = []
+            for i in range(0, len(rets1)):
+                form1_list.append(list(rets1[i]))
+            form2_list = []
+            for i in range(0, len(rets2)):
+                form2_list.append(list(rets2[i]))
 
-            # # TODO
-            # # 翻页必须改成异步的
-            # paginator = Paginator(form1_list, 3)  # 实例化Paginator, 每页显示3条数据
-            # paginator2 = Paginator(form2_list, 3)
+            # TODO
+            # 翻页必须改成异步的
+            paginator = Paginator(form1_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator2 = Paginator(form2_list, 3)
 
-            # article = []
-            # article2 = []
+            article = []
+            article2 = []
 
-            # if page != '':
-            #     try:
-            #         article = paginator.page(page)
-            #     # todo: 注意捕获异常
-            #     except PageNotAnInteger:
-            #         # 如果请求的页数不是整数, 返回第一页。
-            #         article = paginator.page(1)
-            #     except InvalidPage:
-            #         # 如果请求的页数不存在, 重定向页面
-            #         return HttpResponse('找不到页面的内容')
-            #     except EmptyPage:
-            #         # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
-            #         article = paginator.page(paginator.num_pages)
-            # elif page2 != '':
-            #     try:
-            #         article = paginator2.page(page2)
-            #     # todo: 注意捕获异常
-            #     except PageNotAnInteger:
-            #         # 如果请求的页数不是整数, 返回第一页。
-            #         article = paginator2.page(1)
-            #     except InvalidPage:
-            #         # 如果请求的页数不存在, 重定向页面
-            #         return HttpResponse('找不到页面的内容')
-            #     except EmptyPage:
-            #         # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
-            #         article = paginator2.page(paginator2.num_pages)
-            # if page != '' or page2 != '':
-            #     print("type article(page1):", type(article))
+            print(page, page2)
 
-            #     print("Asy update")
-            #     l = []
-            #     l = User.objects.get(id=user_id)
-            #     # TODO 增加分组权限显示
-            #     if l.is_superuser == True:
-            #         is_su = "是"
-            #     else:
-            #         is_su = "否"
-            #     content = {
-            #         "user_id": l.id,
-            #         "username": l.username,
-            #         "last_login": l.last_login.strftime("%Y-%m-%d %H:%M:%S"),
-            #         "email": l.email,
-            #         "date_joined": l.date_joined.strftime("%Y-%m-%d %H:%M:%S"),
-            #         "is_superuser": is_su,
-            #         "page": article,
-            #         "page2": article2,
-            #     }
-            #     return HttpResponse(json.dumps(content),
-            #                         content_type="application/json")
+            if page != '':
+                try:
+                    article = paginator.page(page)
+                # todo: 注意捕获异常
+                except PageNotAnInteger:
+                    # 如果请求的页数不是整数, 返回第一页。
+                    article = paginator.page(1)
+                except InvalidPage:
+                    # 如果请求的页数不存在, 重定向页面
+                    return HttpResponse('找不到页面的内容')
+                except EmptyPage:
+                    # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
+                    article = paginator.page(paginator.num_pages)
+            if page2 != '':
+                try:
+                    article2 = paginator2.page(page2)
+                # todo: 注意捕获异常
+                except PageNotAnInteger:
+                    # 如果请求的页数不是整数, 返回第一页。
+                    article2 = paginator2.page(1)
+                except InvalidPage:
+                    # 如果请求的页数不存在, 重定向页面
+                    return HttpResponse('找不到页面的内容')
+                except EmptyPage:
+                    # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
+                    article2 = paginator2.page(paginator2.num_pages)
+            if page != '' or page2 != '':
+                print("Asy update")
+                l = []
+                l = User.objects.get(id=user_id)
+                if l.is_superuser == True:
+                    is_su = "是"
+                else:
+                    is_su = "否"
+                content = {
+                    "page": list(article),
+                    "page2": list(article2),
+                    "status": 200,
+                }
+                return HttpResponse(json.dumps(content, cls=DateEncoder),
+                                    content_type="application/json")
 
         else:
             print("refresh")
