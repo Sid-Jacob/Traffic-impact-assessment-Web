@@ -7,6 +7,7 @@ from FormTemplate.models import FormTemplate
 from Report.models import Report
 from django.urls import reverse
 import json
+import datetime
 from django.db.models import Q
 # 分页模块
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
@@ -16,7 +17,7 @@ from main.decorator import group_required
 
 # Create your views here.
 # TODO
-# 异步刷新订单，提交post请求字段刷新页面
+# 异步get请求刷新订单，提交post请求字段刷新页面，异步翻页
 
 
 # 测试功能：任何登录用户使用init变为manager，manager管理其他用户的分组
@@ -95,8 +96,13 @@ def manager(request):
                 l.save()
             except Exception as e:
                 pass
-
-            return render(request, 'Manager.html')
+            data = {}
+            data['status'] = 200
+            data['message'] = u'ok'
+            data['nums'] = 0
+            return HttpResponse(json.dumps(data),
+                                content_type="application/json")
+            # return render(request, 'Manager.html')
         # 设置用户权限组
         elif request.POST.get('submit') == '设置分组':
             # TODO
@@ -138,7 +144,14 @@ def manager(request):
                 user_obj.groups.remove(group)
                 group.save()
 
-            return render(request, 'Manager.html')
+            data = {}
+            data['status'] = 200
+            data['message'] = u'ok'
+            data['nums'] = 0
+            return HttpResponse(json.dumps(data),
+                                content_type="application/json")
+
+            # return render(request, 'Manager.html')
     elif request.method == 'GET':
         print("GET")
         u"""处理废除清单、刷新订单信息
@@ -304,6 +317,14 @@ def manager(request):
 @login_required(login_url="/accounts/login")
 @group_required("GOVERNMENT")
 def gov(request):
+    # date格式不支持json化，必须额外用DateEncoder转换
+    class DateEncoder(json.JSONEncoder):
+        def default(self, obj):
+            if isinstance(obj, datetime.date):
+                return obj.strftime("%Y-%m-%d %H:%M:%S")
+            else:
+                return json.JSONEncoder.default(self, obj)
+
     if request.method == 'POST':
         print("POST")
         #集采订单提交
@@ -331,7 +352,46 @@ def gov(request):
                                  userName1=username,
                                  subtype=1,
                                  percentage=percentage)
-            return render(request, 'government.html')
+            data = {}
+            data['status'] = 200
+            data['message'] = u'ok'
+            data['page'] = ""
+
+            # 处理集采订单翻页和首次更新
+            rets1 = Form1.objects.filter(Q(userId1=userId)).values_list(
+                "province", "city", "county", "number", "ddl", "negotiateTime",
+                "formId", "significanceBit", "taken", "done", "userId2",
+                "userName2", "subtype", "percentage", "qualified",
+                "need_examine", "form2_send").order_by("-formId")
+            form1_list = []
+            for i in range(0, len(rets1)):
+                form1_list.append(list(rets1[i]))
+            # TODO
+            # 翻页必须改成异步的
+            paginator = Paginator(form1_list, 3)  # 实例化Paginator, 每页显示3条数据
+
+            # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
+            page = 1
+            if request.method == "GET":
+                page = request.GET.get('page')
+            try:
+                article = paginator.page(page)
+            # todo: 注意捕获异常
+            except PageNotAnInteger:
+                # 如果请求的页数不是整数, 返回第一页。
+                article = paginator.page(1)
+            except InvalidPage:
+                # 如果请求的页数不存在, 重定向页面
+                return HttpResponse('找不到页面的内容')
+            except EmptyPage:
+                # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
+                article = paginator.page(paginator.num_pages)
+
+            data['page'] = list(article)
+
+            return HttpResponse(json.dumps(data, cls=DateEncoder),
+                                content_type="application/json")
+            # return render(request, 'government.html')
         #评审订单提交
         elif request.POST.get('submit') == '提交评审订单':
             print("提交评审订单")
@@ -359,7 +419,13 @@ def gov(request):
                 l.save()
             except Exception as e:
                 pass
-            return render(request, 'government.html')
+            data = {}
+            data['status'] = 200
+            data['message'] = u'ok'
+            data['nums'] = 0
+            return HttpResponse(json.dumps(data),
+                                content_type="application/json")
+            # return render(request, 'government.html')
         else:
             return render(request, 'government.html')
     elif request.method == 'GET':
@@ -611,7 +677,13 @@ def thirdParty(request):
                                  userName1=username,
                                  subtype=2,
                                  form1Id=form1Id)
-            return render(request, 'Thirdparty.html')
+            data = {}
+            data['status'] = 200
+            data['message'] = u'ok'
+            data['nums'] = 0
+            return HttpResponse(json.dumps(data),
+                                content_type="application/json")
+            # return render(request, 'Thirdparty.html')
         elif request.POST.get('submit') == '提交报告':
             print("上传交评报告")
             #向db写数据
@@ -643,7 +715,13 @@ def thirdParty(request):
                 l.save()
             except Exception as e:
                 pass
-        return render(request, 'Thirdparty.html')
+            data = {}
+            data['status'] = 200
+            data['message'] = u'ok'
+            data['nums'] = 0
+            return HttpResponse(json.dumps(data),
+                                content_type="application/json")
+        # return render(request, 'Thirdparty.html')
     elif request.method == 'GET':
         print("GET")
         u"""处理废除清单、刷新订单信息
@@ -954,7 +1032,13 @@ def expert(request):
                 l.save()
             except Exception as e:
                 pass
-        return render(request, 'Expert.html')
+            data = {}
+            data['status'] = 200
+            data['message'] = u'ok'
+            data['nums'] = 0
+            return HttpResponse(json.dumps(data),
+                                content_type="application/json")
+        # return render(request, 'Expert.html')
 
     elif request.method == 'GET':
         print("GET")

@@ -99,6 +99,29 @@ function loadXMLDoc3(obj_id)
 	xmlhttp.open("GET",url,true);
 	xmlhttp.send();
 }
+<!-- 提交报告、异步刷新页面用 -->
+function submitForm4()
+{
+	$.ajax({
+            //几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{%url 'main:thirdParty'%}" ,//url
+                data: $('#jicai-report').serialize(),
+                success: function (result) {
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    if (result.status == 200) {
+                        alert("SUCCESS");
+                    }
+                    ;
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
+	
+}
+
 <!-- window.onload=loadXMLDoc1() -->
 </script>
   </head>
@@ -290,7 +313,7 @@ function loadXMLDoc3(obj_id)
 							  
 							  
 					
-							  <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report">
+							  <form id="jicai-report" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report">
 										<!-- <a>关联订单编号</a>
 										<div class="form-wrap">
 										  <input class="form-input" id="formId" type="number" name="formId" data-constraints="@Required">
@@ -299,7 +322,8 @@ function loadXMLDoc3(obj_id)
 										<input class="form-input" id="hidden" type="hidden" name="formId" value="{{item.6}}">
 										
 										<textarea rows="2" cols="100" name="report-content" form="report"  placeholder="请输入报告内容..."></textarea>
-										<input type="submit" class="button button-secondary" name="submit" value="提交报告">
+										<input type="hidden" class="button button-secondary" name="submit" value="提交报告">
+										<input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4()">
 							  </form>
 								
 							  <br>

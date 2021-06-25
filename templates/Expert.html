@@ -45,6 +45,29 @@ function loadXMLDoc3(obj_id)
 	xmlhttp.open("GET",url,true);
 	xmlhttp.send();
 }
+
+<!-- 提交报告、异步刷新页面用 -->
+function submitForm4()
+{
+	$.ajax({
+            //几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{%url 'main:expert'%}" ,//url
+                data: $('#pingshen-report').serialize(),
+                success: function (result) {
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    if (result.status == 200) {
+                        alert("SUCCESS");
+                    }
+                    ;
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
+	
+}
 	
 	</script>
   </head>
@@ -230,7 +253,7 @@ function loadXMLDoc3(obj_id)
 							  <div class="progress-bar-linear-wrap">
 								<div class="progress-bar-linear"></div>
 							  </div>	
-								<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report">
+								<form id="pingshen-report" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report">
 										<!-- <a>关联订单编号</a>
 										<div class="form-wrap">
 										  <input class="form-input" id="formId" type="number" name="formId" data-constraints="@Required">
@@ -245,7 +268,8 @@ function loadXMLDoc3(obj_id)
 												不合格
 												<input type="radio" name="qualification" value=0 />
 										<br>		
-										<input type="submit" class="button button-secondary" name="submit" value="提交报告">
+										<input type="hidden" class="button button-secondary" name="submit" value="提交报告">
+										<input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4()">
 							  </form>
 							</article>
 							</div>							

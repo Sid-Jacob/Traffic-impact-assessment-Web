@@ -74,14 +74,73 @@ function loadXMLDoc2(formtype,obj_id)
 	xmlhttp.send();
 }
 
-<!-- 提交订单、异步刷新页面用 -->
+<!-- 提交集采订单、异步刷新页面用 -->
+function submitForm1()
+{
+	$.ajax({
+            //几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{%url 'main:gov'%}" ,//url
+                data: $('#jicaiform').serialize(),
+                success: function (result) {
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    if (result.status == 200) {
+                        alert("SUCCESS");
+						text1="";
+						block="";
+						<!-- console.log(typeof(result.page)); -->
+						<!-- console.log(result.page); -->
+						<!-- console.log(result.page.0); -->
+						<!-- console.log(typeof(result.page[0])); -->
+						<!-- console.log(result.page[0]); -->
+						<!-- console.log(typeof(result.page[0][6])); -->
+						<!-- console.log(result.page[0][6]); -->
+						for(i=0;i<=2;i++){
+							block = "<li><h5>"+result.page[i][6]+"号集采订单</h5><p>省份：{{item.0}}，城市：{{item.1}}，县：{{item.2}}，订单数量：{{item.3}}，期限：{{item.4}}，谈判时间：{{item.5}}</p><div class='progress-linear-wrap'><article class='progress-linear'><div class='progress-header'>{%if item.7 == 0%}<p>订单执行百分比</p><span class='progress-value'>0</span>{%elif item.8 == 0%}<p>订单执行百分比</p><span class='progress-value'>33</span>{%elif item.9 == 0%}<p>订单执行百分比</p><span class='progress-value'>66</span><p>接单用户：{{item.11}}</p>{%elif item.9 == 1 and item.7 == 1 and item.8 == 1%}<p>订单执行百分比</p><span class='progress-value'>100</span><p>接单用户：{{item.11}}</p>{%else%}<p>error</p><span class='progress-value'>100</span>{%endif%}</div><div class='progress-bar-linear-wrap'><div class='progress-bar-linear'></div></div><form class='rd-form rd-mailform' data-form-output='form-output-global' data-form-type='contact' method='post'><input type='button' class='button button-sm button-secondary' name='abortForm' value='废除本订单' onclick='javascript:loadXMLDoc2({{item.12}},{{item.6}})'></form></article></div></li>";
+							console.log(result.page[i][6]);
+							text1=text1+"<br>"+block;
+						}
+						
+						console.log(text1);
+						
 
-
-
-
+						$('#jicai-article').html(text1);
+					
+                    }
+                    ;
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
+	
+}
+<!-- 提交评审订单、异步刷新页面用 -->
+function submitForm2()
+{
+	$.ajax({
+            //几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{%url 'main:gov'%}" ,//url
+                data: $('#pingshenform').serialize(),
+                success: function (result) {
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    if (result.status == 200) {
+                        alert("SUCCESS");
+                    }
+                    ;
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
+	
+}
 <!-- window.onload=loadXMLDoc1() -->
 
-
+<!-- TODO -->
 {% comment %} $('#page-turner').onclick(function () {
 		alert($('#page-turner').attr("href"));
         var xmlhttp;
@@ -310,14 +369,14 @@ function loadXMLDoc2(formtype,obj_id)
                   <div class="tab-pane fade show active" id="tabs-2-1">
                     <ul class="contact-box">
 						<h3>集采服务信息填写</h3>
-						<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
+						<form id="jicaiform" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
 									<a>地区</a>
 									<div class="form-wrap">									  
-									  <input class="form-input" id="jicai-province" type="text" name="province" data-constraints="@Required">
+									  <input class="form-input" id="jicai-province" type="text" name="province" data-constraints="@Required" value="河北">
 									  <label class="form-label" for="jicai-province">省（直辖市）</label>
 									</div>
 									 <div class="form-wrap">
-									  <input class="form-input" id="jicai-city" type="text" name="city" data-constraints="@Required">
+									  <input class="form-input" id="jicai-city" type="text" name="city" data-constraints="@Required" value="石家庄">
 									  <label class="form-label" for="jicai-city">市（区）</label>
 									</div>
                   
@@ -327,7 +386,7 @@ function loadXMLDoc2(formtype,obj_id)
 									</div>
 									<a>数量</a>
 									<div class="form-wrap">
-									  <input class="form-input" id="jicai-num" type="text" name="jicai-num" data-constraints="@Required">
+									  <input class="form-input" id="jicai-num" type="text" name="jicai-num" data-constraints="@Required" value=10>
 									  <label class="form-label" for="jicai-num">份</label>
 									</div>
 									<a>期限</a>
@@ -345,8 +404,10 @@ function loadXMLDoc2(formtype,obj_id)
 									  <input class="form-input" id="jicai-per" type="text" name="jicai-per" data-constraints="@Required" value="100">
 									  <label class="form-label" for="jicai-per">%</label>
 									</div>
+									
+									<input type="hidden" class="button button-secondary" name="submit" value="提交集采订单" />
 								
-									<input type="submit" class="button button-secondary" name="submit" value="提交集采订单">
+									<input type="submit" class="button button-secondary" name="submit" value="提交集采订单" onclick="submitForm1()" />
 						</form>
 		            </ul>
                   </div>
@@ -354,7 +415,7 @@ function loadXMLDoc2(formtype,obj_id)
                     <ul class="contact-box">
 					
 						<h3>专家评审服务信息填写</h3>
-						<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
+						<form id="pingshenform" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" onsubmit="return false">
 									<a>关联集采订单编号</a>
 									<div class="form-wrap">									  
 									  <input class="form-input" id="pingshen-form1-id" type="text" name="form1-id" data-constraints="@Required">
@@ -383,7 +444,9 @@ function loadXMLDoc2(formtype,obj_id)
 									C类
 									<input type="radio" name="expert-type" value="C类" />
 									<br>
-									<input type="submit" class="button button-secondary" name="submit" value="提交评审订单"/>
+									<input type="hidden" class="button button-secondary" name="submit" value="提交评审订单"/>
+									
+									<input type="submit" class="button button-secondary" name="submit" value="提交评审订单" onclick="submitForm2()"/>
 						</form>
 					  
 		            </ul> 
@@ -392,6 +455,7 @@ function loadXMLDoc2(formtype,obj_id)
                      <ul class="contact-box">
 					<!-- Skill Bars-->
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					  <article id="jicai-article">
 					  <!--当前页内容遍历展示-->
 					  {%for item in page%}
 					  <li>
@@ -436,6 +500,8 @@ function loadXMLDoc2(formtype,obj_id)
 							<br>
 					  </li>
 					  {%endfor%}
+					  </article>
+					  <article id="jicai-page">
 						<!-- Bootstrap Pagination -->
 						  <nav class="page-navigation" aria-label="Page navigation" id="page-navigation1">
 							<ul class="pagination">
@@ -458,6 +524,7 @@ function loadXMLDoc2(formtype,obj_id)
 								{% endif %}
 							</ul>
 						  </nav>
+						  </article>
 					  </div>
 					</ul>
                   </div>

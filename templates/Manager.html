@@ -99,6 +99,50 @@ function loadXMLDoc3(obj_id)
 	xmlhttp.open("GET",url,true);
 	xmlhttp.send();
 }
+<!-- 提交订单、异步刷新页面用 -->
+function submitForm2()
+{
+	$.ajax({
+            //几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{%url 'main:manager'%}" ,//url
+                data: $('#pingshenform').serialize(),
+                success: function (result) {
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    if (result.status == 200) {
+                        alert("SUCCESS");
+                    }
+                    ;
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
+	
+}
+<!-- 设置分组、异步刷新页面用 -->
+function submitForm3()
+{
+	$.ajax({
+            //几个参数需要注意一下
+                type: "POST",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{%url 'main:manager'%}" ,//url
+                data: $('#groupform').serialize(),
+                success: function (result) {
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    if (result.status == 200) {
+                        alert("SUCCESS");
+                    }
+                    ;
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
+	
+}
 <!-- window.onload=loadXMLDoc1() -->
 </script>
   </head>
@@ -269,7 +313,7 @@ function loadXMLDoc3(obj_id)
 							  <ul class="contact-box">
 								
 									<h3>专家评审服务信息填写</h3>
-									<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
+									<form id="pingshenform" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
 												<a>评审时间</a>
 												<div class="form-wrap">
 												  <input class="form-input" id="pingshen-ddl" type="date" name="pingshen-ddl" data-constraints="@Required">
@@ -295,8 +339,10 @@ function loadXMLDoc3(obj_id)
 												<br>
 												
 												<input class="form-input" id="hidden" type="hidden" name="formId" value="{{item.6}}">
+												
+												<input type="hidden" class="button button-secondary" name="submit" value="提交抽审订单"/>
 											
-												<input type="submit" class="button button-secondary" name="submit" value="提交抽审订单"/>
+												<input type="submit" class="button button-secondary" name="submit" value="提交抽审订单" onclick="submitForm2()"/>
 									</form>
 								  
 									</ul>
@@ -416,9 +462,8 @@ function loadXMLDoc3(obj_id)
 				  
 				  <div class="tab-pane fade" id="tabs-2-3">
                     <ul class="contact-box">
-                      
-					  TODO
-					   <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
+
+					   <form id="groupform" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
 							 
 						<h3>选择用户</h3>
 						<select name="user">
@@ -438,7 +483,9 @@ function loadXMLDoc3(obj_id)
 						平台管理员用户
 						<input type="checkbox" id="checkbox4" class="button button-sm button-secondary" name="用户角色分组" value="MANAGER">
 						<br>
-						<input type="submit" class="button button-secondary" name="submit" value="设置分组">
+						<input type="hidden" class="button button-secondary" name="submit" value="设置分组"/>
+						
+						<input type="submit" class="button button-secondary" name="submit" value="设置分组" onclick="submitForm3()"/>
 
 					   </form>
                       
