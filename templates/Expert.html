@@ -20,31 +20,136 @@
 	<script src={%static 'js/jquery-3.6.0.min.js'%}></script>
 	<script>
 	<!-- 接单用 -->
-function loadXMLDoc3(obj_id)
-{
-	var xmlhttp;
-	if (window.XMLHttpRequest)
-	{
-		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
-		xmlhttp=new XMLHttpRequest();
-	}
-	else
-	{
-		// IE6, IE5 浏览器执行代码
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange=function()
-	{
-		if (xmlhttp.readyState==4 && xmlhttp.status==200)
-		{
-			var data=xmlhttp.responseText;
+<!-- function loadXMLDoc3(obj_id) -->
+<!-- { -->
+	<!-- var xmlhttp; -->
+	<!-- if (window.XMLHttpRequest) -->
+	<!-- { -->
+		<!-- //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码 -->
+		<!-- xmlhttp=new XMLHttpRequest(); -->
+	<!-- } -->
+	<!-- else -->
+	<!-- { -->
+		<!-- // IE6, IE5 浏览器执行代码 -->
+		<!-- xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); -->
+	<!-- } -->
+	<!-- xmlhttp.onreadystatechange=function() -->
+	<!-- { -->
+		<!-- if (xmlhttp.readyState==4 && xmlhttp.status==200) -->
+		<!-- { -->
+			<!-- var data=xmlhttp.responseText; -->
 			
-		}
-	}
-	url = "{%url 'main:expert'%}/?type=take"+"&&obj_id="+obj_id
-	xmlhttp.open("GET",url,true);
-	xmlhttp.send();
+		<!-- } -->
+	<!-- } -->
+	<!-- url = "{%url 'main:expert'%}/?type=take"+"&&obj_id="+obj_id -->
+	<!-- xmlhttp.open("GET",url,true); -->
+	<!-- xmlhttp.send(); -->
+<!-- } -->
+function take(obj_id)
+{
+$.ajax({
+            //几个参数需要注意一下
+                type: "GET",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{%url 'main:expert'%}",
+                data: {type:"take",obj_id:obj_id},
+                success: function (result) {
+					var block;
+					var text1;
+					var gov;
+                    
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    if (result.status == 200) {
+                        alert("SUCCESS");
+						
+						<!-- 设置page1 -->
+						
+						text1="";
+						block="";
+						
+						for(i=0;i<result.page.length;i++){
+							block='<li><h5>'+result.page[i][4]+'号专家评审订单</h5><p>评审时间：'+result.page[i][3]+'，专家人数：'+result.page[i][2]+'，价格：'+result.page[i][1]+'，专家类别：'+result.page[i][0]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
+							if(result.page[i][5]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+							}else if(result.page[i][6]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+							}else if(result.page[i][7]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+							}else if(result.page[i][5]==1 && result.page[i][6]==1 && result.page[i][7]==1){
+								block = block+'<p>接单用户：'+result.page[i][9]+'</p>';
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								
+							}
+							else{
+								block = block+'<p>error</p>';
+							}
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form id="pingshen-report" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report"><input class="form-input" id="hidden" type="hidden" name="formId" value="'+result.page[i][4]+'"><textarea rows="2" cols="100" name="report-content" form="report"  placeholder="输入评审报告内容..."></textarea><br>合格<input type="radio" checked="checked" name="qualification" value=1 />不合格<input type="radio" name="qualification" value=0 /><br><input type="hidden" class="button button-secondary" name="submit" value="提交报告"><input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4()"></form>';
+							
+							
+							<!-- console.log(result.page[i][6]); -->
+							text1=text1+"<br>"+block;
+						}
+						
+						console.log("评审");
+						console.log(text1);
+						
+
+						$('#pingshen-ongoing-article').html(text1);
+						
+						
+						<!-- 设置page2 -->
+						
+						text1="";
+						block="";
+						
+						for(i=0;i<result.page2.length;i++){
+							block='<li><h5>'+result.page2[i][4]+'号专家评审订单</h5><p>评审时间：'+result.page2[i][3]+'，专家人数：'+result.page2[i][2]+'，价格：'+result.page2[i][1]+'，专家类别：'+result.page2[i][0]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
+							if(result.page2[i][5]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+							}else if(result.page2[i][6]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+							}else if(result.page2[i][7]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+							}else if(result.page2[i][5]==1 && result.page2[i][6]==1 && result.page2[i][7]==1){
+								block = block+'<p>接单用户：'+result.page2[i][9]+'</p>';
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								
+							}
+							else{
+								block = block+'<p>error</p>';
+							}
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" ><input type="button" class="button button-secondary" name="submit" value="接单" onclick="javascript:take('+result.page2[i][4]+')"></form>';
+							
+							
+							<!-- console.log(result.page2[i][6]); -->
+							text1=text1+"<br>"+block;
+						}
+						
+						console.log("评审");
+						console.log(text1);
+						
+
+						$('#pingshen-new-article').html(text1);
+
+
+
+
+
+
+						
+						
+						}
+                    ;
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
+
+
+
 }
+
 
 <!-- 提交报告、异步刷新页面用 -->
 function submitForm4()
@@ -59,6 +164,78 @@ function submitForm4()
                     console.log(result);//打印服务端返回的数据(调试用)
                     if (result.status == 200) {
                         alert("SUCCESS");
+						
+						<!-- 设置page1 -->
+						
+						text1="";
+						block="";
+						
+						for(i=0;i<result.page.length;i++){
+							block='<li><h5>'+result.page[i][4]+'号专家评审订单</h5><p>评审时间：'+result.page[i][3]+'，专家人数：'+result.page[i][2]+'，价格：'+result.page[i][1]+'，专家类别：'+result.page[i][0]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
+							if(result.page[i][5]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+							}else if(result.page[i][6]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+							}else if(result.page[i][7]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+							}else if(result.page[i][5]==1 && result.page[i][6]==1 && result.page[i][7]==1){
+								block = block+'<p>接单用户：'+result.page[i][9]+'</p>';
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								
+							}
+							else{
+								block = block+'<p>error</p>';
+							}
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form id="pingshen-report" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report"><input class="form-input" id="hidden" type="hidden" name="formId" value="'+result.page[i][4]+'"><textarea rows="2" cols="100" name="report-content" form="report"  placeholder="输入评审报告内容..."></textarea><br>合格<input type="radio" checked="checked" name="qualification" value=1 />不合格<input type="radio" name="qualification" value=0 /><br><input type="hidden" class="button button-secondary" name="submit" value="提交报告"><input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4()"></form>';
+							
+							
+							<!-- console.log(result.page[i][6]); -->
+							text1=text1+"<br>"+block;
+						}
+						
+						console.log("评审");
+						console.log(text1);
+						
+
+						$('#pingshen-ongoing-article').html(text1);
+						
+						
+						<!-- 设置page3 -->
+						
+						text1="";
+						block="";
+						
+						for(i=0;i<result.page3.length;i++){
+							block='<li><h5>'+result.page3[i][4]+'号专家评审订单</h5><p>评审时间：'+result.page3[i][3]+'，专家人数：'+result.page3[i][2]+'，价格：'+result.page3[i][1]+'，专家类别：'+result.page3[i][0]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
+							if(result.page3[i][5]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+							}else if(result.page3[i][6]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+							}else if(result.page3[i][7]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+							}else if(result.page3[i][5]==1 && result.page3[i][6]==1 && result.page3[i][7]==1){
+								block = block+'<p>接单用户：'+result.page3[i][9]+'</p>';
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								
+							}
+							else{
+								block = block+'<p>error</p>';
+							}
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div>';
+							
+							
+							<!-- console.log(result.page3[i][6]); -->
+							text1=text1+"<br>"+block;
+						}
+						
+						console.log("评审");
+						console.log(text1);
+						
+
+						$('#pingshen-history-article').html(text1);
+						
+						
+						
                     }
                     ;
                 },
@@ -225,6 +402,7 @@ function submitForm4()
 					<ul class="contact-box">
 					<!-- Skill Bars-->
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					  <article id="pingshen-ongoing-article">
 					  <!--当前页内容遍历展示-->
 					  {%for item in page%}
 					  <li>
@@ -280,7 +458,9 @@ function submitForm4()
 						  
 					  </li>
 					  {%endfor%}
+					  </article>
 						<!-- Bootstrap Pagination -->
+						<article id="pingshen-ongoing-page">
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
 								{% if page.has_previous %}  
@@ -302,6 +482,7 @@ function submitForm4()
 								{% endif %}
 							</ul>
 						  </nav>
+						  </article>
 					  </div>
 					</ul>
                   </div>
@@ -311,6 +492,7 @@ function submitForm4()
                     <ul class="contact-box">
 					<!-- Skill Bars-->
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<article id="pingshen-new-article">
 					  <!--当前页内容遍历展示-->
 					  {%for item in page2%}
 					  <li>
@@ -340,7 +522,7 @@ function submitForm4()
 								<div class="progress-bar-linear"></div>
 							  </div>
 								<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
-										<input type="button" class="button button-secondary" name="submit" value="接单" onclick="javascript:loadXMLDoc3({{item.4}})">
+										<input type="button" class="button button-secondary" name="submit" value="接单" onclick="javascript:take({{item.4}})">
 								</form>
 							</article>
 							</div>							
@@ -352,7 +534,9 @@ function submitForm4()
 						  
 					  </li>
 					  {%endfor%}
+					  </article>
 						<!-- Bootstrap Pagination -->
+						<article id="pingshen-new-page">
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
 								{% if page2.has_previous %}  
@@ -374,6 +558,7 @@ function submitForm4()
 								{% endif %}
 							</ul>
 						  </nav>
+						  </article>
 					  </div>
 					</ul>
                   </div>
@@ -383,6 +568,7 @@ function submitForm4()
                     <ul class="contact-box">
 					<!-- Skill Bars-->
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<article id="pingshen-history-article">
 					  <!--当前页内容遍历展示-->
 					  {%for item in page3%}
 					  <li>
@@ -411,9 +597,9 @@ function submitForm4()
 							  <div class="progress-bar-linear-wrap">
 								<div class="progress-bar-linear"></div>
 							  </div>
-							  <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
-								<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:loadXMLDoc2({{item.10}},{{item.4}})">
-							  </form>
+							  <!-- <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"> -->
+								<!-- <input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:loadXMLDoc2({{item.10}},{{item.4}})"> -->
+							  <!-- </form> -->
 							</article>
 							</div>							
 						  {%else%}
@@ -424,7 +610,9 @@ function submitForm4()
 						  
 					  </li>
 					  {%endfor%}
+					  </article>
 						<!-- Bootstrap Pagination -->
+						<article id="pingshen-history-page">
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
 								{% if page3.has_previous %}  
@@ -446,6 +634,7 @@ function submitForm4()
 								{% endif %}
 							</ul>
 						  </nav>
+						  </article>
 					  </div>
 					</ul>
                   </div>
