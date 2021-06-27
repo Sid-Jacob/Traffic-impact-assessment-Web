@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
-    <link rel="icon" href={%static "images/favicon.ico"%} type="image/x-icon">
+    <!-- <link rel="icon" href={%static "images/favicon.ico"%} type="image/x-icon"> -->
     <!-- Stylesheets-->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:100,300,300i,400,700,900">
     <link rel="stylesheet" href={%static "css/bootstrap.css"%}>
@@ -17,62 +17,62 @@
     <div style="background: #212121; padding: 10px 0; box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3); clear: both; text-align:center; position: relative; z-index:1;"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src={%static "images/ie8-panel/warning_bar_0000_us.jpg"%} border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
     <script src={%static "js/html5shiv.min.js"%}></script>
     <![endif]-->
-	<script src="https://apps.bdimg.com/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src={%static 'js/jquery-3.6.0.min.js'%}></script>
 	<script>
 	
 	<!-- 刷新页面、翻页用TODO -->
-function loadXMLDoc1()
-{
-	var xmlhttp;
-	if (window.XMLHttpRequest)
-	{
-		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
-		xmlhttp=new XMLHttpRequest();
-	}
-	else
-	{
-		// IE6, IE5 浏览器执行代码
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange=function()
-	{
-		if (xmlhttp.readyState==4 && xmlhttp.status==200)
-		{
-			var data=xmlhttp.responseText;
-			var json=JSON.parse(data);  // 使用JSON.parse()进行解析：使用JSON对象的静态方法parse()，将字符串解析为对象。
-			document.getElementById("likes_num").innerHTML=json.nums
-		}
-	}
-	url = "/likes/likes_nums?type=Article&&obj_id="
-	xmlhttp.open("GET",url,true);
-	xmlhttp.send();
-}
+<!-- function loadXMLDoc1() -->
+<!-- { -->
+	<!-- var xmlhttp; -->
+	<!-- if (window.XMLHttpRequest) -->
+	<!-- { -->
+		<!-- //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码 -->
+		<!-- xmlhttp=new XMLHttpRequest(); -->
+	<!-- } -->
+	<!-- else -->
+	<!-- { -->
+		<!-- // IE6, IE5 浏览器执行代码 -->
+		<!-- xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); -->
+	<!-- } -->
+	<!-- xmlhttp.onreadystatechange=function() -->
+	<!-- { -->
+		<!-- if (xmlhttp.readyState==4 && xmlhttp.status==200) -->
+		<!-- { -->
+			<!-- var data=xmlhttp.responseText; -->
+			<!-- var json=JSON.parse(data);  // 使用JSON.parse()进行解析：使用JSON对象的静态方法parse()，将字符串解析为对象。 -->
+			<!-- document.getElementById("likes_num").innerHTML=json.nums -->
+		<!-- } -->
+	<!-- } -->
+	<!-- url = "/likes/likes_nums?type=Article&&obj_id=" -->
+	<!-- xmlhttp.open("GET",url,true); -->
+	<!-- xmlhttp.send(); -->
+<!-- } -->
 <!-- 废除订单用 -->
-function loadXMLDoc2(formtype,obj_id)
-{
-	var xmlhttp;
-	if (window.XMLHttpRequest)
-	{
-		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
-		xmlhttp=new XMLHttpRequest();
-	}
-	else
-	{
-		// IE6, IE5 浏览器执行代码
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange=function()
-	{
-		if (xmlhttp.readyState==4 && xmlhttp.status==200)
-		{
-			var data=xmlhttp.responseText;
+<!-- function loadXMLDoc2(formtype,obj_id) -->
+<!-- { -->
+	<!-- var xmlhttp; -->
+	<!-- if (window.XMLHttpRequest) -->
+	<!-- { -->
+		<!-- //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码 -->
+		<!-- xmlhttp=new XMLHttpRequest(); -->
+	<!-- } -->
+	<!-- else -->
+	<!-- { -->
+		<!-- // IE6, IE5 浏览器执行代码 -->
+		<!-- xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); -->
+	<!-- } -->
+	<!-- xmlhttp.onreadystatechange=function() -->
+	<!-- { -->
+		<!-- if (xmlhttp.readyState==4 && xmlhttp.status==200) -->
+		<!-- { -->
+			<!-- var data=xmlhttp.responseText; -->
 			
-		}
-	}
-	url = "{%url 'main:gov'%}/?type=nullify"+formtype+"&&obj_id="+obj_id
-	xmlhttp.open("GET",url,true);
-	xmlhttp.send();
-}
+		<!-- } -->
+	<!-- } -->
+	<!-- url = "{%url 'main:gov'%}/?type=nullify"+formtype+"&&obj_id="+obj_id -->
+	<!-- xmlhttp.open("GET",url,true); -->
+	<!-- xmlhttp.send(); -->
+<!-- } -->
 function nullify(formtype,obj_id)
 {
 $.ajax({
@@ -80,7 +80,7 @@ $.ajax({
                 type: "GET",//方法类型
                 dataType: "json",//预期服务器返回的数据类型
                 url: "{%url 'main:gov'%}",
-                data: {type:formtype,obj_id:obj_id},
+                data: {type:"nullify"+formtype,obj_id:obj_id},
                 success: function (result) {
 					var block;
 					var text1;
@@ -97,7 +97,7 @@ $.ajax({
 						<!-- console.log(result.page[0]); -->
 						<!-- console.log(typeof(result.page[0][6])); -->
 						<!-- console.log(result.page[0][6]); -->
-						for(i=0;i<=2;i++){
+						for(i=0;i<result.page.length;i++){
 							block='<li><h5>'+result.page[i][6]+'号集采订单</h5><p>省份：'+result.page[i][0]+'，城市：'+result.page[i][1]+'，县：'+result.page[i][2]+'，订单数量：'+result.page[i][3]+'，期限：'+result.page[i][4]+'，谈判时间：'+result.page[i][5]+'，抽审比例：'+result.page[i][13]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
 							if(result.page[i][7]==0){
 								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
@@ -135,7 +135,7 @@ $.ajax({
 						text1="";
 						block="";
 						
-						for(i=0;i<=2;i++){
+						for(i=0;i<result.page2.length;i++){
 							block='<li><h5>'+result.page2[i][4]+'号专家评审订单</h5><p>评审时间：'+result.page2[i][3]+'，专家人数：'+result.page2[i][2]+'，价格：'+result.page2[i][1]+'，专家类别：'+result.page2[i][0]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
 							if(result.page2[i][5]==0){
 								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
@@ -201,7 +201,7 @@ function submitForm1()
 						<!-- console.log(result.page[0]); -->
 						<!-- console.log(typeof(result.page[0][6])); -->
 						<!-- console.log(result.page[0][6]); -->
-						for(i=0;i<=2;i++){
+						for(i=0;i<result.page.length;i++){
 							block='<li><h5>'+result.page[i][6]+'号集采订单</h5><p>省份：'+result.page[i][0]+'，城市：'+result.page[i][1]+'，县：'+result.page[i][2]+'，订单数量：'+result.page[i][3]+'，期限：'+result.page[i][4]+'，谈判时间：'+result.page[i][5]+'，抽审比例：'+result.page[i][13]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
 							if(result.page[i][7]==0){
 								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
@@ -288,7 +288,7 @@ function submitForm2()
 						text1="";
 						block="";
 						
-						for(i=0;i<=2;i++){
+						for(i=0;i<result.page2.length;i++){
 							block='<li><h5>'+result.page2[i][4]+'号专家评审订单</h5><p>评审时间：'+result.page2[i][3]+'，专家人数：'+result.page2[i][2]+'，价格：'+result.page2[i][1]+'，专家类别：'+result.page2[i][0]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
 							if(result.page2[i][5]==0){
 								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
-    <link rel="icon" href={%static "images/favicon.ico"%} type="image/x-icon">
+    <!-- <link rel="icon" href={%static "images/favicon.ico"%} type="image/x-icon"> -->
     <!-- Stylesheets-->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:100,300,300i,400,700,900">
     <link rel="stylesheet" href={%static "css/bootstrap.css"%}>
@@ -17,64 +17,124 @@
     <div style="background: #212121; padding: 10px 0; box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3); clear: both; text-align:center; position: relative; z-index:1;"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src={%static "images/ie8-panel/warning_bar_0000_us.jpg"%} border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
     <script src={%static "js/html5shiv.min.js"%}></script>
     <![endif]-->
-	<script src="https://apps.bdimg.com/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src={%static 'js/jquery-3.6.0.min.js'%}></script>
 		<script>
 	
 	<!-- 刷新页面、翻页用TODO -->
-function loadXMLDoc1()
-{
-	var xmlhttp;
-	if (window.XMLHttpRequest)
-	{
-		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
-		xmlhttp=new XMLHttpRequest();
-	}
-	else
-	{
-		// IE6, IE5 浏览器执行代码
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange=function()
-	{
-		if (xmlhttp.readyState==4 && xmlhttp.status==200)
-		{
-			var data=xmlhttp.responseText;
-			var json=JSON.parse(data);  // 使用JSON.parse()进行解析：使用JSON对象的静态方法parse()，将字符串解析为对象。
-			document.getElementById("likes_num").innerHTML=json.nums
-		}
-	}
-	url = "/likes/likes_nums?type=Article&&obj_id="
-	xmlhttp.open("GET",url,true);
-	xmlhttp.send();
-}
+<!-- function loadXMLDoc1() -->
+<!-- { -->
+	<!-- var xmlhttp; -->
+	<!-- if (window.XMLHttpRequest) -->
+	<!-- { -->
+		<!-- //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码 -->
+		<!-- xmlhttp=new XMLHttpRequest(); -->
+	<!-- } -->
+	<!-- else -->
+	<!-- { -->
+		<!-- // IE6, IE5 浏览器执行代码 -->
+		<!-- xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); -->
+	<!-- } -->
+	<!-- xmlhttp.onreadystatechange=function() -->
+	<!-- { -->
+		<!-- if (xmlhttp.readyState==4 && xmlhttp.status==200) -->
+		<!-- { -->
+			<!-- var data=xmlhttp.responseText; -->
+			<!-- var json=JSON.parse(data);  // 使用JSON.parse()进行解析：使用JSON对象的静态方法parse()，将字符串解析为对象。 -->
+			<!-- document.getElementById("likes_num").innerHTML=json.nums -->
+		<!-- } -->
+	<!-- } -->
+	<!-- url = "/likes/likes_nums?type=Article&&obj_id=" -->
+	<!-- xmlhttp.open("GET",url,true); -->
+	<!-- xmlhttp.send(); -->
+<!-- } -->
 <!-- 废除订单用 -->
-function loadXMLDoc2(formtype,obj_id)
-{
-	var xmlhttp;
-	if (window.XMLHttpRequest)
-	{
-		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
-		xmlhttp=new XMLHttpRequest();
-	}
-	else
-	{
-		// IE6, IE5 浏览器执行代码
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange=function()
-	{
-		if (xmlhttp.readyState==4 && xmlhttp.status==200)
-		{
-			var data=xmlhttp.responseText;
+<!-- function loadXMLDoc2(formtype,obj_id) -->
+<!-- { -->
+	<!-- var xmlhttp; -->
+	<!-- if (window.XMLHttpRequest) -->
+	<!-- { -->
+		<!-- //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码 -->
+		<!-- xmlhttp=new XMLHttpRequest(); -->
+	<!-- } -->
+	<!-- else -->
+	<!-- { -->
+		<!-- // IE6, IE5 浏览器执行代码 -->
+		<!-- xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); -->
+	<!-- } -->
+	<!-- xmlhttp.onreadystatechange=function() -->
+	<!-- { -->
+		<!-- if (xmlhttp.readyState==4 && xmlhttp.status==200) -->
+		<!-- { -->
+			<!-- var data=xmlhttp.responseText; -->
 			
-		}
-	}
-	url = "{%url 'main:thirdParty'%}/?type=nullify"+formtype+"&&obj_id="+obj_id
-	xmlhttp.open("GET",url,true);
-	xmlhttp.send();
+		<!-- } -->
+	<!-- } -->
+	<!-- url = "{%url 'main:thirdParty'%}/?type=nullify"+formtype+"&&obj_id="+obj_id -->
+	<!-- xmlhttp.open("GET",url,true); -->
+	<!-- xmlhttp.send(); -->
+<!-- } -->
+function nullify(formtype,obj_id)
+{
+$.ajax({
+            //几个参数需要注意一下
+                type: "GET",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{%url 'main:thirdParty'%}",
+                data: {type:"nullify"+formtype,obj_id:obj_id},
+                success: function (result) {
+					var block;
+					var text1;
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    if (result.status == 200) {
+                        alert("SUCCESS");
+
+						text1="";
+						block="";
+						
+						for(i=0;i<result.page4.length;i++){
+							block='<li><h5>'+result.page4[i][4]+'号专家评审订单</h5><p>评审时间：'+result.page4[i][3]+'，专家人数：'+result.page4[i][2]+'，价格：'+result.page4[i][1]+'，专家类别：'+result.page4[i][0]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
+							if(result.page4[i][5]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+							}else if(result.page4[i][6]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+							}else if(result.page4[i][7]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+							}else if(result.page4[i][5]==1 && result.page4[i][6]==1 && result.page4[i][7]==1){
+								block = block+'<p>接单用户：'+result.page4[i][9]+'</p>';
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								
+							}
+							else{
+								block = block+'<p>error</p>';
+							}
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:nullify('+result.page4[i][10]+','+result.page4[i][4]+')"></form>';
+							
+							
+							<!-- console.log(result.page4[i][6]); -->
+							text1=text1+"<br>"+block;
+						}
+						
+						console.log("评审");
+						console.log(text1);
+						
+
+						$('#pingshen-article').html(text1);
+						
+						}
+                    ;
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
+
+
+
 }
+
+
 <!-- 接单用 -->
-function loadXMLDoc3(obj_id)
+{% comment %} function loadXMLDoc3(obj_id)
 {
 	var xmlhttp;
 	if (window.XMLHttpRequest)
@@ -98,7 +158,133 @@ function loadXMLDoc3(obj_id)
 	url = "{%url 'main:thirdParty'%}/?type=take"+"&&obj_id="+obj_id
 	xmlhttp.open("GET",url,true);
 	xmlhttp.send();
+} {% endcomment %}
+function take(obj_id)
+{
+$.ajax({
+            //几个参数需要注意一下
+                type: "GET",//方法类型
+                dataType: "json",//预期服务器返回的数据类型
+                url: "{%url 'main:thirdParty'%}",
+                data: {type:"take",obj_id:obj_id},
+                success: function (result) {
+					var block;
+					var text1;
+					var gov;
+                    
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    if (result.status == 200) {
+                        alert("SUCCESS");
+						{% comment %} 设置page2 {% endcomment %}
+						text1="";
+						block="";
+						console.log(typeof(result.page2));
+						console.log(result.page2);
+						console.log(typeof(result.page2[0]));
+						console.log(result.page2[0]);
+						console.log(typeof(result.page2[0][6]));
+						console.log(result.page2[0][6]);
+						for(i=0;i<result.page2.length;i++){
+							block='<li><h5>'+result.page2[i][6];
+							block=block+'号集采订单</h5><p>省份：'+result.page2[i][0]+'，城市：'+result.page2[i][1]+'，县：'+result.page2[i][2]+'，订单数量：'+result.page2[i][3]+'，期限：'+result.page2[i][4]+'，谈判时间：'+result.page2[i][5]+'，抽审比例：'+result.page2[i][13]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
+							if(result.page2[i][7]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+							}else if(result.page2[i][8]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+							}else if(result.page2[i][9]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+							}else if(result.page2[i][9]==1 && result.page2[i][7]==1 && result.page2[i][8]==1){
+								block = block+'<p>接单用户：'+result.page2[i][11]+'</p>';
+								if(result.page2[i][15]==1 && result.page2[i][16]==1 && result.page2[i][14]==1){
+									block=block + '<p>报告审核情况：合格</p>';
+								}else if(result.page2[i][15]==1 && result.page2[i][16]==1 && result.page2[i][14]==0){
+									block=block + '<p>报告审核情况：不合格</p>';
+								}
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								
+							}
+							else{
+								block = block+'<p>error</p>';
+							}
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input type="button"  class="button button-sm button-secondary" name="submit" value="接单" onclick="javascript:take('+result.page2[i][6]+')"></form>';
+							
+							
+							console.log(result.page2[i][6]);
+							text1=text1+"<br>"+block;
+						}
+						
+						console.log(text1);
+						
+
+						$('#jicai-new-article').html(text1);
+
+
+
+						{% comment %} 设置page1 {% endcomment %}
+						
+						text1="";
+						block="";
+						console.log(typeof(result.page));
+						console.log(result.page);
+						console.log(typeof(result.page[0]));
+						console.log(result.page[0]);
+						console.log(typeof(result.page[0][6]));
+						console.log(result.page[0][6]);
+						for(i=0;i<result.page.length;i++){
+							block='<li><h5>'+result.page[i][6]+'号集采订单</h5><p>省份：'+result.page[i][0]+'，城市：'+result.page[i][1]+'，县：'+result.page[i][2]+'，订单数量：'+result.page[i][3]+'，期限：'+result.page[i][4]+'，谈判时间：'+result.page[i][5]+'，抽审比例：'+result.page[i][13]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
+							if(result.page[i][7]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+							}else if(result.page[i][8]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+							}else if(result.page[i][9]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+							}else if(result.page[i][9]==1 && result.page[i][7]==1 && result.page[i][8]==1){
+								block = block+'<p>接单用户：'+result.page[i][11]+'</p>';
+								if(result.page[i][15]==1 && result.page[i][16]==1 && result.page[i][14]==1){
+									block=block + '<p>报告审核情况：合格</p>';
+								}else if(result.page[i][15]==1 && result.page[i][16]==1 && result.page[i][14]==0){
+									block=block + '<p>报告审核情况：不合格</p>';
+								}
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								
+							}
+							else{
+								block = block+'<p>error</p>';
+							}
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form id="jicai-report" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report"><input class="form-input" id="hidden" type="hidden" name="formId" value="'+result.page[i][6]+'"><textarea rows="2" cols="100" name="report-content" form="report"  placeholder="请输入报告内容..."></textarea><input type="hidden" class="button button-secondary" name="submit" value="提交报告"><input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4()"></form>';
+							
+							
+							console.log(result.page[i][6]);
+							text1=text1+"<br>"+block;
+						}
+						
+						console.log(text1);
+						
+
+						$('#jicai-ongoing-article').html(text1);
+
+						{% comment %} TODO：分页器 {% endcomment %}
+
+
+
+
+
+
+						
+						
+						}
+                    ;
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
+
+
+
 }
+
+
 <!-- 提交报告、异步刷新页面用 -->
 function submitForm4()
 {
@@ -112,6 +298,94 @@ function submitForm4()
                     console.log(result);//打印服务端返回的数据(调试用)
                     if (result.status == 200) {
                         alert("SUCCESS");
+						{% comment %} 设置page3 {% endcomment %}
+						text1="";
+						block="";
+						console.log(typeof(result.page3));
+						console.log(result.page3);
+						console.log(typeof(result.page3[0]));
+						console.log(result.page3[0]);
+						console.log(typeof(result.page3[0][6]));
+						console.log(result.page3[0][6]);
+						for(i=0;i<result.page3.length;i++){
+							block='<li><h5>'+result.page3[i][6];
+							block=block+'号集采订单</h5><p>省份：'+result.page3[i][0]+'，城市：'+result.page3[i][1]+'，县：'+result.page3[i][2]+'，订单数量：'+result.page3[i][3]+'，期限：'+result.page3[i][4]+'，谈判时间：'+result.page3[i][5]+'，抽审比例：'+result.page3[i][13]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
+							if(result.page3[i][7]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+							}else if(result.page3[i][8]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+							}else if(result.page3[i][9]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+							}else if(result.page3[i][9]==1 && result.page3[i][7]==1 && result.page3[i][8]==1){
+								block = block+'<p>接单用户：'+result.page3[i][11]+'</p>';
+								if(result.page3[i][15]==1 && result.page3[i][16]==1 && result.page3[i][14]==1){
+									block=block + '<p>报告审核情况：合格</p>';
+								}else if(result.page3[i][15]==1 && result.page3[i][16]==1 && result.page3[i][14]==0){
+									block=block + '<p>报告审核情况：不合格</p>';
+								}
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								
+							}
+							else{
+								block = block+'<p>error</p>';
+							}
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div>';
+							
+							
+							console.log(result.page3[i][6]);
+							text1=text1+"<br>"+block;
+						}
+						
+						console.log(text1);
+						
+
+						$('#jicai-history-article').html(text1);
+
+
+
+						{% comment %} 设置page1 {% endcomment %}
+						
+						text1="";
+						block="";
+						console.log(typeof(result.page));
+						console.log(result.page);
+						console.log(typeof(result.page[0]));
+						console.log(result.page[0]);
+						console.log(typeof(result.page[0][6]));
+						console.log(result.page[0][6]);
+						for(i=0;i<result.page.length;i++){
+							block='<li><h5>'+result.page[i][6]+'号集采订单</h5><p>省份：'+result.page[i][0]+'，城市：'+result.page[i][1]+'，县：'+result.page[i][2]+'，订单数量：'+result.page[i][3]+'，期限：'+result.page[i][4]+'，谈判时间：'+result.page[i][5]+'，抽审比例：'+result.page[i][13]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
+							if(result.page[i][7]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+							}else if(result.page[i][8]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+							}else if(result.page[i][9]==0){
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+							}else if(result.page[i][9]==1 && result.page[i][7]==1 && result.page[i][8]==1){
+								block = block+'<p>接单用户：'+result.page[i][11]+'</p>';
+								if(result.page[i][15]==1 && result.page[i][16]==1 && result.page[i][14]==1){
+									block=block + '<p>报告审核情况：合格</p>';
+								}else if(result.page[i][15]==1 && result.page[i][16]==1 && result.page[i][14]==0){
+									block=block + '<p>报告审核情况：不合格</p>';
+								}
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								
+							}
+							else{
+								block = block+'<p>error</p>';
+							}
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form id="jicai-report" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report"><input class="form-input" id="hidden" type="hidden" name="formId" value="'+result.page[i][6]+'"><textarea rows="2" cols="100" name="report-content" form="report"  placeholder="请输入报告内容..."></textarea><input type="hidden" class="button button-secondary" name="submit" value="提交报告"><input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4()"></form>';
+							
+							
+							console.log(result.page[i][6]);
+							text1=text1+"<br>"+block;
+						}
+						
+						console.log(text1);
+						
+
+						$('#jicai-ongoing-article').html(text1);
+
                     }
                     ;
                 },
@@ -282,6 +556,7 @@ function submitForm4()
 					<ul class="contact-box">
 					<!-- Skill Bars-->
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<article id="jicai-ongoing-article">
 					  <!--当前页内容遍历展示-->
 					  {%for item in page%}
 					  <li>
@@ -361,7 +636,7 @@ function submitForm4()
 									</form>
 								  
 									</ul> -->
-							  </br>
+							  <!-- </br> -->
 							  
 							  <!-- <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
 								<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:loadXMLDoc2({{item.12}},{{item.6}})">
@@ -373,7 +648,9 @@ function submitForm4()
 						  {% endif %}  
 					  </li>
 					  {%endfor%}
+					  </article>
 						<!-- Bootstrap Pagination -->
+						<article id="jicai-ongoing-page">
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
 								{% if page.has_previous %}  
@@ -395,6 +672,7 @@ function submitForm4()
 								{% endif %}
 							</ul>
 						  </nav>
+						  </article>
 					  </div>
 					</ul>
 					
@@ -407,6 +685,7 @@ function submitForm4()
 					<!-- Skill Bars-->
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					  <!--当前页内容遍历展示-->
+					  <article id="jicai-new-article">
 					  {%for item in page2%}
 					  <li>
 						  
@@ -437,7 +716,7 @@ function submitForm4()
 							  
 							 
 							  <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
-								<input type="button" class="button button-secondary" name="submit" value="接单" onclick="javascript:loadXMLDoc3({{item.6}})">
+								<input type="button" class="button button-secondary" name="submit" value="接单" onclick="javascript:take({{item.6}})">
 							  </form>
 							</article>
 							</div>
@@ -447,7 +726,9 @@ function submitForm4()
 						  <br>
 					  </li>
 					  {%endfor%}
+					  </article>
 						<!-- Bootstrap Pagination -->
+						<article id="jicai-new-page">
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
 								{% if page2.has_previous %}  
@@ -469,6 +750,7 @@ function submitForm4()
 								{% endif %}
 							</ul>
 						  </nav>
+						  </article>
 					  </div>
 					</ul>
 					
@@ -478,6 +760,7 @@ function submitForm4()
                     <ul class="contact-box">
 					<!-- Skill Bars-->
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<article id="jicai-history-article">
 					  <!--当前页内容遍历展示-->
 					  {%for item in page3%}
 					  <li>
@@ -513,7 +796,9 @@ function submitForm4()
 						  {% endif %}  
 					  </li>
 					  {%endfor%}
+					  </article>
 						<!-- Bootstrap Pagination -->
+						<article id="jicai-history-page">
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
 								{% if page3.has_previous %}  
@@ -535,6 +820,7 @@ function submitForm4()
 								{% endif %}
 							</ul>
 						  </nav>
+						  </article>
 					  </div>
 					</ul>
                   </div>
@@ -543,6 +829,7 @@ function submitForm4()
                     <ul class="contact-box">
 					<!-- Skill Bars-->
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					  <article id="pingshen-article">
 					  <!--当前页内容遍历展示-->
 					  {%for item in page4%}
 					  <li>
@@ -572,7 +859,7 @@ function submitForm4()
 								<div class="progress-bar-linear"></div>
 							  </div>
 							  <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
-								<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:loadXMLDoc2({{item.10}},{{item.4}})">
+								<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:nullify({{item.10}},{{item.4}})">
 							  </form>
 							</article>
 							</div>							
@@ -584,7 +871,9 @@ function submitForm4()
 						  
 					  </li>
 					  {%endfor%}
+					  </article>
 						<!-- Bootstrap Pagination -->
+						<article id="pingshen-page">
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
 								{% if page4.has_previous %}  
@@ -606,6 +895,7 @@ function submitForm4()
 								{% endif %}
 							</ul>
 						  </nav>
+						  </article>
 					  </div>
 					</ul>
                   </div>
