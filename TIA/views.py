@@ -27,8 +27,7 @@ def home(request):
     return redirect(reverse("index"))
 
 
-# TODO
-# 搜索文章、订单
+# TODO 搜索文章、订单
 
 
 def index(request):

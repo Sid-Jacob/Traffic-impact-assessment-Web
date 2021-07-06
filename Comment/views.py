@@ -6,10 +6,8 @@ from .forms import CommentForm
 
 from django.contrib.auth.decorators import login_required
 
-# TODO
-# 未登录状态发表Comment有bug
-# TODO
-# 为什么发完评论没有自动刷新页面，news模板中修改文本框，以及ajax提交评论方式
+# TODO 未登录状态发表Comment有bug
+# TODO 为什么发完评论没有自动刷新页面，news模板中修改文本框，以及ajax提交评论方式
 
 
 @login_required

@@ -9,7 +9,6 @@
     <meta charset="utf-8">
     <!-- <link rel="icon" href={%static "images/favicon.ico"%} type="image/x-icon"> -->
     <!-- Stylesheets-->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:100,300,300i,400,700,900">
     <link rel="stylesheet" href={%static "css/bootstrap.css"%}>
     <link rel="stylesheet" href={%static "css/fonts.css"%}>
     <link rel="stylesheet" href={%static "css/style.css"%} id="main-styles-link">
@@ -83,7 +82,7 @@ $.ajax({
 							else{
 								block = block+'<p>error</p>';
 							}
-							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form id="pingshen-report" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report"><input class="form-input" id="hidden" type="hidden" name="formId" value="'+result.page[i][4]+'"><textarea rows="2" cols="100" name="report-content" form="report"  placeholder="输入评审报告内容..."></textarea><br>合格<input type="radio" checked="checked" name="qualification" value=1 />不合格<input type="radio" name="qualification" value=0 /><br><input type="hidden" class="button button-secondary" name="submit" value="提交报告"><input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4()"></form>';
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form id='+result.page[i][4]+' onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input class="form-input" id="hidden" type="hidden" name="formId" value="'+result.page[i][4]+'"><textarea rows="2" cols="100" name="report-content" form='+result.page[i][4]+'  placeholder="输入评审报告内容..."></textarea><br>合格<input type="radio" checked="checked" name="qualification" value=1 />不合格<input type="radio" name="qualification" value=0 /><br><input type="hidden" class="button button-secondary" name="submit" value="提交报告"><input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4('+result.page[i][4]+')"></form>';
 							
 							
 							<!-- console.log(result.page[i][6]); -->
@@ -152,14 +151,15 @@ $.ajax({
 
 
 <!-- 提交报告、异步刷新页面用 -->
-function submitForm4()
+function submitForm4(formid)
 {
+var formId='#'+formid
 	$.ajax({
             //几个参数需要注意一下
                 type: "POST",//方法类型
                 dataType: "json",//预期服务器返回的数据类型
                 url: "{%url 'main:expert'%}" ,//url
-                data: $('#pingshen-report').serialize(),
+                data: $(formId).serialize(),
                 success: function (result) {
                     console.log(result);//打印服务端返回的数据(调试用)
                     if (result.status == 200) {
@@ -186,7 +186,7 @@ function submitForm4()
 							else{
 								block = block+'<p>error</p>';
 							}
-							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form id="pingshen-report" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report"><input class="form-input" id="hidden" type="hidden" name="formId" value="'+result.page[i][4]+'"><textarea rows="2" cols="100" name="report-content" form="report"  placeholder="输入评审报告内容..."></textarea><br>合格<input type="radio" checked="checked" name="qualification" value=1 />不合格<input type="radio" name="qualification" value=0 /><br><input type="hidden" class="button button-secondary" name="submit" value="提交报告"><input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4()"></form>';
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form id='+result.page[i][4]+' onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input class="form-input" id="hidden" type="hidden" name="formId" value="'+result.page[i][4]+'"><textarea rows="2" cols="100" name="report-content" form="report"  placeholder="输入评审报告内容..."></textarea><br>合格<input type="radio" checked="checked" name="qualification" value=1 />不合格<input type="radio" name="qualification" value=0 /><br><input type="hidden" class="button button-secondary" name="submit" value="提交报告"><input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4('+result.page[i][4]+')"></form>';
 							
 							
 							<!-- console.log(result.page[i][6]); -->
@@ -431,7 +431,7 @@ function submitForm4()
 							  <div class="progress-bar-linear-wrap">
 								<div class="progress-bar-linear"></div>
 							  </div>	
-								<form id="pingshen-report" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report">
+								<form id={{item.4}} onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
 										<!-- <a>关联订单编号</a>
 										<div class="form-wrap">
 										  <input class="form-input" id="formId" type="number" name="formId" data-constraints="@Required">
@@ -439,7 +439,7 @@ function submitForm4()
 										</div> -->
 										<input class="form-input" id="hidden" type="hidden" name="formId" value="{{item.4}}">
 										
-										<textarea rows="2" cols="100" name="report-content" form="report"  placeholder="输入评审报告内容..."></textarea>
+										<textarea rows="2" cols="100" name="report-content" form={{item.4}}  placeholder="输入评审报告内容..."></textarea>
 										<br>
 												合格
 												<input type="radio" checked="checked" name="qualification" value=1 />
@@ -447,7 +447,7 @@ function submitForm4()
 												<input type="radio" name="qualification" value=0 />
 										<br>		
 										<input type="hidden" class="button button-secondary" name="submit" value="提交报告">
-										<input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4()">
+										<input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4({{item.4}})">
 							  </form>
 							</article>
 							</div>							
@@ -460,7 +460,7 @@ function submitForm4()
 					  {%endfor%}
 					  </article>
 						<!-- Bootstrap Pagination -->
-						<article id="pingshen-ongoing-page">
+						{% comment %} <article id="pingshen-ongoing-page">
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
 								{% if page.has_previous %}  
@@ -482,7 +482,7 @@ function submitForm4()
 								{% endif %}
 							</ul>
 						  </nav>
-						  </article>
+						  </article> {% endcomment %}
 					  </div>
 					</ul>
                   </div>
@@ -536,7 +536,7 @@ function submitForm4()
 					  {%endfor%}
 					  </article>
 						<!-- Bootstrap Pagination -->
-						<article id="pingshen-new-page">
+						{% comment %} <article id="pingshen-new-page">
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
 								{% if page2.has_previous %}  
@@ -558,7 +558,7 @@ function submitForm4()
 								{% endif %}
 							</ul>
 						  </nav>
-						  </article>
+						  </article> {% endcomment %}
 					  </div>
 					</ul>
                   </div>
@@ -612,7 +612,7 @@ function submitForm4()
 					  {%endfor%}
 					  </article>
 						<!-- Bootstrap Pagination -->
-						<article id="pingshen-history-page">
+						{% comment %} <article id="pingshen-history-page">
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
 								{% if page3.has_previous %}  
@@ -634,7 +634,7 @@ function submitForm4()
 								{% endif %}
 							</ul>
 						  </nav>
-						  </article>
+						  </article> {% endcomment %}
 					  </div>
 					</ul>
                   </div>
@@ -643,7 +643,7 @@ function submitForm4()
 				  
 				  <div class="tab-pane fade" id="tabs-2-4">
                     <ul class="contact-box">
-                      <h4>TODO</h4>
+                      <h4>功能待完善...</h4>
 					  
                     </ul>
                   </div>
@@ -663,9 +663,10 @@ function submitForm4()
 
                               <li><a class="hover-text" >上次登录时间：{{last_login}}</a></li>
                               <li><a class="hover-text" >注册时间：{{date_joined}}</a></li>
-							  <li><a class="hover-text" >是否为平台管理员：{{is_superuser}}</a></li>
-							  <li><a class="hover-text" >用户权限：TODO</a></li>
+							  <li><a class="hover-text" >是否为超级管理员：{{is_superuser}}</a></li>
 							  <li><a class="hover-text" >用户邮箱：{{email}}</a></li>
+							  <br>
+							  <li><a class="hover-text" id="user-group">用户身份：{{group}}</a></li>
 
                           </div>
                         </div>

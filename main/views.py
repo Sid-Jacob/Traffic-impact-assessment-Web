@@ -16,13 +16,12 @@ import random
 from main.decorator import group_required
 
 # Create your views here.
-# TODO
-# $异步翻页$
+# TODO 异步翻页
 
-# 修改用户信息界面，增加group字段，平台管理员更新分组后异步刷新显示字段
+# TODO: bug:异步更新时progress-bar无法正常渲染，时间显示格式和普通刷新不一样；news内页评论功能异步化
 
-# TODO: bug
-# 异步更新时progress-bar无法正常渲染，时间显示格式和普通刷新不一样
+# 每页显示标题数
+PAGENUM = 1000
 
 
 # 测试功能：任何登录用户使用init变为manager，manager管理其他用户的分组
@@ -77,6 +76,12 @@ def manager(request):
                 return obj.strftime("%Y-%m-%d")
             else:
                 return json.JSONEncoder.default(self, obj)
+
+    def in_groups(u, *group_names):
+        if u.is_authenticated:
+            if bool(u.groups.filter(name__in=group_names)) | u.is_superuser:
+                return True
+        return False
 
     if request.method == 'POST':
         print("POST")
@@ -147,9 +152,9 @@ def manager(request):
             form2_list = []
             for i in range(0, len(rets2)):
                 form2_list.append(list(rets2[i]))
-            # TODO
             # 翻页必须改成异步的
-            paginator = Paginator(form1_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator = Paginator(form1_list,
+                                  PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page = 1
@@ -157,7 +162,7 @@ def manager(request):
                 page = request.GET.get('page')
             try:
                 article = paginator.page(page)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article = paginator.page(1)
@@ -168,7 +173,8 @@ def manager(request):
                 # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
                 article = paginator.page(paginator.num_pages)
 
-            paginator2 = Paginator(form2_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator2 = Paginator(form2_list,
+                                   PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page2 = 1
@@ -176,7 +182,7 @@ def manager(request):
                 page2 = request.GET.get('page2')
             try:
                 article2 = paginator2.page(page2)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article2 = paginator2.page(1)
@@ -206,7 +212,6 @@ def manager(request):
             # return render(request, 'Manager.html')
         # 设置用户权限组
         elif request.POST.get('submit') == '设置分组':
-            # TODO
             user_id = request.POST.get('user')
             grouplist = request.POST.getlist('用户角色分组')
 
@@ -252,11 +257,20 @@ def manager(request):
             try:
                 l = []
                 l = User.objects.get(id=user_id)
-                # TODO 增加分组权限显示
                 if l.is_superuser == True:
                     is_su = "是"
                 else:
                     is_su = "否"
+                group = ""
+                user = request.user
+                if in_groups(user, "GOVERNMENT"):
+                    group = group + "政府用户;"
+                if in_groups(user, "THIRDPARTY"):
+                    group = group + "第三方用户;"
+                if in_groups(user, "EXPERT"):
+                    group = group + "专家用户;"
+                if in_groups(user, "MANAGER"):
+                    group = group + "平台管理员用户;"
                 content = {
                     "status": 200,
                     'message': u'ok',
@@ -266,6 +280,7 @@ def manager(request):
                     "email": l.email,
                     "date_joined": l.date_joined.strftime("%Y-%m-%d %H:%M:%S"),
                     "is_superuser": is_su,
+                    "group": group,
                 }
             except Exception as e:
                 #没有获取到对象
@@ -277,6 +292,8 @@ def manager(request):
                                 content_type="application/json")
 
             # return render(request, 'Manager.html')
+        else:
+            return render(request, "Manager.html")
     elif request.method == 'GET':
         print("GET")
         u"""处理废除清单、刷新订单信息
@@ -295,6 +312,7 @@ def manager(request):
         user_id = request.session.get('_auth_user_id')
         username = request.user
         username = str(username)
+        group = ""
         print("type:", obj_type, "obj_id:", obj_id, "user:", username,
               "user_id:", user_id)
         if obj_id != '' and obj_type != '':
@@ -323,9 +341,9 @@ def manager(request):
                 for i in range(0, len(rets2)):
                     form2_list.append(list(rets2[i]))
                 print(form2_list)
-                # TODO
                 # 翻页必须改成异步的
-                paginator2 = Paginator(form2_list, 3)  # 实例化Paginator, 每页显示3条数据
+                paginator2 = Paginator(form2_list,
+                                       PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
                 # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
                 page2 = 1
@@ -333,7 +351,7 @@ def manager(request):
                     page2 = request.GET.get('page2')
                 try:
                     article2 = paginator2.page(page2)
-                # todo: 注意捕获异常
+                # 注意捕获异常
                 except PageNotAnInteger:
                     # 如果请求的页数不是整数, 返回第一页。
                     article2 = paginator2.page(1)
@@ -354,6 +372,7 @@ def manager(request):
                     'message': u'ok',
                     "page": list(article),
                     "page2": list(article2),
+                    "group": group,
                 }
             except Exception as e:
                 #没有获取到对象
@@ -399,9 +418,9 @@ def manager(request):
             form2_list = []
             for i in range(0, len(rets2)):
                 form2_list.append(list(rets2[i]))
-            # TODO
             # 翻页必须改成异步的
-            paginator = Paginator(form1_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator = Paginator(form1_list,
+                                  PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page = 1
@@ -409,7 +428,7 @@ def manager(request):
                 page = request.GET.get('page')
             try:
                 article = paginator.page(page)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article = paginator.page(1)
@@ -420,7 +439,8 @@ def manager(request):
                 # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
                 article = paginator.page(paginator.num_pages)
 
-            paginator2 = Paginator(form2_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator2 = Paginator(form2_list,
+                                   PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page2 = 1
@@ -428,7 +448,7 @@ def manager(request):
                 page2 = request.GET.get('page2')
             try:
                 article2 = paginator2.page(page2)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article2 = paginator2.page(1)
@@ -453,11 +473,20 @@ def manager(request):
                 print("try")
                 l = []
                 l = User.objects.get(id=user_id)
-                # TODO 增加分组权限显示
                 if l.is_superuser == True:
                     is_su = "是"
                 else:
                     is_su = "否"
+                user = request.user
+                if in_groups(user, "GOVERNMENT"):
+                    group = group + "政府用户;"
+                if in_groups(user, "THIRDPARTY"):
+                    group = group + "第三方用户;"
+                if in_groups(user, "EXPERT"):
+                    group = group + "专家用户;"
+                if in_groups(user, "MANAGER"):
+                    group = group + "平台管理员用户;"
+
                 content = {
                     "user_id": l.id,
                     "username": l.username,
@@ -468,6 +497,7 @@ def manager(request):
                     "page": article,
                     "page2": article2,
                     "user_list": user_list,
+                    "group": group,
                 }
                 # print("content:", content)
             except Exception as e:
@@ -493,6 +523,12 @@ def gov(request):
                 return obj.strftime("%Y-%m-%d")
             else:
                 return json.JSONEncoder.default(self, obj)
+
+    def in_groups(u, *group_names):
+        if u.is_authenticated:
+            if bool(u.groups.filter(name__in=group_names)) | u.is_superuser:
+                return True
+        return False
 
     if request.method == 'POST':
         print("POST")
@@ -535,9 +571,9 @@ def gov(request):
             form1_list = []
             for i in range(0, len(rets1)):
                 form1_list.append(list(rets1[i]))
-            # TODO
             # 翻页必须改成异步的
-            paginator = Paginator(form1_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator = Paginator(form1_list,
+                                  PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page = 1
@@ -545,7 +581,7 @@ def gov(request):
                 page = request.GET.get('page')
             try:
                 article = paginator.page(page)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article = paginator.page(1)
@@ -601,9 +637,9 @@ def gov(request):
             form2_list = []
             for i in range(0, len(rets2)):
                 form2_list.append(list(rets2[i]))
-            # TODO
             # 翻页必须改成异步的
-            paginator2 = Paginator(form2_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator2 = Paginator(form2_list,
+                                   PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page2 = 1
@@ -611,7 +647,7 @@ def gov(request):
                 page2 = request.GET.get('page2')
             try:
                 article2 = paginator2.page(page2)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article2 = paginator2.page(1)
@@ -686,9 +722,9 @@ def gov(request):
             for i in range(0, len(rets2)):
                 form2_list.append(list(rets2[i]))
 
-            # TODO
             # 翻页必须改成异步的
-            paginator = Paginator(form1_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator = Paginator(form1_list,
+                                  PAGENUM)  # 实例化Paginator, 每页显示3条数据
             paginator2 = Paginator(form2_list, 3)
 
             article = []
@@ -699,7 +735,7 @@ def gov(request):
             if page != '':
                 try:
                     article = paginator.page(page)
-                # todo: 注意捕获异常
+                # 注意捕获异常
                 except PageNotAnInteger:
                     # 如果请求的页数不是整数, 返回第一页。
                     article = paginator.page(1)
@@ -712,7 +748,7 @@ def gov(request):
             if page2 != '':
                 try:
                     article2 = paginator2.page(page2)
-                # todo: 注意捕获异常
+                # 注意捕获异常
                 except PageNotAnInteger:
                     # 如果请求的页数不是整数, 返回第一页。
                     article2 = paginator2.page(1)
@@ -730,6 +766,7 @@ def gov(request):
                     is_su = "是"
                 else:
                     is_su = "否"
+
                 content = {
                     "page": list(article),
                     "page2": list(article2),
@@ -750,9 +787,9 @@ def gov(request):
             form1_list = []
             for i in range(0, len(rets1)):
                 form1_list.append(list(rets1[i]))
-            # TODO
             # 翻页必须改成异步的
-            paginator = Paginator(form1_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator = Paginator(form1_list,
+                                  PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page = 1
@@ -760,7 +797,7 @@ def gov(request):
                 page = request.GET.get('page')
             try:
                 article = paginator.page(page)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article = paginator.page(1)
@@ -779,9 +816,9 @@ def gov(request):
             form2_list = []
             for i in range(0, len(rets2)):
                 form2_list.append(list(rets2[i]))
-            # TODO
             # 翻页必须改成异步的
-            paginator2 = Paginator(form2_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator2 = Paginator(form2_list,
+                                   PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page2 = 1
@@ -789,7 +826,7 @@ def gov(request):
                 page2 = request.GET.get('page2')
             try:
                 article2 = paginator2.page(page2)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article2 = paginator2.page(1)
@@ -804,11 +841,20 @@ def gov(request):
                 print("try")
                 l = []
                 l = User.objects.get(id=user_id)
-                # TODO 增加分组权限显示
                 if l.is_superuser == True:
                     is_su = "是"
                 else:
                     is_su = "否"
+                group = ""
+                user = request.user
+                if in_groups(user, "GOVERNMENT"):
+                    group = group + "政府用户;"
+                if in_groups(user, "THIRDPARTY"):
+                    group = group + "第三方用户;"
+                if in_groups(user, "EXPERT"):
+                    group = group + "专家用户;"
+                if in_groups(user, "MANAGER"):
+                    group = group + "平台管理员用户;"
                 content = {
                     "user_id": l.id,
                     "username": l.username,
@@ -818,6 +864,7 @@ def gov(request):
                     "is_superuser": is_su,
                     "page": article,
                     "page2": article2,
+                    "group": group,
                 }
                 # print("content:", content)
             except Exception as e:
@@ -846,9 +893,16 @@ def thirdParty(request):
             else:
                 return json.JSONEncoder.default(self, obj)
 
+    def in_groups(u, *group_names):
+        if u.is_authenticated:
+            if bool(u.groups.filter(name__in=group_names)) | u.is_superuser:
+                return True
+        return False
+
     if request.method == 'POST':
         print("POST")
         #提交集采报告
+        print(request.POST)
         if request.POST.get('submit') == '提交报告':
             print("上传交评报告")
             #向db写数据
@@ -913,9 +967,9 @@ def thirdParty(request):
             form3_list = []
             for i in range(0, len(rets3)):
                 form3_list.append(list(rets3[i]))
-            # TODO
             # 翻页必须改成异步的
-            paginator = Paginator(form1_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator = Paginator(form1_list,
+                                  PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page = 1
@@ -923,7 +977,7 @@ def thirdParty(request):
                 page = request.GET.get('page')
             try:
                 article = paginator.page(page)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article = paginator.page(1)
@@ -934,7 +988,8 @@ def thirdParty(request):
                 # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
                 article = paginator.page(paginator.num_pages)
 
-            paginator3 = Paginator(form3_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator3 = Paginator(form3_list,
+                                   PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page3 = 1
@@ -942,7 +997,7 @@ def thirdParty(request):
                 page3 = request.GET.get('page3')
             try:
                 article3 = paginator3.page(page3)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article3 = paginator3.page(1)
@@ -958,7 +1013,9 @@ def thirdParty(request):
 
             return HttpResponse(json.dumps(data, cls=DateEncoder),
                                 content_type="application/json")
-        # return render(request, 'Thirdparty.html')
+        else:
+            print("error")
+            return render(request, 'Thirdparty.html')
     elif request.method == 'GET':
         print("GET")
         u"""处理废除清单、刷新订单信息
@@ -1024,9 +1081,9 @@ def thirdParty(request):
                 form2_list = []
                 for i in range(0, len(rets2)):
                     form2_list.append(list(rets2[i]))
-                # TODO
                 # 翻页必须改成异步的
-                paginator = Paginator(form1_list, 3)  # 实例化Paginator, 每页显示3条数据
+                paginator = Paginator(form1_list,
+                                      PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
                 # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
                 page = 1
@@ -1034,7 +1091,7 @@ def thirdParty(request):
                     page = request.GET.get('page')
                 try:
                     article = paginator.page(page)
-                # todo: 注意捕获异常
+                # 注意捕获异常
                 except PageNotAnInteger:
                     # 如果请求的页数不是整数, 返回第一页。
                     article = paginator.page(1)
@@ -1045,7 +1102,8 @@ def thirdParty(request):
                     # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
                     article = paginator.page(paginator.num_pages)
 
-                paginator2 = Paginator(form2_list, 3)  # 实例化Paginator, 每页显示3条数据
+                paginator2 = Paginator(form2_list,
+                                       PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
                 # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
                 page2 = 1
@@ -1053,7 +1111,7 @@ def thirdParty(request):
                     page2 = request.GET.get('page2')
                 try:
                     article2 = paginator2.page(page2)
-                # todo: 注意捕获异常
+                # 注意捕获异常
                 except PageNotAnInteger:
                     # 如果请求的页数不是整数, 返回第一页。
                     article2 = paginator2.page(1)
@@ -1124,9 +1182,9 @@ def thirdParty(request):
             form3_list = []
             for i in range(0, len(rets3)):
                 form3_list.append(list(rets3[i]))
-            # TODO
             # 翻页必须改成异步的
-            paginator = Paginator(form1_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator = Paginator(form1_list,
+                                  PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page = 1
@@ -1134,7 +1192,7 @@ def thirdParty(request):
                 page = request.GET.get('page')
             try:
                 article = paginator.page(page)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article = paginator.page(1)
@@ -1145,7 +1203,8 @@ def thirdParty(request):
                 # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
                 article = paginator.page(paginator.num_pages)
 
-            paginator2 = Paginator(form2_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator2 = Paginator(form2_list,
+                                   PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page2 = 1
@@ -1153,7 +1212,7 @@ def thirdParty(request):
                 page2 = request.GET.get('page2')
             try:
                 article2 = paginator2.page(page2)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article2 = paginator2.page(1)
@@ -1164,7 +1223,8 @@ def thirdParty(request):
                 # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
                 article2 = paginator2.page(paginator2.num_pages)
 
-            paginator3 = Paginator(form3_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator3 = Paginator(form3_list,
+                                   PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page3 = 1
@@ -1172,7 +1232,7 @@ def thirdParty(request):
                 page3 = request.GET.get('page3')
             try:
                 article3 = paginator3.page(page3)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article3 = paginator3.page(1)
@@ -1191,9 +1251,9 @@ def thirdParty(request):
             form4_list = []
             for i in range(0, len(rets4)):
                 form4_list.append(list(rets4[i]))
-            # TODO
             # 翻页必须改成异步的
-            paginator4 = Paginator(form4_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator4 = Paginator(form4_list,
+                                   PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page4 = 1
@@ -1201,7 +1261,7 @@ def thirdParty(request):
                 page4 = request.GET.get('page4')
             try:
                 article4 = paginator4.page(page4)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article4 = paginator4.page(1)
@@ -1217,11 +1277,20 @@ def thirdParty(request):
                 print("try")
                 l = []
                 l = User.objects.get(id=user_id)
-                # TODO 增加分组权限显示
                 if l.is_superuser == True:
                     is_su = "是"
                 else:
                     is_su = "否"
+                group = ""
+                user = request.user
+                if in_groups(user, "GOVERNMENT"):
+                    group = group + "政府用户;"
+                if in_groups(user, "THIRDPARTY"):
+                    group = group + "第三方用户;"
+                if in_groups(user, "EXPERT"):
+                    group = group + "专家用户;"
+                if in_groups(user, "MANAGER"):
+                    group = group + "平台管理员用户;"
                 content = {
                     "user_id": l.id,
                     "username": l.username,
@@ -1233,6 +1302,7 @@ def thirdParty(request):
                     "page2": article2,
                     "page3": article3,
                     "page4": article4,
+                    "group": group,
                 }
                 # print("content:", content)
             except Exception as e:
@@ -1259,8 +1329,15 @@ def expert(request):
             else:
                 return json.JSONEncoder.default(self, obj)
 
+    def in_groups(u, *group_names):
+        if u.is_authenticated:
+            if bool(u.groups.filter(name__in=group_names)) | u.is_superuser:
+                return True
+        return False
+
     if request.method == 'POST':
         print("POST")
+        print(request.POST)
         #评审订单提交
         if request.POST.get('submit') == '提交报告':
             print("上传交评报告")
@@ -1269,7 +1346,7 @@ def expert(request):
             print(report)
             formId = request.POST.get(
                 'formId')  # 通过<input type="hidden" value="xxx">设置默认隐藏字段
-            print(formId)
+            print("formId=", formId)
             form = Form2.objects.filter(Q(formId=formId))
 
             username = request.user
@@ -1299,7 +1376,8 @@ def expert(request):
             # 正在进行的订单
             rets1 = Form2.objects.filter(
                 Q(userId2=user_id)
-                & Q(significanceBit=True) & Q(done=False)).values_list(
+                & Q(significanceBit=True) & Q(done=False)
+                & Q(taken=True)).values_list(
                     "expertCategory",
                     "price",
                     "expertNum",
@@ -1315,7 +1393,8 @@ def expert(request):
             # 已完成的订单
             rets3 = Form2.objects.filter(
                 Q(userId2=user_id)
-                & Q(significanceBit=True) & Q(done=True)).values_list(
+                & Q(significanceBit=True)
+                & Q(done=True) & Q(taken=True)).values_list(
                     "expertCategory", "price", "expertNum", "assessTime",
                     "formId", "significanceBit", "taken", "done", "userId2",
                     "userName2", "subtype").order_by("-formId")
@@ -1326,9 +1405,9 @@ def expert(request):
             form3_list = []
             for i in range(0, len(rets3)):
                 form3_list.append(list(rets3[i]))
-            # TODO
             # 翻页必须改成异步的
-            paginator = Paginator(form1_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator = Paginator(form1_list,
+                                  PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page = 1
@@ -1336,7 +1415,7 @@ def expert(request):
                 page = request.GET.get('page')
             try:
                 article = paginator.page(page)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article = paginator.page(1)
@@ -1347,7 +1426,8 @@ def expert(request):
                 # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
                 article = paginator.page(paginator.num_pages)
 
-            paginator3 = Paginator(form3_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator3 = Paginator(form3_list,
+                                   PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page3 = 1
@@ -1355,7 +1435,7 @@ def expert(request):
                 page3 = request.GET.get('page3')
             try:
                 article3 = paginator3.page(page3)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article3 = paginator3.page(1)
@@ -1371,7 +1451,8 @@ def expert(request):
 
             return HttpResponse(json.dumps(data, cls=DateEncoder),
                                 content_type="application/json")
-        # return render(request, 'Expert.html')
+        else:
+            return render(request, 'Expert.html')
 
     elif request.method == 'GET':
         print("GET")
@@ -1419,7 +1500,8 @@ def expert(request):
                 # 正在进行的订单
                 rets1 = Form2.objects.filter(
                     Q(taken=True) & Q(userId2=user_id)
-                    & Q(significanceBit=True) & Q(done=False)).values_list(
+                    & Q(significanceBit=True) & Q(done=False)
+                    & Q(taken=True)).values_list(
                         "expertCategory",
                         "price",
                         "expertNum",
@@ -1445,9 +1527,9 @@ def expert(request):
                 form2_list = []
                 for i in range(0, len(rets2)):
                     form2_list.append(list(rets2[i]))
-                # TODO
                 # 翻页必须改成异步的
-                paginator = Paginator(form1_list, 3)  # 实例化Paginator, 每页显示3条数据
+                paginator = Paginator(form1_list,
+                                      PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
                 # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
                 page = 1
@@ -1455,7 +1537,7 @@ def expert(request):
                     page = request.GET.get('page')
                 try:
                     article = paginator.page(page)
-                # todo: 注意捕获异常
+                # 注意捕获异常
                 except PageNotAnInteger:
                     # 如果请求的页数不是整数, 返回第一页。
                     article = paginator.page(1)
@@ -1466,7 +1548,8 @@ def expert(request):
                     # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
                     article = paginator.page(paginator.num_pages)
 
-                paginator2 = Paginator(form2_list, 3)  # 实例化Paginator, 每页显示3条数据
+                paginator2 = Paginator(form2_list,
+                                       PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
                 # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
                 page2 = 1
@@ -1474,7 +1557,7 @@ def expert(request):
                     page2 = request.GET.get('page2')
                 try:
                     article2 = paginator2.page(page2)
-                # todo: 注意捕获异常
+                # 注意捕获异常
                 except PageNotAnInteger:
                     # 如果请求的页数不是整数, 返回第一页。
                     article2 = paginator2.page(1)
@@ -1517,7 +1600,8 @@ def expert(request):
             # 正在进行的订单
             rets1 = Form2.objects.filter(
                 Q(userId2=user_id)
-                & Q(significanceBit=True) & Q(done=False)).values_list(
+                & Q(significanceBit=True) & Q(done=False)
+                & Q(taken=True)).values_list(
                     "expertCategory",
                     "price",
                     "expertNum",
@@ -1539,7 +1623,8 @@ def expert(request):
             # 已完成的订单
             rets3 = Form2.objects.filter(
                 Q(userId2=user_id)
-                & Q(significanceBit=True) & Q(done=True)).values_list(
+                & Q(significanceBit=True)
+                & Q(done=True) & Q(taken=True)).values_list(
                     "expertCategory", "price", "expertNum", "assessTime",
                     "formId", "significanceBit", "taken", "done", "userId2",
                     "userName2", "subtype").order_by("-formId")
@@ -1553,9 +1638,9 @@ def expert(request):
             form3_list = []
             for i in range(0, len(rets3)):
                 form3_list.append(list(rets3[i]))
-            # TODO
             # 翻页必须改成异步的
-            paginator = Paginator(form1_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator = Paginator(form1_list,
+                                  PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page = 1
@@ -1563,7 +1648,7 @@ def expert(request):
                 page = request.GET.get('page')
             try:
                 article = paginator.page(page)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article = paginator.page(1)
@@ -1574,7 +1659,8 @@ def expert(request):
                 # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
                 article = paginator.page(paginator.num_pages)
 
-            paginator2 = Paginator(form2_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator2 = Paginator(form2_list,
+                                   PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page2 = 1
@@ -1582,7 +1668,7 @@ def expert(request):
                 page2 = request.GET.get('page2')
             try:
                 article2 = paginator2.page(page2)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article2 = paginator2.page(1)
@@ -1593,7 +1679,8 @@ def expert(request):
                 # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
                 article2 = paginator.page(paginator2.num_pages)
 
-            paginator3 = Paginator(form3_list, 3)  # 实例化Paginator, 每页显示3条数据
+            paginator3 = Paginator(form3_list,
+                                   PAGENUM)  # 实例化Paginator, 每页显示3条数据
 
             # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
             page3 = 1
@@ -1601,7 +1688,7 @@ def expert(request):
                 page3 = request.GET.get('page3')
             try:
                 article3 = paginator3.page(page3)
-            # todo: 注意捕获异常
+            # 注意捕获异常
             except PageNotAnInteger:
                 # 如果请求的页数不是整数, 返回第一页。
                 article3 = paginator3.page(1)
@@ -1617,11 +1704,20 @@ def expert(request):
                 print("try")
                 l = []
                 l = User.objects.get(id=user_id)
-                # TODO 增加分组权限显示
                 if l.is_superuser == True:
                     is_su = "是"
                 else:
                     is_su = "否"
+                group = ""
+                user = request.user
+                if in_groups(user, "GOVERNMENT"):
+                    group = group + "政府用户;"
+                if in_groups(user, "THIRDPARTY"):
+                    group = group + "第三方用户;"
+                if in_groups(user, "EXPERT"):
+                    group = group + "专家用户;"
+                if in_groups(user, "MANAGER"):
+                    group = group + "平台管理员用户;"
                 content = {
                     "user_id": l.id,
                     "username": l.username,
@@ -1632,6 +1728,7 @@ def expert(request):
                     "page": article,
                     "page2": article2,
                     "page3": article3,
+                    "group": group,
                 }
                 # print("content:", content)
             except Exception as e:

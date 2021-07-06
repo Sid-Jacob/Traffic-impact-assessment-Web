@@ -9,10 +9,8 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 
-# TODO
-# 忘记密码
-# TODO
-# 登录后跳转到之前的页面、根据用户信息跳转到个人主页
+# TODO 忘记密码
+# TODO 登录后跳转到之前的页面、根据用户信息跳转到个人主页
 
 
 #登出

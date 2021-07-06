@@ -9,7 +9,6 @@
     <meta charset="utf-8">
     <!-- <link rel="icon" href={%static "images/favicon.ico"%} type="image/x-icon"> -->
     <!-- Stylesheets-->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:100,300,300i,400,700,900">
     <link rel="stylesheet" href={%static "css/bootstrap.css"%}>
     <link rel="stylesheet" href={%static "css/fonts.css"%}>
     <link rel="stylesheet" href={%static "css/style.css"%} id="main-styles-link">
@@ -20,7 +19,7 @@
 	<script src={%static 'js/jquery-3.6.0.min.js'%}></script>
 		<script>
 	
-	<!-- 刷新页面、翻页用TODO -->
+	<!-- 刷新页面、翻页用 -->
 <!-- function loadXMLDoc1() -->
 <!-- { -->
 	<!-- var xmlhttp; -->
@@ -180,12 +179,6 @@ $.ajax({
 						{% comment %} 设置page2 {% endcomment %}
 						text1="";
 						block="";
-						console.log(typeof(result.page2));
-						console.log(result.page2);
-						console.log(typeof(result.page2[0]));
-						console.log(result.page2[0]);
-						console.log(typeof(result.page2[0][6]));
-						console.log(result.page2[0][6]);
 						for(i=0;i<result.page2.length;i++){
 							block='<li><h5>'+result.page2[i][6];
 							block=block+'号集采订单</h5><p>省份：'+result.page2[i][0]+'，城市：'+result.page2[i][1]+'，县：'+result.page2[i][2]+'，订单数量：'+result.page2[i][3]+'，期限：'+result.page2[i][4]+'，谈判时间：'+result.page2[i][5]+'，抽审比例：'+result.page2[i][13]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
@@ -208,7 +201,7 @@ $.ajax({
 							else{
 								block = block+'<p>error</p>';
 							}
-							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input type="button"  class="button button-sm button-secondary" name="submit" value="接单" onclick="javascript:take('+result.page2[i][6]+')"></form>';
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input type="button"  class="button button-sm button-secondary" name="submit" value="接单" onclick="javascript:take('+result.page2[i][6]+')"></form></article></div><br></li>';
 							
 							
 							console.log(result.page2[i][6]);
@@ -226,12 +219,7 @@ $.ajax({
 						
 						text1="";
 						block="";
-						console.log(typeof(result.page));
-						console.log(result.page);
-						console.log(typeof(result.page[0]));
-						console.log(result.page[0]);
-						console.log(typeof(result.page[0][6]));
-						console.log(result.page[0][6]);
+
 						for(i=0;i<result.page.length;i++){
 							block='<li><h5>'+result.page[i][6]+'号集采订单</h5><p>省份：'+result.page[i][0]+'，城市：'+result.page[i][1]+'，县：'+result.page[i][2]+'，订单数量：'+result.page[i][3]+'，期限：'+result.page[i][4]+'，谈判时间：'+result.page[i][5]+'，抽审比例：'+result.page[i][13]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
 							if(result.page[i][7]==0){
@@ -253,7 +241,7 @@ $.ajax({
 							else{
 								block = block+'<p>error</p>';
 							}
-							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form id="jicai-report" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report"><input class="form-input" id="hidden" type="hidden" name="formId" value="'+result.page[i][6]+'"><textarea rows="2" cols="100" name="report-content" form="report"  placeholder="请输入报告内容..."></textarea><input type="hidden" class="button button-secondary" name="submit" value="提交报告"><input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4()"></form>';
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form id='+result.page[i][6]+' onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input class="form-input" type="hidden" name="formId" value="'+result.page[i][6]+'"><textarea rows="2" cols="100" name="report-content" form='+result.page[i][6]+'  placeholder="请输入报告内容..."></textarea><input type="hidden" class="button button-secondary" name="submit" value="提交报告"><input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4('+result.page[i][6]+')"></form><br></article></div></li>';
 							
 							
 							console.log(result.page[i][6]);
@@ -288,14 +276,17 @@ $.ajax({
 
 
 <!-- 提交报告、异步刷新页面用 -->
-function submitForm4()
+function submitForm4(formid)
 {
+
+var formId='#'+formid
+
 	$.ajax({
             //几个参数需要注意一下
                 type: "POST",//方法类型
                 dataType: "json",//预期服务器返回的数据类型
                 url: "{%url 'main:thirdParty'%}" ,//url
-                data: $('#jicai-report').serialize(),
+                data: $(formId).serialize(),
                 success: function (result) {
                     console.log(result);//打印服务端返回的数据(调试用)
                     if (result.status == 200) {
@@ -303,12 +294,7 @@ function submitForm4()
 						{% comment %} 设置page3 {% endcomment %}
 						text1="";
 						block="";
-						console.log(typeof(result.page3));
-						console.log(result.page3);
-						console.log(typeof(result.page3[0]));
-						console.log(result.page3[0]);
-						console.log(typeof(result.page3[0][6]));
-						console.log(result.page3[0][6]);
+
 						for(i=0;i<result.page3.length;i++){
 							block='<li><h5>'+result.page3[i][6];
 							block=block+'号集采订单</h5><p>省份：'+result.page3[i][0]+'，城市：'+result.page3[i][1]+'，县：'+result.page3[i][2]+'，订单数量：'+result.page3[i][3]+'，期限：'+result.page3[i][4]+'，谈判时间：'+result.page3[i][5]+'，抽审比例：'+result.page3[i][13]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
@@ -331,7 +317,7 @@ function submitForm4()
 							else{
 								block = block+'<p>error</p>';
 							}
-							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div>';
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div></article></div></li>';
 							
 							
 							console.log(result.page3[i][6]);
@@ -349,12 +335,7 @@ function submitForm4()
 						
 						text1="";
 						block="";
-						console.log(typeof(result.page));
-						console.log(result.page);
-						console.log(typeof(result.page[0]));
-						console.log(result.page[0]);
-						console.log(typeof(result.page[0][6]));
-						console.log(result.page[0][6]);
+	
 						for(i=0;i<result.page.length;i++){
 							block='<li><h5>'+result.page[i][6]+'号集采订单</h5><p>省份：'+result.page[i][0]+'，城市：'+result.page[i][1]+'，县：'+result.page[i][2]+'，订单数量：'+result.page[i][3]+'，期限：'+result.page[i][4]+'，谈判时间：'+result.page[i][5]+'，抽审比例：'+result.page[i][13]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
 							if(result.page[i][7]==0){
@@ -376,7 +357,7 @@ function submitForm4()
 							else{
 								block = block+'<p>error</p>';
 							}
-							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form id="jicai-report" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report"><input class="form-input" id="hidden" type="hidden" name="formId" value="'+result.page[i][6]+'"><textarea rows="2" cols="100" name="report-content" form="report"  placeholder="请输入报告内容..."></textarea><input type="hidden" class="button button-secondary" name="submit" value="提交报告"><input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4()"></form>';
+							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form id='+result.page[i][6]+' onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input class="form-input" type="hidden" name="formId" value="'+result.page[i][6]+'"><textarea rows="2" cols="100" name="report-content" form='+result.page[i][6]+'  placeholder="请输入报告内容..."></textarea><input type="hidden" class="button button-secondary" name="submit" value="提交报告"><input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4('+result.page[i][6]+')"></form>';
 							
 							
 							console.log(result.page[i][6]);
@@ -547,9 +528,8 @@ function submitForm4()
                   <li class="nav-item" role="presentation"><a class="nav-link active" href="#tabs-2-1" data-toggle="tab">正在进行</a></li>
                   <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-2" data-toggle="tab">新订单</a></li>
                   <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-3" data-toggle="tab">历史订单</a></li>
-				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-4" data-toggle="tab">专家评审订单</a></li>
-				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-5" data-toggle="tab">问题反馈</a></li>
-				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-6" data-toggle="tab">我的信息</a></li>
+				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-4" data-toggle="tab">问题反馈</a></li>
+				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-5" data-toggle="tab">我的信息</a></li>
                 </ul>
                 <!-- Tab panes-->
                 <div class="tab-content">
@@ -562,7 +542,6 @@ function submitForm4()
 					  <!--当前页内容遍历展示-->
 					  {%for item in page%}
 					  <li>
-						  
 						  {% if item.12 == 1 %}
 						  <h5>{{item.6}}号集采订单</h5>
 						  <p>省份：{{item.0}}，城市：{{item.1}}，县：{{item.2}}，订单数量：{{item.3}}，期限：{{item.4}}，谈判时间：{{item.5}}，抽审比例：{{item.13}}</p> 
@@ -587,62 +566,21 @@ function submitForm4()
 							  <div class="progress-bar-linear-wrap">
 								<div class="progress-bar-linear"></div>
 							  </div>
-							  
-							  
-					
-							  <form id="jicai-report" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" id="report">
+							  <form id={{item.6}} onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
 										<!-- <a>关联订单编号</a>
 										<div class="form-wrap">
 										  <input class="form-input" id="formId" type="number" name="formId" data-constraints="@Required">
 										  <label class="form-label" for="formId">{{item.6}}</label>
 										</div> -->
-										<input class="form-input" id="hidden" type="hidden" name="formId" value="{{item.6}}">
+										<input class="form-input" id="formId" type="hidden" name="formId" value={{item.6}}>
 										
-										<textarea rows="2" cols="100" name="report-content" form="report"  placeholder="请输入报告内容..."></textarea>
+										<textarea rows="2" cols="100" name="report-content" form={{item.6}}  placeholder="请输入报告内容..."></textarea>
 										<input type="hidden" class="button button-secondary" name="submit" value="提交报告">
-										<input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4()">
+										<input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4({{item.6}})">
 							  </form>
 								
 							  <br>
-									<!-- <ul class="contact-box">
-								
-									<h3>专家评审服务信息填写</h3>
-									<form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
-												<a>评审时间</a>
-												<div class="form-wrap">
-												  <input class="form-input" id="pingshen-ddl" type="date" name="pingshen-ddl" data-constraints="@Required">
-												  <label class="form-label" for="pingshen-ddl"></label>
-												</div>
-												<a>专家人数</a>
-												<div class="form-wrap">									  
-												  <input class="form-input" id="pingshen-expert-num" type="text" name="expert-num" data-constraints="@Required">
-												  <label class="form-label" for="pingshen-expert-num">人</label>
-												</div>
-												<a>价格</a>
-												  <div class="form-wrap">
-												  <input class="form-input" id="pingshen-price" type="text" name="price" data-constraints="@Required">
-												  <label class="form-label" for="pingshen-price">元（人民币）</label>
-												</div>
-												<a>专家类别</a>
-												A类
-												<input type="radio" checked="checked" name="expert-type" value="A类" />
-												B类
-												<input type="radio" name="expert-type" value="B类" />
-												C类
-												<input type="radio" name="expert-type" value="C类" />
-												<br>
-												
-												<input class="form-input" id="hidden" type="hidden" name="formId" value="{{item.6}}">
-											
-												<input type="submit" class="button button-secondary" name="submit" value="提交抽审订单"/>
-									</form>
-								  
-									</ul> -->
-							  <!-- </br> -->
-							  
-							  <!-- <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
-								<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:loadXMLDoc2({{item.12}},{{item.6}})">
-							  </form> -->
+									
 							</article>
 							</div>
 						  {%else%}
@@ -652,7 +590,7 @@ function submitForm4()
 					  {%endfor%}
 					  </article>
 						<!-- Bootstrap Pagination -->
-						<article id="jicai-ongoing-page">
+						{% comment %} <article id="jicai-ongoing-page">
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
 								{% if page.has_previous %}  
@@ -674,7 +612,7 @@ function submitForm4()
 								{% endif %}
 							</ul>
 						  </nav>
-						  </article>
+						  </article> {% endcomment %}
 					  </div>
 					</ul>
 					
@@ -730,7 +668,7 @@ function submitForm4()
 					  {%endfor%}
 					  </article>
 						<!-- Bootstrap Pagination -->
-						<article id="jicai-new-page">
+						{% comment %} <article id="jicai-new-page">
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
 								{% if page2.has_previous %}  
@@ -752,7 +690,7 @@ function submitForm4()
 								{% endif %}
 							</ul>
 						  </nav>
-						  </article>
+						  </article> {% endcomment %}
 					  </div>
 					</ul>
 					
@@ -800,7 +738,7 @@ function submitForm4()
 					  {%endfor%}
 					  </article>
 						<!-- Bootstrap Pagination -->
-						<article id="jicai-history-page">
+						{% comment %} <article id="jicai-history-page">
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
 								{% if page3.has_previous %}  
@@ -822,94 +760,21 @@ function submitForm4()
 								{% endif %}
 							</ul>
 						  </nav>
-						  </article>
+						  </article> {% endcomment %}
 					  </div>
 					</ul>
                   </div>
+				  
+				  
 				  
 				  <div class="tab-pane fade" id="tabs-2-4">
                     <ul class="contact-box">
-					<!-- Skill Bars-->
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					  <article id="pingshen-article">
-					  <!--当前页内容遍历展示-->
-					  {%for item in page4%}
-					  <li>
-						  <!-- <p>{{item.0}} {{item.1}} {{item.2}} {{item.3}} {{item.4}} {{item.5}} {{item.6}} {{item.7}} {{item.8}} {{item.9}} {{item.10}}</p> -->
-						  {% if item.10 == 2 %}
-						  <h5>{{item.4}}号专家评审订单</h5>
-						   <p>评审时间：{{item.3}}，专家人数：{{item.2}}，价格：{{item.1}}，专家类别：{{item.0}}</p>
-							<!-- Linear progress bar-->
-							<div class="progress-linear-wrap">
-							<article class="progress-linear">
-							  <div class="progress-header">
-								{%if item.5 == 0%}
-									<p>订单执行百分比</p><span class="progress-value">0</span>
-								{%elif item.6 == 0%}
-									<p>订单执行百分比</p><span class="progress-value">33</span>
-								{%elif item.7 == 0%}
-									<p>订单执行百分比</p><span class="progress-value">66</span>
-									<p>接单用户：{{item.9}}</p>
-								{%elif item.5 == 1 and item.6 == 1 and item.7 == 1%}
-									<p>订单执行百分比</p><span class="progress-value">100</span>
-									<p>接单用户：{{item.9}}</p>
-								{%else%}
-									<p>error</p><span class="progress-value">100</span>
-								{%endif%}
-							  </div>
-							  <div class="progress-bar-linear-wrap">
-								<div class="progress-bar-linear"></div>
-							  </div>
-							  <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post">
-								<input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:nullify({{item.10}},{{item.4}})">
-							  </form>
-							</article>
-							</div>							
-						  {%else%}
-							<p>error</p>
-					 	  
-						  {% endif %}
-						  <br>
-						  
-					  </li>
-					  {%endfor%}
-					  </article>
-						<!-- Bootstrap Pagination -->
-						<article id="pingshen-page">
-						  <nav class="page-navigation" aria-label="Page navigation">
-							<ul class="pagination">
-								{% if page4.has_previous %}  
-									<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page4={{page4.previous_page_number}}" aria-label="Previous">
-										<span aria-hidden="true">&laquo;</span></a></li>
-								{% endif %}
-
-								{% for num in page4.paginator4.page_range%} 
-									{%if pindex == page4.number%}
-										<li class="page-item active"><span class="page-link">{{ num }}</span></li>
-									{%else%}
-										<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page4={{num}}">{{ num }}</a></li>
-									{%endif%}
-								{% endfor %}
-
-								{% if page4.has_next %}  
-									<li class="page-item"><a class="page-link" href="{%url 'main:thirdParty'%}/?page4={{page4.next_page_number}}" aria-label="Next">
-										<span aria-hidden="true">&raquo;</span></a></li>
-								{% endif %}
-							</ul>
-						  </nav>
-						  </article>
-					  </div>
-					</ul>
-                  </div>
-				  
-				  <div class="tab-pane fade" id="tabs-2-5">
-                    <ul class="contact-box">
-                      <h4>TODO</h4>
+                      <h4>功能待完善...</h4>
 					  
                     </ul>
                   </div>
 				  
-				  <div class="tab-pane fade" id="tabs-2-6">
+				  <div class="tab-pane fade" id="tabs-2-5">
                     <ul class="contact-box">
                       <li>
                         <div class="unit unit-horizontal unit-spacing-xxs">
@@ -924,9 +789,10 @@ function submitForm4()
 
                               <li><a class="hover-text" >上次登录时间：{{last_login}}</a></li>
                               <li><a class="hover-text" >注册时间：{{date_joined}}</a></li>
-							  <li><a class="hover-text" >是否为平台管理员：{{is_superuser}}</a></li>
-							  <li><a class="hover-text" >用户权限：TODO</a></li>
+							  <li><a class="hover-text" >是否为超级管理员：{{is_superuser}}</a></li>
 							  <li><a class="hover-text" >用户邮箱：{{email}}</a></li>
+							  <br>
+							  <li><a class="hover-text" id="user-group">用户身份：{{group}}</a></li>
 
                           </div>
                         </div>

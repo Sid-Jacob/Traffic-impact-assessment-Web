@@ -9,7 +9,6 @@
     <meta charset="utf-8">
     <!-- <link rel="icon" href={%static "images/favicon.ico"%} type="image/x-icon"> -->
     <!-- Stylesheets-->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:100,300,300i,400,700,900">
     <link rel="stylesheet" href={%static "css/bootstrap.css"%}>
     <link rel="stylesheet" href={%static "css/fonts.css"%}>
     <link rel="stylesheet" href={%static "css/style.css"%} id="main-styles-link">
@@ -20,7 +19,7 @@
 	<script src={%static 'js/jquery-3.6.0.min.js'%}></script>
 	<script>
 	
-	<!-- 刷新页面、翻页用TODO -->
+	<!-- 刷新页面、翻页用 -->
 <!-- function loadXMLDoc1() -->
 <!-- { -->
 	<!-- var xmlhttp; -->
@@ -478,7 +477,7 @@ function submitForm2()
                   <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-2" data-toggle="tab">专家评审服务</a></li>
                   <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-3" data-toggle="tab">我的集采订单</a></li>
 				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-4" data-toggle="tab">专家评审订单</a></li>
-				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-5" data-toggle="tab">订单修改#TODO</a></li>
+				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-5" data-toggle="tab">订单修改</a></li>
 				  <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-2-6" data-toggle="tab">我的信息</a></li>
                 </ul>
                 <!-- Tab panes-->
@@ -618,7 +617,7 @@ function submitForm2()
 					  </li>
 					  {%endfor%}
 					  </article>
-					  <article id="jicai-page">
+					  {% comment %} <article id="jicai-page">
 						<!-- Bootstrap Pagination -->
 						  <nav class="page-navigation" aria-label="Page navigation" id="page-navigation1">
 							<ul class="pagination">
@@ -641,7 +640,7 @@ function submitForm2()
 								{% endif %}
 							</ul>
 						  </nav>
-						  </article>
+						  </article> {% endcomment %}
 					  </div>
 					</ul>
                   </div>
@@ -693,7 +692,7 @@ function submitForm2()
 					  </li>
 					  {%endfor%}
 					  </article>
-					  <article id="pingshen-page">
+					  {% comment %} <article id="pingshen-page">
 						<!-- Bootstrap Pagination -->
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
@@ -716,7 +715,7 @@ function submitForm2()
 								{% endif %}
 							</ul>
 						  </nav>
-						  </article>
+						  </article> {% endcomment %}
 					  </div>
 					</ul>
                   </div>
@@ -727,7 +726,7 @@ function submitForm2()
                       <li>
                         <div class="unit unit-horizontal unit-spacing-xxs">
                           <div class="unit-left"><span class="icon mdi mdi-map-marker"></span></div>
-                          <div class="unit-body"><a class="hover-text" href="#">TODO</a></div>
+                          <div class="unit-body"><a class="hover-text" href="#">功能待完善...</a></div>
                         </div>
                       </li>
                     </ul>
@@ -747,9 +746,10 @@ function submitForm2()
 
                               <li><a class="hover-text" >上次登录时间：{{last_login}}</a></li>
                               <li><a class="hover-text" >注册时间：{{date_joined}}</a></li>
-							  <li><a class="hover-text" >是否为平台管理员：{{is_superuser}}</a></li>
-							  <li><a class="hover-text" >用户权限：TODO</a></li>
+							  <li><a class="hover-text" >是否为超级管理员：{{is_superuser}}</a></li>
 							  <li><a class="hover-text" >用户邮箱：{{email}}</a></li>
+							  <br>
+							  <li><a class="hover-text" id="user-group">用户身份：{{group}}</a></li>
 
                           </div>
                         </div>

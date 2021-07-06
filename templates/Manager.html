@@ -9,7 +9,6 @@
     <meta charset="utf-8">
     <!-- <link rel="icon" href={%static "images/favicon.ico"%} type="image/x-icon"> -->
     <!-- Stylesheets-->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:100,300,300i,400,700,900">
     <link rel="stylesheet" href={%static "css/bootstrap.css"%}>
     <link rel="stylesheet" href={%static "css/fonts.css"%}>
     <link rel="stylesheet" href={%static "css/style.css"%} id="main-styles-link">
@@ -20,7 +19,7 @@
 	<script src={%static 'js/jquery-3.6.0.min.js'%}></script>
 		<script>
 	
-	<!-- 刷新页面、翻页用TODO -->
+	<!-- 刷新页面、翻页用 -->
 <!-- function loadXMLDoc1() -->
 <!-- { -->
 	<!-- var xmlhttp; -->
@@ -135,14 +134,15 @@ $.ajax({
 
 }
 <!-- 提交订单、异步刷新页面用 -->
-function submitForm2()
+function submitForm2(form1id)
 {
+var formId='#'+form1id
 	$.ajax({
             //几个参数需要注意一下
                 type: "POST",//方法类型
                 dataType: "json",//预期服务器返回的数据类型
                 url: "{%url 'main:manager'%}" ,//url
-                data: $('#pingshenform').serialize(),
+                data: $(formId).serialize(),
                 success: function (result) {
                     console.log(result);//打印服务端返回的数据(调试用)
                     if (result.status == 200) {
@@ -157,8 +157,7 @@ function submitForm2()
 						<!-- console.log(typeof(result.page[0][6])); -->
 						<!-- console.log(result.page[0][6]); -->
 						for(i=0;i<result.page.length;i++){
-							block='<li><h5>'+result.page[i][6]+'号集采订单</h5><p>省份：'+result.page[i][0]+'，城市：'+result.page[i][1]+'，县：'+result.page[i][2]+'，订单数量：'+result.page[i][3]+'，期限：'+result.page[i][4]+'，谈判时间：'+result.page[i][5]+'，抽审比例：'+result.page[i][13]+'</p><div class="progress-linear-wrap"><div class="progress-linear-wrap"><ul class="contact-box"><h3>专家评审服务信息填写</h3><form id="pingshenform" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" ><a>评审时间</a><div class="form-wrap"><input class="form-input" id="pingshen-ddl" type="date" name="pingshen-ddl" data-constraints="@Required"><label class="form-label" for="pingshen-ddl"></label></div><a>专家人数</a><div class="form-wrap"><input class="form-input" id="pingshen-expert-num" type="text" name="expert-num" data-constraints="@Required"><label class="form-label" for="pingshen-expert-num">人</label></div><a>价格</a><div class="form-wrap"><input class="form-input" id="pingshen-price" type="text" name="price" data-constraints="@Required"><label class="form-label" for="pingshen-price">元（人民币）</label></div><a>专家类别</a>A类<input type="radio" checked="checked" name="expert-type" value="A类" />B类<input type="radio" name="expert-type" value="B类" />C类<input type="radio" name="expert-type" value="C类" /><br><input class="form-input" id="hidden" type="hidden" name="formId" value="'+result.page[i][6]+'"><input type="hidden" class="button button-secondary" name="submit" value="提交抽审订单"/><input type="submit" class="button button-secondary" name="submit" value="提交抽审订单" onclick="submitForm2()"/></form></ul></br></div></li>';
-							<!-- console.log(result.page[i][6]); -->
+							block='<li><h5>'+result.page[i][6]+'号集采订单</h5><p>省份：'+result.page[i][0]+'，城市：'+result.page[i][1]+'，县：'+result.page[i][2]+'，订单数量：'+result.page[i][3]+'，期限：'+result.page[i][4]+'，谈判时间：'+result.page[i][5]+'，抽审比例：'+result.page[i][13]+'</p><div class="progress-linear-wrap"><div class="progress-linear-wrap"><ul class="contact-box"><h3>专家评审服务信息填写</h3><form id='+result.page[i][6]+' onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" ><a>评审时间</a><div class="form-wrap"><input class="form-input" id="pingshen-ddl" type="date" name="pingshen-ddl" data-constraints="@Required"><label class="form-label" for="pingshen-ddl"></label></div><a>专家人数</a><div class="form-wrap"><input class="form-input" id="pingshen-expert-num" type="text" name="expert-num" data-constraints="@Required"><label class="form-label" for="pingshen-expert-num">人</label></div><a>价格</a><div class="form-wrap"><input class="form-input" id="pingshen-price" type="text" name="price" data-constraints="@Required"><label class="form-label" for="pingshen-price">元（人民币）</label></div><a>专家类别</a>A类<input type="radio" checked="checked" name="expert-type" value="A类" />B类<input type="radio" name="expert-type" value="B类" />C类<input type="radio" name="expert-type" value="C类" /><br><input class="form-input" id="hidden" type="hidden" name="formId" value="'+result.page[i][6]+'"><input type="hidden" class="button button-secondary" name="submit" value="提交抽审订单"/><input type="submit" class="button button-secondary" name="submit" value="提交抽审订单" onclick="submitForm2('+result.page[i][6]+')"/></form></ul></br></div></li>';
 							text1=text1+"<br>"+block;
 						}
 						
@@ -222,6 +221,8 @@ function submitForm3()
                     console.log(result);//打印服务端返回的数据(调试用)
                     if (result.status == 200) {
                         alert("SUCCESS");
+
+						$('#user-group').html(text);
                     }
                     ;
                 },
@@ -402,7 +403,7 @@ function submitForm3()
 							  <ul class="contact-box">
 								
 									<h3>专家评审服务信息填写</h3>
-									<form id="pingshenform" onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
+									<form id={{item.6}} onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
 												<a>评审时间</a>
 												<div class="form-wrap">
 												  <input class="form-input" id="pingshen-ddl" type="date" name="pingshen-ddl" data-constraints="@Required">
@@ -427,11 +428,11 @@ function submitForm3()
 												<input type="radio" name="expert-type" value="C类" />
 												<br>
 												
-												<input class="form-input" id="hidden" type="hidden" name="formId" value="{{item.6}}">
+												<input class="form-input" id="formId" type="hidden" name="formId" value="{{item.6}}">
 												
 												<input type="hidden" class="button button-secondary" name="submit" value="提交抽审订单"/>
 											
-												<input type="submit" class="button button-secondary" name="submit" value="提交抽审订单" onclick="submitForm2()"/>
+												<input type="submit" class="button button-secondary" name="submit" value="提交抽审订单" onclick="submitForm2({{item.6}})"/>
 									</form>
 								  
 									</ul>
@@ -448,7 +449,7 @@ function submitForm3()
 					  {%endfor%}
 					  </article>
 						<!-- Bootstrap Pagination -->
-						<article id="jicai-page">
+						{% comment %} <article id="jicai-page">
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
 								{% if page.has_previous %}  
@@ -470,7 +471,7 @@ function submitForm3()
 								{% endif %}
 							</ul>
 						  </nav>
-						  </article>
+						  </article> {% endcomment %}
 					  </div>
 					</ul>
 					
@@ -529,7 +530,7 @@ function submitForm3()
 					  {%endfor%}
 					  </article>
 						<!-- Bootstrap Pagination -->
-						<article id="pingshen-page">
+						{% comment %} <article id="pingshen-page">
 						  <nav class="page-navigation" aria-label="Page navigation">
 							<ul class="pagination">
 								{% if page2.has_previous %}  
@@ -551,7 +552,7 @@ function submitForm3()
 								{% endif %}
 							</ul>
 						  </nav>
-						  </article>
+						  </article> {% endcomment %}
 					  </div>
 					</ul>
                   </div>
@@ -606,9 +607,11 @@ function submitForm3()
 
                               <li><a class="hover-text" >上次登录时间：{{last_login}}</a></li>
                               <li><a class="hover-text" >注册时间：{{date_joined}}</a></li>
-							  <li><a class="hover-text" >是否为平台管理员：{{is_superuser}}</a></li>
-							  <li><a class="hover-text" >用户权限：TODO</a></li>
+							  <li><a class="hover-text" >是否为超级管理员：{{is_superuser}}</a></li>
 							  <li><a class="hover-text" >用户邮箱：{{email}}</a></li>
+							  <br>
+							  <li><a class="hover-text" id="user-group">用户身份：{{group}}</a></li>
+
 
                           </div>
                         </div>

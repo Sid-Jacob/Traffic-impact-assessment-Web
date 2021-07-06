@@ -8,8 +8,7 @@ from django.apps import AppConfig
 # Create your models here.
 
 
-# TODO
-# 修改date为时间类型
+# TODO 修改date为时间类型
 class Article(models.Model):
     # STATUS_CHOICES = (
     #     ('d', '草稿'),
