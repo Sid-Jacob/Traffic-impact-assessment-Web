@@ -47,10 +47,13 @@ def login(request):
                 print("login successfully")
                 #如果是从需要权限访问的资源处跳转进入登录页面，则登录后返回之前的页面，而不是index
                 # 根据登录的用户信息跳转到个人主页
-                path = request.GET.get("next", "") or "index/"
+                path = request.GET.get("next", "") or reverse("index")
                 print(path)
-                return redirect(path)
-                # return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+                # return render(request, 'Government.html')
+                # return redirect('https://www.baidu.com/')
+
+                return HttpResponseRedirect(path)
+                # POST请求重定向要用HttpResponseRedirect()
                 # return render(request, "Index.html")
                 # print(reverse("index"))
                 # return redirect(reverse("index"))

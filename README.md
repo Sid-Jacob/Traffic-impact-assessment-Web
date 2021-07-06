@@ -51,8 +51,11 @@ http://www.dongchuanmin.com/archives/471.html
 
 --》console.log(result.page[0][x])
 
-
 一个页面有多个表单要提交，第一个表单之外的表单require字段已填写但显示“未填写”
+
+异步更新时progress-bar无法正常渲染
+
+--》前端控件的代码错误
 
 ---
 
@@ -60,7 +63,7 @@ http://www.dongchuanmin.com/archives/471.html
 
 #### main
 TODO 异步翻页
-TODO: bug:异步更新时progress-bar无法正常渲染，时间显示格式和普通刷新不一样
+TODO: bug:时间显示格式和普通刷新不一样
 
 #### Comment
 TODO 未登录状态发表Comment有bug
@@ -68,7 +71,7 @@ TODO 为什么发完评论没有自动刷新页面，news模板中修改文本�
 
 #### Login
 TODO 忘记密码
-TODO 登录后跳转到之前的页面、根据用户信息跳转到个人主页
+TODO **登录后跳转到之前的页面**、根据用户信息跳转到个人主页
 
 #### TIA
 TODO 搜索文章、订单

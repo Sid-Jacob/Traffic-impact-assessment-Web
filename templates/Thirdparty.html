@@ -94,24 +94,24 @@ $.ajax({
 						for(i=0;i<result.page4.length;i++){
 							block='<li><h5>'+result.page4[i][4]+'号专家评审订单</h5><p>评审时间：'+result.page4[i][3]+'，专家人数：'+result.page4[i][2]+'，价格：'+result.page4[i][1]+'，专家类别：'+result.page4[i][0]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
 							if(result.page4[i][5]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:0%;">';
 							}else if(result.page4[i][6]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:33%;">';
 							}else if(result.page4[i][7]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:66%;">';
 							}else if(result.page4[i][5]==1 && result.page4[i][6]==1 && result.page4[i][7]==1){
 								block = block+'<p>接单用户：'+result.page4[i][9]+'</p>';
-								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:100%;">';
 								
 							}
 							else{
 								block = block+'<p>error</p>';
 							}
-							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:nullify('+result.page4[i][10]+','+result.page4[i][4]+')"></form>';
+							block=block+'</div></div><form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:nullify('+result.page4[i][10]+','+result.page4[i][4]+')"></form>';
 							
 							
 							<!-- console.log(result.page4[i][6]); -->
-							text1=text1+"<br>"+block;
+							text1=text1+block+"<br>";
 						}
 						
 						console.log("评审");
@@ -183,11 +183,11 @@ $.ajax({
 							block='<li><h5>'+result.page2[i][6];
 							block=block+'号集采订单</h5><p>省份：'+result.page2[i][0]+'，城市：'+result.page2[i][1]+'，县：'+result.page2[i][2]+'，订单数量：'+result.page2[i][3]+'，期限：'+result.page2[i][4]+'，谈判时间：'+result.page2[i][5]+'，抽审比例：'+result.page2[i][13]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
 							if(result.page2[i][7]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:0%;">';
 							}else if(result.page2[i][8]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:33%;">';
 							}else if(result.page2[i][9]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:66%;">';
 							}else if(result.page2[i][9]==1 && result.page2[i][7]==1 && result.page2[i][8]==1){
 								block = block+'<p>接单用户：'+result.page2[i][11]+'</p>';
 								if(result.page2[i][15]==1 && result.page2[i][16]==1 && result.page2[i][14]==1){
@@ -195,17 +195,17 @@ $.ajax({
 								}else if(result.page2[i][15]==1 && result.page2[i][16]==1 && result.page2[i][14]==0){
 									block=block + '<p>报告审核情况：不合格</p>';
 								}
-								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:100%;">';
 								
 							}
 							else{
 								block = block+'<p>error</p>';
 							}
-							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input type="button"  class="button button-sm button-secondary" name="submit" value="接单" onclick="javascript:take('+result.page2[i][6]+')"></form></article></div><br></li>';
+							block=block+'</div></div><form onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input type="button"  class="button button-sm button-secondary" name="submit" value="接单" onclick="javascript:take('+result.page2[i][6]+')"></form></article></div><br></li>';
 							
 							
 							console.log(result.page2[i][6]);
-							text1=text1+"<br>"+block;
+							text1=text1+block+"<br>";
 						}
 						
 						console.log(text1);
@@ -223,11 +223,11 @@ $.ajax({
 						for(i=0;i<result.page.length;i++){
 							block='<li><h5>'+result.page[i][6]+'号集采订单</h5><p>省份：'+result.page[i][0]+'，城市：'+result.page[i][1]+'，县：'+result.page[i][2]+'，订单数量：'+result.page[i][3]+'，期限：'+result.page[i][4]+'，谈判时间：'+result.page[i][5]+'，抽审比例：'+result.page[i][13]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
 							if(result.page[i][7]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:0%;">';
 							}else if(result.page[i][8]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:33%;">';
 							}else if(result.page[i][9]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:66%;">';
 							}else if(result.page[i][9]==1 && result.page[i][7]==1 && result.page[i][8]==1){
 								block = block+'<p>接单用户：'+result.page[i][11]+'</p>';
 								if(result.page[i][15]==1 && result.page[i][16]==1 && result.page[i][14]==1){
@@ -235,13 +235,13 @@ $.ajax({
 								}else if(result.page[i][15]==1 && result.page[i][16]==1 && result.page[i][14]==0){
 									block=block + '<p>报告审核情况：不合格</p>';
 								}
-								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:100%;">';
 								
 							}
 							else{
 								block = block+'<p>error</p>';
 							}
-							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form id='+result.page[i][6]+' onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input class="form-input" type="hidden" name="formId" value="'+result.page[i][6]+'"><textarea rows="2" cols="100" name="report-content" form='+result.page[i][6]+'  placeholder="请输入报告内容..."></textarea><input type="hidden" class="button button-secondary" name="submit" value="提交报告"><input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4('+result.page[i][6]+')"></form><br></article></div></li>';
+							block=block+'</div></div><form id='+result.page[i][6]+' onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input class="form-input" type="hidden" name="formId" value="'+result.page[i][6]+'"><textarea rows="2" cols="100" name="report-content" form='+result.page[i][6]+'  placeholder="请输入报告内容..."></textarea><input type="hidden" class="button button-secondary" name="submit" value="提交报告"><input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4('+result.page[i][6]+')"></form><br></article></div></li>';
 							
 							
 							console.log(result.page[i][6]);
@@ -299,11 +299,11 @@ var formId='#'+formid
 							block='<li><h5>'+result.page3[i][6];
 							block=block+'号集采订单</h5><p>省份：'+result.page3[i][0]+'，城市：'+result.page3[i][1]+'，县：'+result.page3[i][2]+'，订单数量：'+result.page3[i][3]+'，期限：'+result.page3[i][4]+'，谈判时间：'+result.page3[i][5]+'，抽审比例：'+result.page3[i][13]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
 							if(result.page3[i][7]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:0%;">';
 							}else if(result.page3[i][8]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:33%;">';
 							}else if(result.page3[i][9]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:66%;">';
 							}else if(result.page3[i][9]==1 && result.page3[i][7]==1 && result.page3[i][8]==1){
 								block = block+'<p>接单用户：'+result.page3[i][11]+'</p>';
 								if(result.page3[i][15]==1 && result.page3[i][16]==1 && result.page3[i][14]==1){
@@ -311,13 +311,13 @@ var formId='#'+formid
 								}else if(result.page3[i][15]==1 && result.page3[i][16]==1 && result.page3[i][14]==0){
 									block=block + '<p>报告审核情况：不合格</p>';
 								}
-								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:100%;">';
 								
 							}
 							else{
 								block = block+'<p>error</p>';
 							}
-							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div></article></div></li>';
+							block=block+'</div></div></article></div></li>';
 							
 							
 							console.log(result.page3[i][6]);
@@ -335,15 +335,15 @@ var formId='#'+formid
 						
 						text1="";
 						block="";
-	
+
 						for(i=0;i<result.page.length;i++){
 							block='<li><h5>'+result.page[i][6]+'号集采订单</h5><p>省份：'+result.page[i][0]+'，城市：'+result.page[i][1]+'，县：'+result.page[i][2]+'，订单数量：'+result.page[i][3]+'，期限：'+result.page[i][4]+'，谈判时间：'+result.page[i][5]+'，抽审比例：'+result.page[i][13]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
 							if(result.page[i][7]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:0%;">';
 							}else if(result.page[i][8]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:33%;">';
 							}else if(result.page[i][9]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:66%;">';
 							}else if(result.page[i][9]==1 && result.page[i][7]==1 && result.page[i][8]==1){
 								block = block+'<p>接单用户：'+result.page[i][11]+'</p>';
 								if(result.page[i][15]==1 && result.page[i][16]==1 && result.page[i][14]==1){
@@ -351,13 +351,13 @@ var formId='#'+formid
 								}else if(result.page[i][15]==1 && result.page[i][16]==1 && result.page[i][14]==0){
 									block=block + '<p>报告审核情况：不合格</p>';
 								}
-								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:100%;">';
 								
 							}
 							else{
 								block = block+'<p>error</p>';
 							}
-							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form id='+result.page[i][6]+' onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input class="form-input" type="hidden" name="formId" value="'+result.page[i][6]+'"><textarea rows="2" cols="100" name="report-content" form='+result.page[i][6]+'  placeholder="请输入报告内容..."></textarea><input type="hidden" class="button button-secondary" name="submit" value="提交报告"><input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4('+result.page[i][6]+')"></form>';
+							block=block+'</div></div><form id='+result.page[i][6]+' onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input class="form-input" type="hidden" name="formId" value="'+result.page[i][6]+'"><textarea rows="2" cols="100" name="report-content" form='+result.page[i][6]+'  placeholder="请输入报告内容..."></textarea><input type="hidden" class="button button-secondary" name="submit" value="提交报告"><input type="submit" class="button button-secondary" name="submit" value="提交报告" onclick="submitForm4('+result.page[i][6]+')"></form><br></article></div></li>';
 							
 							
 							console.log(result.page[i][6]);
@@ -883,5 +883,7 @@ var formId='#'+formid
     <!-- Javascript-->
     <script src={%static "js/core.min.js"%}></script>
     <script src={%static "js/script.js"%}></script>
+	<script src={%static "js/jquery.mousewheel.min.js"%}></script>
+
   </body>
 </html>

@@ -94,24 +94,24 @@ $.ajax({
 						for(i=0;i<result.page2.length;i++){
 							block='<li><h5>'+result.page2[i][4]+'号专家评审订单</h5><p>评审时间：'+result.page2[i][3]+'，专家人数：'+result.page2[i][2]+'，价格：'+result.page2[i][1]+'，专家类别：'+result.page2[i][0]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
 							if(result.page2[i][5]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:0%;">';
 							}else if(result.page2[i][6]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:33%;">';
 							}else if(result.page2[i][7]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:66%;">';
 							}else if(result.page2[i][5]==1 && result.page2[i][6]==1 && result.page2[i][7]==1){
 								block = block+'<p>接单用户：'+result.page2[i][9]+'</p>';
-								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:100%;">';
 								
 							}
 							else{
 								block = block+'<p>error</p>';
 							}
-							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:nullify('+result.page2[i][10]+','+result.page2[i][4]+')"></form>';
+							block=block+'</div></div><form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:nullify('+result.page2[i][10]+','+result.page2[i][4]+')"></form>';
 							
 							
 							<!-- console.log(result.page2[i][6]); -->
-							text1=text1+"<br>"+block;
+							text1=text1+block+"<br>";
 						}
 						
 						console.log("评审");
@@ -158,7 +158,7 @@ var formId='#'+form1id
 						<!-- console.log(result.page[0][6]); -->
 						for(i=0;i<result.page.length;i++){
 							block='<li><h5>'+result.page[i][6]+'号集采订单</h5><p>省份：'+result.page[i][0]+'，城市：'+result.page[i][1]+'，县：'+result.page[i][2]+'，订单数量：'+result.page[i][3]+'，期限：'+result.page[i][4]+'，谈判时间：'+result.page[i][5]+'，抽审比例：'+result.page[i][13]+'</p><div class="progress-linear-wrap"><div class="progress-linear-wrap"><ul class="contact-box"><h3>专家评审服务信息填写</h3><form id='+result.page[i][6]+' onsubmit="return false" class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" ><a>评审时间</a><div class="form-wrap"><input class="form-input" id="pingshen-ddl" type="date" name="pingshen-ddl" data-constraints="@Required"><label class="form-label" for="pingshen-ddl"></label></div><a>专家人数</a><div class="form-wrap"><input class="form-input" id="pingshen-expert-num" type="text" name="expert-num" data-constraints="@Required"><label class="form-label" for="pingshen-expert-num">人</label></div><a>价格</a><div class="form-wrap"><input class="form-input" id="pingshen-price" type="text" name="price" data-constraints="@Required"><label class="form-label" for="pingshen-price">元（人民币）</label></div><a>专家类别</a>A类<input type="radio" checked="checked" name="expert-type" value="A类" />B类<input type="radio" name="expert-type" value="B类" />C类<input type="radio" name="expert-type" value="C类" /><br><input class="form-input" id="hidden" type="hidden" name="formId" value="'+result.page[i][6]+'"><input type="hidden" class="button button-secondary" name="submit" value="提交抽审订单"/><input type="submit" class="button button-secondary" name="submit" value="提交抽审订单" onclick="submitForm2('+result.page[i][6]+')"/></form></ul></br></div></li>';
-							text1=text1+"<br>"+block;
+							text1=text1+block+"<br>";
 						}
 						
 						console.log("集采");
@@ -174,24 +174,24 @@ var formId='#'+form1id
 						for(i=0;i<result.page2.length;i++){
 							block='<li><h5>'+result.page2[i][4]+'号专家评审订单</h5><p>评审时间：'+result.page2[i][3]+'，专家人数：'+result.page2[i][2]+'，价格：'+result.page2[i][1]+'，专家类别：'+result.page2[i][0]+'</p><div class="progress-linear-wrap"><article class="progress-linear"><div class="progress-header">';
 							if(result.page2[i][5]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">0</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:0%;">';
 							}else if(result.page2[i][6]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">33</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:33%;">';
 							}else if(result.page2[i][7]==0){
-								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span>';
+								block = block+'<p>订单执行百分比</p><span class="progress-value">66</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:66%;">';
 							}else if(result.page2[i][5]==1 && result.page2[i][6]==1 && result.page2[i][7]==1){
 								block = block+'<p>接单用户：'+result.page2[i][9]+'</p>';
-								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span>';
+								block = block+ '<p>订单执行百分比</p><span class="progress-value">100</span></div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear" style="width:100%;">';
 								
 							}
 							else{
 								block = block+'<p>error</p>';
 							}
-							block=block+'</div><div class="progress-bar-linear-wrap"><div class="progress-bar-linear"></div></div><form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:nullify('+result.page2[i][10]+','+result.page2[i][4]+')"></form>';
+							block=block+'</div></div><form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post"><input type="button" class="button button-sm button-secondary" name="abortForm" value="废除本订单" onclick="javascript:nullify('+result.page2[i][10]+','+result.page2[i][4]+')"></form>';
 							
 							
 							<!-- console.log(result.page2[i][6]); -->
-							text1=text1+"<br>"+block;
+							text1=text1+block+"<br>";
 						}
 						
 						console.log("评审");
@@ -703,5 +703,6 @@ function submitForm3()
     <!-- Javascript-->
     <script src={%static "js/core.min.js"%}></script>
     <script src={%static "js/script.js"%}></script>
+	<script src={%static "js/jquery.mousewheel.min.js"%}></script>
   </body>
 </html>

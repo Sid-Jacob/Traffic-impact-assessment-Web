@@ -18,7 +18,7 @@ from main.decorator import group_required
 # Create your views here.
 # TODO 异步翻页
 
-# TODO: bug:异步更新时progress-bar无法正常渲染，时间显示格式和普通刷新不一样；news内页评论功能异步化
+# TODO: bug:异步更新时progress-bar无法正常渲染，时间显示格式和普通刷新不一样
 
 # 每页显示标题数
 PAGENUM = 1000
@@ -1067,6 +1067,7 @@ def thirdParty(request):
                         "negotiateTime", "formId", "significanceBit", "taken",
                         "done", "userId2", "userName2", "subtype",
                         "percentage").order_by("-formId")
+                print(rets1)
                 # 新订单
                 rets2 = Form1.objects.filter(
                     Q(taken=False) & Q(significanceBit=True)).values_list(
