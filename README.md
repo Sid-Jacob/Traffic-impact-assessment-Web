@@ -53,15 +53,12 @@ http://www.dongchuanmin.com/archives/471.html
 
 一个页面有多个表单要提交，第一个表单之外的表单require字段已填写但显示“未填写”
 
-<<<<<<< HEAD
 异步更新时progress-bar无法正常渲染
 
 --》前端控件的代码错误
 
 ---
 
-=======
->>>>>>> refs/remotes/origin/master
 ## TODO：
 
 #### main
