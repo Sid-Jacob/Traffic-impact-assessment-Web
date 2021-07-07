@@ -55,6 +55,7 @@ def index(request):
             # 删除掉图片显示异常的新闻
             if news_list[i][j] == "":
                 del_list.append(i)
+
     del_list = del_list[::-1]
     for i in del_list:
         if i < len(news_list):

@@ -15,4 +15,6 @@ urlpatterns = [
     re_path(r'expert/.*?', views.expert),
     path('init/', views.init, name="init"),
     re_path(r'init/.*?', views.init),
+    path('delete/', views.delete, name="delete"),
+    re_path(r'delete/.*?', views.delete),
 ]

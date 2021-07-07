@@ -45,6 +45,16 @@ def init(request):
     return render(request, "Index.html")
 
 
+def delete(request):
+    ret = FormTemplate.objects.filter().all()
+    print("ret=", ret)
+    for item in ret:
+        print(item.formId)
+        item.delete()
+    redirect(reverse("main:main"))
+    return render(request, "Index.html")
+
+
 # 根据用户分组，自动跳转到对应主页
 @login_required(login_url="/accounts/login")
 def distributer(request):
